@@ -1,0 +1,18 @@
+# 忽略上传的截图素材
+.uploads/
+
+# 忽略备份文件
+*-backup.html
+
+# 忽略 Node 日志和临时文件
+*.log
+nohup.out
+/tmp/
+
+# 忽略 IDE 配置
+.vscode/
+.idea/
+
+# 忽略操作系统文件
+.DS_Store
+Thumbs.db
