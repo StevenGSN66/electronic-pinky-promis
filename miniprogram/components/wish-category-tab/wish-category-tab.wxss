@@ -1,0 +1,29 @@
+/* 愿望分类标签栏组件样式 */
+.category-tab {
+  white-space: nowrap;
+  background: #fff;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.tab-list {
+  display: inline-flex;
+  padding: 0 20rpx;
+  height: 80rpx;
+  align-items: center;
+}
+
+.tab-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24rpx;
+  height: 56rpx;
+  font-size: 28rpx;
+  color: #666;
+  border-bottom: 4rpx solid transparent;
+  transition: all 0.3s;
+}
+
+.tab-item.active {
+  font-weight: 500;
+}

@@ -1,0 +1,239 @@
+/* pages/promise-sign/promise-sign.wxss */
+/* 电子拉钩确认页样式 */
+
+.promise-sign-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #F0FFF5 0%, #FFFFFF 100%);
+  padding: 32rpx;
+  box-sizing: border-box;
+}
+
+/* 引导区 */
+.guide-area {
+  margin-bottom: 32rpx;
+}
+
+/* 约定预览卡片 */
+.promise-card-preview {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 4rpx 20rpx rgba(124, 212, 168, 0.15);
+  border: 2rpx solid var(--primary-light, #E0F5E9);
+}
+
+.card-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--primary, #7CD4A8);
+  margin-bottom: 20rpx;
+}
+
+.promise-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 16rpx;
+  line-height: 1.4;
+}
+
+.promise-desc {
+  display: block;
+  font-size: 28rpx;
+  color: #666666;
+  margin-bottom: 20rpx;
+  line-height: 1.5;
+}
+
+.promise-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.meta-item {
+  font-size: 26rpx;
+  color: #999999;
+}
+
+/* 签名区域 */
+.sign-area {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+
+.sign-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.title-text {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #333333;
+}
+
+.title-hint {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+/* 已签名展示 */
+.signed-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0;
+}
+
+.sign-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32rpx;
+}
+
+.sign-label {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--primary, #7CD4A8);
+  margin-bottom: 12rpx;
+}
+
+.sign-time {
+  font-size: 24rpx;
+  color: #999999;
+  margin-bottom: 20rpx;
+}
+
+.sign-image {
+  width: 400rpx;
+  height: 200rpx;
+  border: 2rpx dashed var(--primary, #7CD4A8);
+  border-radius: 16rpx;
+  background: #FAFAFA;
+}
+
+.tap-sign-mark {
+  font-size: 48rpx;
+  padding: 40rpx 80rpx;
+  background: var(--primary-light, #E0F5E9);
+  border-radius: 16rpx;
+  color: var(--primary, #7CD4A8);
+}
+
+.btn-reset {
+  background: none;
+  border: 2rpx solid #DDDDDD;
+  color: #999999;
+  font-size: 28rpx;
+  padding: 16rpx 48rpx;
+  border-radius: 40rpx;
+}
+
+.btn-reset::after {
+  border: none;
+}
+
+/* 签名板包装 */
+.sign-pad-wrapper {
+  padding: 20rpx 0;
+}
+
+/* 双方状态 */
+.both-status {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+  padding: 24rpx;
+  border-radius: 16rpx;
+  flex: 1;
+}
+
+.status-item.signed {
+  background: var(--primary-light, #E0F5E9);
+}
+
+.status-item.unsigned {
+  background: #F5F5F5;
+}
+
+.status-icon {
+  font-size: 48rpx;
+}
+
+.status-text {
+  font-size: 26rpx;
+  color: #666666;
+  font-weight: 600;
+}
+
+.status-connector {
+  font-size: 48rpx;
+  padding: 0 20rpx;
+}
+
+/* 双方已签提示 */
+.both-signed-tip {
+  margin-top: 32rpx;
+  padding: 32rpx;
+  background: linear-gradient(135deg, #E0F5E9 0%, #FFF5E6 100%);
+  border-radius: 20rpx;
+  text-align: center;
+}
+
+.tip-text {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--primary, #7CD4A8);
+  margin-bottom: 12rpx;
+}
+
+.tip-sub {
+  display: block;
+  font-size: 26rpx;
+  color: #999999;
+}
+
+/* 底部操作 */
+.bottom-actions {
+  display: flex;
+  justify-content: center;
+  padding: 20rpx 0 40rpx;
+}
+
+.btn-back {
+  background: none;
+  border: 2rpx solid #CCCCCC;
+  color: #999999;
+  font-size: 28rpx;
+  padding: 20rpx 60rpx;
+  border-radius: 40rpx;
+}
+
+.btn-back::after {
+  border: none;
+}

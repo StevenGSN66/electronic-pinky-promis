@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "创建约定",
+  "usingComponents": {
+    "signature-pad": "/components/signature-pad/signature-pad"
+  }
+}

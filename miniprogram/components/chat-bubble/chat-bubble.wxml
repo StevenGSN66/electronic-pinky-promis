@@ -1,0 +1,30 @@
+<!-- AI对话气泡组件 -->
+<view class="chat-bubble {{sender}}-bubble">
+  <view class="avatar-wrap" wx:if="{{sender === 'ai'}}" bindtap="onAvatarTap">
+    <image class="avatar" src="{{aiAvatar}}" mode="aspectFill"/>
+  </view>
+
+  <view class="bubble-content">
+    <view class="bubble-body" bindtap="onBubbleTap">
+      <view wx:if="{{loading}}" class="loading-dots">
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+      </view>
+      <block wx:else>
+        <text class="bubble-text {{expanded ? 'expanded' : 'folded'}}">{{content}}</text>
+        <view class="expand-btn" wx:if="{{content.length > 100}}" bindtap="onToggleExpand">
+          <text>{{expanded ? '收起' : '展开'}}</text>
+        </view>
+      </block>
+    </view>
+    <view class="bubble-meta">
+      <text class="time">{{time}}</text>
+      <text class="copy-btn" wx:if="{{sender === 'ai' && !loading}}" bindtap="onCopy">复制</text>
+    </view>
+  </view>
+
+  <view class="avatar-wrap" wx:if="{{sender === 'user'}}" bindtap="onAvatarTap">
+    <image class="avatar" src="{{userAvatar}}" mode="aspectFill"/>
+  </view>
+</view>

@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/promise/create",
+    "pages/promise-sign/promise-sign",
+    "pages/promise/detail",
+    "pages/promise/list",
+    "pages/promise/review",
+    "pages/trust/tree",
+    "pages/trust/level",
+    "pages/wish/create",
+    "pages/wish/list",
+    "pages/wish/public",
+    "pages/wish/detail",
+    "pages/profile/profile",
+    "pages/profile/settings",
+    "pages/notification/notification"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "亲子信任约定",
+    "navigationBarBackgroundColor": "#7CD4A8",
+    "backgroundColor": "#F5F5F5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#7CD4A8",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/wish/public",
+        "text": "愿望岛",
+        "iconPath": "assets/icons/island.png",
+        "selectedIconPath": "assets/icons/island-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/icons/profile.png",
+        "selectedIconPath": "assets/icons/profile-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

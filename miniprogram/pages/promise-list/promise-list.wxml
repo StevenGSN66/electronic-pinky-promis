@@ -1,0 +1,48 @@
+<!-- promise-list.wxml -->
+<!-- 我的约定列表页：按状态筛选（进行中/已完成/已逾期/已复盘） -->
+
+<view class="container list-container">
+
+  <!-- 顶部标签栏 -->
+  <view class="tab-bar">
+    <view wx:for="{{tabs}}" wx:key="key" class="tab-item {{currentTab === item.key ? 'active' : ''}}" bindtap="switchTab" data-tab="{{item.key}}">
+      <text class="tab-label">{{item.label}}</text>
+      <view wx:if="{{currentTab === item.key}}" class="tab-indicator"></view>
+    </view>
+  </view>
+
+  <!-- 约定列表 -->
+  <view class="promise-list">
+    <view wx:for="{{promiseList}}" wx:key="id" class="promise-card card" bindtap="goToDetail" data-id="{{item.id}}">
+      <view class="card-header">
+        <text class="card-title">{{item.title}}</text>
+        <view class="status-tag status-{{item.status}}">{{item.statusLabel || item.status}}</view>
+      </view>
+      <view class="card-body">
+        <text class="card-info">与 {{item.partnerName}} 的约定</text>
+        <text class="card-deadline">截止：{{item.deadline}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{promiseList.length === 0 && !loading}}" class="empty-state">
+    <text class="empty-icon">📭</text>
+    <text class="empty-text">暂无{{tabs.find(t=>t.key===currentTab).label}}的约定</text>
+    <view wx:if="{{currentTab === 'pending'}}" class="btn-primary create-btn" bindtap="goToCreate">去创建约定</view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view wx:if="{{hasMore && promiseList.length > 0}}" class="load-more">
+    <text>加载中...</text>
+  </view>
+  <view wx:if="{{!hasMore && promiseList.length > 0}}" class="no-more">
+    <text>没有更多了</text>
+  </view>
+
+  <!-- 全局加载遮罩 -->
+  <view wx:if="{{loading && promiseList.length === 0}}" class="loading-mask">
+    <text>加载中...</text>
+  </view>
+
+</view>

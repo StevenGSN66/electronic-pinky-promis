@@ -1,0 +1,160 @@
+/* components/mascot-guide/mascot-guide.wxss */
+/* 雁小约引导组件样式 */
+
+/* ===== 弹窗遮罩模式 ===== */
+.mascot-guide-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 120rpx;
+  transition: opacity 0.3s;
+}
+
+.mascot-guide-modal.show {
+  opacity: 1;
+}
+
+.mascot-guide-modal.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.guide-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.guide-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+/* ===== 嵌入式模式 ===== */
+.mascot-guide-inline {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+  padding: 24rpx;
+}
+
+/* ===== Mascot 图片 ===== */
+.mascot-img {
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+  object-fit: contain;
+}
+
+.modal-img {
+  width: 280rpx;
+  height: 280rpx;
+}
+
+.inline-img {
+  width: 120rpx;
+  height: 120rpx;
+  flex-shrink: 0;
+}
+
+/* ===== 气泡 ===== */
+.bubble {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 28rpx 36rpx;
+  position: relative;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+  border: 2rpx solid var(--primary-light, #E0F5E9);
+}
+
+.inline-bubble {
+  flex: 1;
+  max-width: 520rpx;
+}
+
+.bubble-text {
+  font-size: 28rpx;
+  color: #333333;
+  line-height: 1.6;
+}
+
+.bubble-arrow {
+  position: absolute;
+  bottom: -16rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 16rpx solid transparent;
+  border-right: 16rpx solid transparent;
+  border-top: 16rpx solid #FFFFFF;
+}
+
+.inline-bubble .bubble-arrow {
+  left: -16rpx;
+  bottom: auto;
+  top: 40rpx;
+  transform: translateY(-50%) rotate(-90deg);
+  border-top-color: #FFFFFF;
+}
+
+/* ===== 动画 ===== */
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+.fade-out {
+  animation: fadeOut 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* ===== 底部操作 ===== */
+.guide-footer {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  margin-top: 20rpx;
+}
+
+.step-indicator {
+  font-size: 24rpx;
+  color: #FFFFFF;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+}
+
+.btn-next {
+  background: var(--primary, #7CD4A8);
+  color: #FFFFFF;
+  padding: 16rpx 40rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  box-shadow: 0 4rpx 16rpx rgba(124, 212, 168, 0.35);
+}
+
+.btn-close {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 26rpx;
+  padding: 12rpx 20rpx;
+}

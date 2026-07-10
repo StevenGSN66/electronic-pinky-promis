@@ -1,0 +1,396 @@
+/* index.wxss */
+/* 首页/信任星球样式：星球 + 亲情树（已点亮）+ 友情树/自律树（待开放） */
+
+.planet-container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #F0FFF5 0%, #FFFFFF 50%, #FAFAFA 100%);
+  padding-bottom: 160rpx;
+}
+
+/* ===== 星球主视觉区 ===== */
+.planet-section {
+  padding: 40rpx 32rpx;
+  background: linear-gradient(135deg, #E8F8F0 0%, #D4F0E4 100%);
+  border-radius: 0 0 48rpx 48rpx;
+  margin-bottom: 32rpx;
+}
+
+.planet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32rpx;
+}
+
+.planet-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #2D6A4F;
+}
+
+.planet-drops {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 8rpx 24rpx;
+  border-radius: 40rpx;
+}
+
+.drops-icon {
+  font-size: 28rpx;
+  margin-right: 8rpx;
+}
+
+.drops-count {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--primary, #7CD4A8);
+}
+
+/* 星球 + 树种布局 */
+.planet-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24rpx;
+  position: relative;
+  padding: 20rpx 0;
+}
+
+/* 中心亲情树 */
+.tree-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.planet-core {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 240rpx;
+  height: 240rpx;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F0FFF5 100%);
+  border: 4rpx solid var(--primary, #7CD4A8);
+  border-radius: 50%;
+  box-shadow: 0 8rpx 32rpx rgba(124, 212, 168, 0.3);
+}
+
+.tree-emoji {
+  font-size: 64rpx;
+  margin-bottom: 8rpx;
+}
+
+.tree-name {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #2D6A4F;
+}
+
+.tree-level {
+  font-size: 22rpx;
+  color: var(--primary, #7CD4A8);
+  background: rgba(124, 212, 168, 0.15);
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  margin-top: 8rpx;
+}
+
+.drops-ring {
+  margin-top: 16rpx;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8rpx 24rpx;
+  border-radius: 40rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.ring-drops {
+  font-size: 26rpx;
+  color: var(--primary, #7CD4A8);
+  font-weight: 600;
+}
+
+/* 侧方树种（友情树/自律树） */
+.tree-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tree-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 160rpx;
+  height: 160rpx;
+  background: #FFFFFF;
+  border: 3rpx solid;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.tree-item.active {
+  opacity: 1;
+}
+
+.tree-item.locked {
+  opacity: 0.5;
+  background: #F5F5F5;
+}
+
+.tree-item.locked .tree-emoji,
+.tree-item.locked .tree-name {
+  opacity: 0.4;
+}
+
+.tree-item.unlockable {
+  animation: pulse 2s infinite;
+  box-shadow: 0 4rpx 24rpx rgba(255, 215, 0, 0.3);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.lock-icon {
+  font-size: 32rpx;
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+}
+
+.lock-hint {
+  font-size: 18rpx;
+  color: #999999;
+  text-align: center;
+  padding: 0 16rpx;
+  margin-top: 4rpx;
+}
+
+.unlock-badge {
+  font-size: 20rpx;
+  color: #FF9F43;
+  background: rgba(255, 159, 67, 0.15);
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+  margin-top: 8rpx;
+  font-weight: 600;
+}
+
+/* 解锁提示 */
+.unlock-tip {
+  margin-top: 32rpx;
+  padding: 20rpx 32rpx;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20rpx;
+  text-align: center;
+}
+
+.tip-text {
+  font-size: 26rpx;
+  color: #666666;
+  line-height: 1.5;
+}
+
+/* ===== 今日约定区 ===== */
+.today-section {
+  padding: 0 32rpx;
+  margin-bottom: 40rpx;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #333333;
+}
+
+.section-more {
+  font-size: 26rpx;
+  color: var(--primary, #7CD4A8);
+}
+
+.promise-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.promise-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 24rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.promise-tag {
+  padding: 6rpx 16rpx;
+  border-radius: 12rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.promise-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.promise-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.promise-meta {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.promise-action {
+  flex-shrink: 0;
+}
+
+.btn-primary-sm {
+  background: var(--primary, #7CD4A8);
+  color: #FFFFFF;
+  font-size: 26rpx;
+  padding: 12rpx 28rpx;
+  border-radius: 28rpx;
+  font-weight: 600;
+}
+
+/* ===== 动态区 ===== */
+.activity-section {
+  padding: 0 32rpx;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+  padding: 24rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.activity-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-top: 8rpx;
+  flex-shrink: 0;
+}
+
+.activity-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.activity-text {
+  font-size: 28rpx;
+  color: #333333;
+  line-height: 1.4;
+}
+
+.activity-time {
+  font-size: 22rpx;
+  color: #BBBBBB;
+}
+
+.empty-hint {
+  text-align: center;
+  padding: 40rpx;
+}
+
+.hint-text {
+  font-size: 26rpx;
+  color: #BBBBBB;
+}
+
+/* ===== 空状态 ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 16rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999999;
+  margin-bottom: 24rpx;
+}
+
+.create-btn {
+  padding: 20rpx 60rpx;
+}
+
+/* ===== 悬浮按钮 ===== */
+.fab {
+  position: fixed;
+  right: 40rpx;
+  bottom: 120rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background: linear-gradient(135deg, #7CD4A8 0%, #5BC49A 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(124, 212, 168, 0.4);
+  z-index: 100;
+}
+
+.fab-icon {
+  color: #FFFFFF;
+  font-size: 48rpx;
+  font-weight: bold;
+}
+
+/* 加载遮罩 */
+.loading-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}

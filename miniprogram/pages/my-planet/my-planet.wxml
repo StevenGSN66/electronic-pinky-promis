@@ -1,0 +1,65 @@
+<!-- my-planet.wxml -->
+<!-- 我的星球页面：展示个人守约率/信任水滴/信任树等级/最近动态 -->
+
+<view class="container planet-container">
+
+  <!-- 星球主视觉区 -->
+  <view class="planet-visual card">
+    <text class="planet-title">我的信任星球</text>
+    <!-- 信任树展示 -->
+    <view class="tree-display">
+      <text class="tree-emoji">🌳</text>
+      <view class="tree-info">
+        <text class="tree-level">Lv.{{stats.treeLevel}}</text>
+        <view class="exp-bar">
+          <view class="exp-progress" style="width: {{stats.treeExp / stats.nextLevelExp * 100}}%;"></view>
+        </view>
+        <text class="exp-text">{{stats.treeExp}} / {{stats.nextLevelExp}} 经验</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 核心数据卡片 -->
+  <view class="stats-row">
+    <view class="stat-card card">
+      <text class="stat-value">{{stats.completionRate}}%</text>
+      <text class="stat-label">守约率</text>
+    </view>
+    <view class="stat-card card">
+      <text class="stat-value">{{stats.trustDrops}}</text>
+      <text class="stat-label">信任水滴</text>
+    </view>
+    <view class="stat-card card">
+      <text class="stat-value">Lv.{{stats.treeLevel}}</text>
+      <text class="stat-label">信任树等级</text>
+    </view>
+  </view>
+
+  <!-- 最近动态 -->
+  <view class="dynamics-section">
+    <view class="section-header">
+      <text class="section-title">最近动态</text>
+      <text class="section-more" bindtap="goToDynamics">查看全部 ></text>
+    </view>
+    <view class="dynamics-list">
+      <view wx:for="{{recentDynamics}}" wx:key="id" class="dynamic-item card">
+        <view class="dynamic-icon {{item.type}}">
+          <text>{{item.type === 'complete' ? '✅' : item.type === 'levelup' ? '⬆️' : '📌'}}</text>
+        </view>
+        <view class="dynamic-content">
+          <text class="dynamic-text">{{item.content}}</text>
+          <text class="dynamic-time">{{item.time}}</text>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{recentDynamics.length === 0}}" class="empty-state">
+      <text class="empty-text">暂无动态</text>
+    </view>
+  </view>
+
+  <!-- 全局加载遮罩 -->
+  <view wx:if="{{loading}}" class="loading-mask">
+    <text>加载中...</text>
+  </view>
+
+</view>

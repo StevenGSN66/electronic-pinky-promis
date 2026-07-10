@@ -1,0 +1,83 @@
+<!-- promise-detail.wxml -->
+<!-- 约定详情页：展示约定内容、承诺人、截止时间、完成标准、签名凭证，支持完成/延期/复盘 -->
+
+<view class="container detail-container">
+
+  <!-- 约定卡片 -->
+  <view wx:if="{{promise}}" class="promise-detail-card card">
+    <!-- 状态标签 -->
+    <view class="status-badge status-{{promise.status}}">
+      {{statusMap[promise.status]}}
+    </view>
+
+    <!-- 约定标题 -->
+    <text class="detail-title">{{promise.title}}</text>
+
+    <!-- 参与人信息 -->
+    <view class="participants">
+      <view class="participant">
+        <image class="participant-avatar" src="{{promise.initiator.avatar || '/assets/default-avatar.png'}}" mode="aspectFill"/>
+        <text class="participant-name">{{promise.initiator.name}}</text>
+        <text class="participant-role">发起人</text>
+      </view>
+      <text class="participant-connector">🤝</text>
+      <view class="participant">
+        <image class="participant-avatar" src="{{promise.acceptor.avatar || '/assets/default-avatar.png'}}" mode="aspectFill"/>
+        <text class="participant-name">{{promise.acceptor.name}}</text>
+        <text class="participant-role">接受人</text>
+      </view>
+    </view>
+
+    <!-- 约定详情 -->
+    <view class="detail-section">
+      <view class="detail-row">
+        <text class="detail-label">约定内容</text>
+        <text class="detail-value">{{promise.content}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">截止时间</text>
+        <text class="detail-value">{{promise.deadline}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">完成标准</text>
+        <text class="detail-value">{{promise.standard}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">创建时间</text>
+        <text class="detail-value">{{promise.createdAt}}</text>
+      </view>
+    </view>
+
+    <!-- 签名凭证 -->
+    <view class="signature-section" bindtap="previewSignature">
+      <text class="detail-label">电子拉钩签名</text>
+      <image wx:if="{{promise.signatureUrl}}" class="signature-image" src="{{promise.signatureUrl}}" mode="aspectFit"/>
+      <view wx:else class="signature-placeholder">
+        <text>签名凭证占位</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮区 -->
+  <view wx:if="{{promise && promise.status === 'pending'}}" class="action-bar">
+    <view class="action-btn btn-primary" bindtap="markAsCompleted">标记完成</view>
+    <view class="action-btn btn-secondary" bindtap="requestPostpone">申请延期</view>
+    <view class="action-btn btn-secondary" bindtap="goToReview">未履约复盘</view>
+  </view>
+
+  <!-- 已完成状态提示 -->
+  <view wx:if="{{promise && promise.status === 'completed'}}" class="status-tip success">
+    <text>🎉 该约定已顺利完成，信任水滴已增加！</text>
+  </view>
+
+  <!-- 已逾期状态提示 -->
+  <view wx:if="{{promise && promise.status === 'overdue'}}" class="status-tip warning">
+    <text>⚠️ 该约定已逾期，建议尽快复盘处理</text>
+  </view>
+
+  <!-- 全局加载遮罩 -->
+  <view wx:if="{{loading}}" class="loading-mask">
+    <text>加载中...</text>
+  </view>
+
+</view>

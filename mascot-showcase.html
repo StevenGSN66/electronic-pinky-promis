@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>雁小约 V2 吉祥物素材展示</title>
+<style>
+  :root {
+    --primary: #7CD4A8;
+    --primary-light: #E0F5E9;
+    --pink: #FFB7B2;
+    --orange: #FFDAC1;
+    --blue: #B5D8F7;
+    --bg: #F8FAFB;
+    --card: #FFFFFF;
+    --text: #333333;
+    --text-light: #666666;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, #5BC49A 100%);
+    color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  .header h1 { font-size: 28px; margin-bottom: 8px; }
+  .header p { font-size: 15px; opacity: 0.9; }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px 60px; }
+  .section { margin-bottom: 40px; }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-left: 12px;
+    border-left: 4px solid var(--primary);
+  }
+  .mascot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  .mascot-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .mascot-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  }
+  .mascot-card img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 12px;
+    background: var(--primary-light);
+  }
+  .mascot-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .mascot-usage {
+    font-size: 13px;
+    color: var(--text-light);
+  }
+  .mascot-tag {
+    display: inline-block;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    margin-top: 8px;
+  }
+  .tag-main { background: var(--primary-light); color: var(--primary); }
+  .tag-scene { background: var(--blue); color: #2D6A8E; }
+  .tag-emotion { background: var(--pink); color: #8B3A3A; }
+  .tag-set { background: var(--orange); color: #8B5A2B; }
+  .info-box {
+    background: var(--primary-light);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 32px;
+  }
+  .info-box p { font-size: 14px; color: var(--text-light); }
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🐧 雁小约 V2 吉祥物素材</h1>
+  <p>电子拉钩 / 信任星球 App 官方吉祥物形象展示</p>
+</div>
+
+<div class="container">
+
+  <div class="info-box">
+    <p>雁小约是信任星球 App 的官方吉祥物，造型为<strong>鸿雁信使</strong>（飞行帽+护目镜+信封）。<br>以下素材已整理进工程目录，可在 UI 组件中引用。</p>
+  </div>
+
+  <!-- 统一主视觉 -->
+  <div class="section">
+    <div class="section-title">雁小约·鸿雁信使（统一造型）</div>
+    <div class="mascot-grid">
+      <div class="mascot-card">
+        <img src="assets/mascot/yan-xiaoyue-main.png" alt="鸿雁信使">
+        <div class="mascot-name">雁小约·鸿雁信使</div>
+        <div class="mascot-usage">所有场景通用（欢迎/成功/提醒/思考/首页）</div>
+        <span class="mascot-tag tag-main">统一造型</span>
+      </div>
+    </div>
+    <p style="text-align:center;color:#999;font-size:13px;margin-top:16px">
+      🐦 鸿雁 = 古代信使象征 → "愿望有回信"<br>
+      ✉️ 信封 + 🥽 飞行帽 + 🟢 绿色领巾 = 信任星球的信使
+    </p>
+  </div>
+
+  <!-- 角色设定 -->
+  <div class="section">
+    <div class="section-title">角色设定（3 张）</div>
+    <div class="mascot-grid">
+      <div class="mascot-card">
+        <img src="miniprogram/assets/images/mascot/mascot-side.jpg" alt="侧面">
+        <div class="mascot-name">侧面</div>
+        <div class="mascot-usage">角色设定页</div>
+        <span class="mascot-tag tag-set">设定</span>
+      </div>
+      <div class="mascot-card">
+        <img src="miniprogram/assets/images/mascot/mascot-back.jpg" alt="背面">
+        <div class="mascot-name">背面</div>
+        <div class="mascot-usage">角色设定页</div>
+        <span class="mascot-tag tag-set">设定</span>
+      </div>
+      <div class="mascot-card">
+        <img src="miniprogram/assets/images/mascot/mascot-character-sheet.jpg" alt="设定图">
+        <div class="mascot-name">角色设定图</div>
+        <div class="mascot-usage">完整角色设定</div>
+        <span class="mascot-tag tag-set">设定</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 组件调用示例 -->
+  <div class="section">
+    <div class="section-title">组件调用示例</div>
+    <div class="info-box">
+      <pre style="font-size:13px;color:#333;overflow-x:auto;">&lt;mascot-guide
+  text="你好呀！我是雁小约~"
+  mood="welcome"
+/&gt;</pre>
+      <p style="margin-top:8px;">支持 mood: welcome / front / success / reminder / thinking / main，组件自动映射到对应素材。</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>电子拉钩 / 信任星球 — AI创造力大赛项目</p>
+  <p>吉祥物设计：雁小约 V2</p>
+</div>
+
+</body>
+</html>

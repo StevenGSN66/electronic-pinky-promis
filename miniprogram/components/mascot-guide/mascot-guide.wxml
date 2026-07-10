@@ -1,0 +1,32 @@
+<!-- components/mascot-guide/mascot-guide.wxml -->
+<!-- 雁小约引导组件：支持弹窗模式和嵌入式，根据 mood 自动切换表情 -->
+
+<!-- 弹窗遮罩模式 -->
+<view class="mascot-guide-modal {{visible ? 'show' : 'hide'}}" wx:if="{{modal && visible}}">
+  <view class="guide-mask" bindtap="onClose"></view>
+  <view class="guide-content">
+    <image class="mascot-img modal-img" src="{{mascotSrc}}" mode="aspectFit" bindtap="onMascotTap"/>
+    <view class="bubble {{animating ? 'fade-out' : 'fade-in'}}">
+      <view class="bubble-text">{{getCurrentText()}}</view>
+      <view class="bubble-arrow"></view>
+    </view>
+    <view class="guide-footer" wx:if="{{tips.length > 1 || showClose}}">
+      <text class="step-indicator" wx:if="{{showSteps && tips.length > 1}}">{{currentIndex + 1}} / {{tips.length}}</text>
+      <view class="btn-next" bindtap="onNext" wx:if="{{tips.length > 1}}">
+        <text>{{currentIndex < tips.length - 1 ? '下一条' : '知道了'}}</text>
+      </view>
+      <view class="btn-close" wx:if="{{showClose}}" bindtap="onClose">
+        <text>关闭</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 嵌入式模式（无遮罩，用于页面内嵌） -->
+<view class="mascot-guide-inline" wx:if="{{!modal && visible}}">
+  <image class="mascot-img inline-img" src="{{mascotSrc}}" mode="aspectFit" bindtap="onMascotTap"/>
+  <view class="bubble inline-bubble {{animating ? 'fade-out' : 'fade-in'}}">
+    <view class="bubble-text">{{getCurrentText()}}</view>
+    <view class="bubble-arrow"></view>
+  </view>
+</view>

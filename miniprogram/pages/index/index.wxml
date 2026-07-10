@@ -1,0 +1,125 @@
+<!-- index.wxml -->
+<!-- 首页/信任星球：展示信任星球全景、亲情树（已点亮）、友情树/自律树（待开放） -->
+
+<view class="planet-container">
+
+  <!-- ===== 信任星球主视觉区 ===== -->
+  <view class="planet-section">
+    <view class="planet-header">
+      <text class="planet-name">{{planetName}}</text>
+      <view class="planet-drops">
+        <text class="drops-icon">💧</text>
+        <text class="drops-count">{{totalDrops}}</text>
+      </view>
+    </view>
+
+    <!-- 星球 + 树种全景 -->
+    <view class="planet-visual">
+      <!-- 中心：亲情树（已激活） -->
+      <view class="tree-center" bindtap="onTapTree" data-type="affection" data-status="{{trees[0].status}}">
+        <view class="planet-core" style="border-color: {{trees[0].color}};">
+          <text class="tree-emoji">{{trees[0].icon}}</text>
+          <text class="tree-name">{{trees[0].name}}</text>
+          <text class="tree-level">Lv.{{trees[0].level}}</text>
+        </view>
+        <view class="drops-ring">
+          <text class="ring-drops">💧 {{trees[0].drops}}</text>
+        </view>
+      </view>
+
+      <!-- 左侧：友情树（锁定/待解锁） -->
+      <view class="tree-side tree-left" bindtap="onTapTree" data-type="friendship" data-status="{{trees[1].status}}">
+        <view class="tree-item {{trees[1].status}}" style="border-color: {{trees[1].color}};">
+          <text class="tree-emoji">{{trees[1].icon}}</text>
+          <text class="tree-name">{{trees[1].name}}</text>
+          <block wx:if="{{trees[1].status === 'locked'}}">
+            <text class="lock-icon">🔒</text>
+            <text class="lock-hint">{{trees[1].unlockHint}}</text>
+          </block>
+          <block wx:if="{{trees[1].status === 'unlockable'}}">
+            <text class="unlock-badge">✨ 可解锁</text>
+          </block>
+        </view>
+      </view>
+
+      <!-- 右侧：自律树（锁定/待解锁） -->
+      <view class="tree-side tree-right" bindtap="onTapTree" data-type="selfDiscipline" data-status="{{trees[2].status}}">
+        <view class="tree-item {{trees[2].status}}" style="border-color: {{trees[2].color}};">
+          <text class="tree-emoji">{{trees[2].icon}}</text>
+          <text class="tree-name">{{trees[2].name}}</text>
+          <block wx:if="{{trees[2].status === 'locked'}}">
+            <text class="lock-icon">🔒</text>
+            <text class="lock-hint">{{trees[2].unlockHint}}</text>
+          </block>
+          <block wx:if="{{trees[2].status === 'unlockable'}}">
+            <text class="unlock-badge">✨ 可解锁</text>
+          </block>
+        </view>
+      </view>
+    </view>
+
+    <!-- 解锁提示 -->
+    <view class="unlock-tip" wx:if="{{trees[1].status === 'locked' || trees[2].status === 'locked'}}">
+      <text class="tip-text">🌱 完成更多约定，解锁新树种，打造更丰富的信任星球~</text>
+    </view>
+  </view>
+
+  <!-- ===== 今日待完成约定 ===== -->
+  <view class="today-section">
+    <view class="section-header">
+      <text class="section-title">📋 今日约定</text>
+      <text class="section-more" bindtap="goToPromiseList">查看全部 ></text>
+    </view>
+
+    <!-- 有约定时 -->
+    <view wx:if="{{todayPromises.length > 0}}" class="promise-list">
+      <view wx:for="{{todayPromises}}" wx:key="id" class="promise-item card" bindtap="goToPromiseDetail" data-id="{{item.id}}">
+        <view class="promise-tag" style="background: {{item.treeType === 'affection' ? '#E0F5E9' : '#F0F0F0'}};">
+          <text style="color: {{item.treeType === 'affection' ? '#7CD4A8' : '#999'}};">
+            {{item.treeType === 'affection' ? '亲情' : '其他'}}
+          </text>
+        </view>
+        <view class="promise-info">
+          <text class="promise-title">{{item.title}}</text>
+          <text class="promise-meta">⏰ {{item.deadline || '今日'}} · 👤 {{item.partnerName || '家人'}}</text>
+        </view>
+        <view class="promise-action btn-primary-sm" catchtap="goToCheckin" data-id="{{item.id}}">去打卡</view>
+      </view>
+    </view>
+
+    <!-- 无约定时 -->
+    <view wx:else class="empty-state card">
+      <text class="empty-icon">📝</text>
+      <text class="empty-text">今天还没有约定哦</text>
+      <view class="btn-primary create-btn" bindtap="goToCreatePromise">创建约定</view>
+    </view>
+  </view>
+
+  <!-- ===== 最近守约动态 ===== -->
+  <view class="activity-section">
+    <text class="section-title">🔔 最近动态</text>
+    <view wx:if="{{recentActivities.length > 0}}" class="activity-list">
+      <view wx:for="{{recentActivities}}" wx:key="id" class="activity-item card">
+        <view class="activity-dot" style="background: var(--primary, #7CD4A8);"></view>
+        <view class="activity-content">
+          <text class="activity-text">{{item.content}}</text>
+          <text class="activity-time">{{item.time}}</text>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-hint">
+      <text class="hint-text">完成第一个约定后，这里会显示你的成长动态~</text>
+    </view>
+  </view>
+
+  <!-- ===== 悬浮创建按钮 ===== -->
+  <view class="fab" bindtap="goToCreatePromise">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <!-- 加载遮罩 -->
+  <view wx:if="{{loading}}" class="loading-mask">
+    <text>加载中...</text>
+  </view>
+
+</view>

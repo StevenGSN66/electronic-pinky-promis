@@ -1,0 +1,85 @@
+<!-- pages/promise-sign/promise-sign.wxml -->
+<!-- 电子拉钩确认页：双方在此完成约定的仪式感确认 -->
+
+<view class="promise-sign-page">
+  <!-- 顶部引导区：雁小约提示 -->
+  <view class="guide-area">
+    <mascot-guide
+      text="拉钩上吊，一百年不许变！请{{currentRole === 'promisor' ? '发起人' : '接受人'}}确认这个约定~"
+      mood="front"
+    />
+  </view>
+
+  <!-- 约定信息卡片 -->
+  <view class="promise-card-preview" wx:if="{{promise}}">
+    <view class="card-title">📋 约定内容</view>
+    <view class="card-content">
+      <text class="promise-title">{{promise.title}}</text>
+      <text class="promise-desc" wx:if="{{promise.description}}">{{promise.description}}</text>
+      <view class="promise-meta">
+        <text class="meta-item">⏰ {{promise.deadline || '未设定截止时间'}}</text>
+        <text class="meta-item">👤 {{promise.promisorName || '发起人'}} → {{promise.promiseeName || '接受人'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 签名区域 -->
+  <view class="sign-area">
+    <view class="sign-title">
+      <text class="title-text">✋ 在这里拉钩</text>
+      <text class="title-hint">{{isSigned ? '已完成' : '请点击确认或手写签名'}}</text>
+    </view>
+
+    <!-- 已签名状态：展示签名结果 -->
+    <view class="signed-display" wx:if="{{isSigned && mySignature}}">
+      <view class="sign-result">
+        <text class="sign-label">{{currentRole === 'promisor' ? '发起人' : '接受人'}}已确认</text>
+        <text class="sign-time">{{mySignature.confirmedAt}}</text>
+        <!-- 手写签名预览 -->
+        <image
+          wx:if="{{mySignature.type === 'canvas' && mySignature.imageData}}"
+          class="sign-image"
+          src="{{mySignature.imageData}}"
+          mode="aspectFit"
+        />
+        <!-- 点击确认标记 -->
+        <view wx:else class="tap-sign-mark">👍 已确认</view>
+      </view>
+      <button class="btn-reset" bindtap="onResetSignature">重新签名</button>
+    </view>
+
+    <!-- 未签名状态：展示签名板 -->
+    <view class="sign-pad-wrapper" wx:else>
+      <signature-pad
+        bind:complete="onHandwritingComplete"
+        bind:tapConfirm="onTapConfirm"
+      />
+    </view>
+  </view>
+
+  <!-- 双方签名状态展示 -->
+  <view class="both-status" wx:if="{{promise}}">
+    <view class="status-row">
+      <view class="status-item {{mySignature ? 'signed' : 'unsigned'}}">
+        <text class="status-icon">{{mySignature ? '✅' : '⭕'}}</text>
+        <text class="status-text">{{currentRole === 'promisor' ? '发起人（我）' : '接受人（我）'}}</text>
+      </view>
+      <view class="status-connector">🤝</view>
+      <view class="status-item {{otherSignature ? 'signed' : 'unsigned'}}">
+        <text class="status-icon">{{otherSignature ? '✅' : '⭕'}}</text>
+        <text class="status-text">{{currentRole === 'promisor' ? '接受人' : '发起人'}}</text>
+      </view>
+    </view>
+
+    <!-- 双方都签名后的提示 -->
+    <view class="both-signed-tip" wx:if="{{mySignature && otherSignature}}">
+      <text class="tip-text">🎉 拉钩成功！约定已生效~</text>
+      <text class="tip-sub">信任星球正在记录你们的约定...</text>
+    </view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="bottom-actions" wx:if="{{!isSigned}}">
+    <button class="btn-back" bindtap="onBackToEdit">返回修改</button>
+  </view>
+</view>

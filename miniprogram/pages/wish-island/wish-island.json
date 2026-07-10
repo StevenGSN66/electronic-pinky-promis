@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "愿望岛",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 50,
+  "usingComponents": {}
+}

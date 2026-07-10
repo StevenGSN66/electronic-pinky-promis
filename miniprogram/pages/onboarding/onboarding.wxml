@@ -1,0 +1,97 @@
+<!-- onboarding.wxml -->
+<!-- 新人引导页：介绍雁小约App，说明"共同守信"理念，引导添加昵称/头像/常用约定人 -->
+
+<view class="container onboarding-container">
+
+  <!-- 步骤0：App介绍与理念 -->
+  <view wx:if="{{currentStep === 0}}" class="step-section">
+    <!-- 雁小约欢迎形象 -->
+    <mascot-guide
+      text="你好呀！我是雁小约，欢迎来到信任星球！在这里，每一次约定都会被用心记录，每一次守信都会让信任树成长~"
+      mood="welcome"
+      showClose="{{false}}"
+    />
+
+    <!-- 品牌Logo区域 -->
+    <view class="brand-area">
+      <text class="app-name">雁小约</text>
+      <text class="app-slogan">让每一次约定都值得信赖</text>
+    </view>
+
+    <!-- 理念介绍区域 -->
+    <view class="concept-card card">
+      <text class="concept-title">共同守信</text>
+      <text class="concept-desc">
+        雁小约是一款帮助家庭成员（尤其是孩子与家长）建立信任、共同守约的小程序。通过"电子拉钩"的方式，让约定变得有仪式感，让守信成为习惯。
+      </text>
+    </view>
+
+    <!-- 功能亮点 -->
+    <view class="features">
+      <view class="feature-item">
+        <text class="feature-icon">🤝</text>
+        <text class="feature-text">电子拉钩</text>
+      </view>
+      <view class="feature-item">
+        <text class="feature-icon">💧</text>
+        <text class="feature-text">信任水滴</text>
+      </view>
+      <view class="feature-item">
+        <text class="feature-icon">🌟</text>
+        <text class="feature-text">愿望岛</text>
+      </view>
+    </view>
+
+    <!-- 下一步按钮 -->
+    <view class="btn-primary next-btn" bindtap="goToStep" data-step="1">开始体验</view>
+  </view>
+
+  <!-- 步骤1：设置个人资料 -->
+  <view wx:if="{{currentStep === 1}}" class="step-section">
+    <text class="step-title">设置你的资料</text>
+    <text class="step-subtitle">让约定伙伴认识你</text>
+
+    <!-- 头像选择 -->
+    <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+      <image class="avatar" src="{{avatarUrl || '/assets/default-avatar.png'}}" mode="aspectFill"/>
+      <text class="avatar-hint">点击设置头像</text>
+    </button>
+
+    <!-- 昵称输入 -->
+    <view class="input-group">
+      <text class="input-label">昵称</text>
+      <input type="nickname" class="input" placeholder="请输入昵称" value="{{nickname}}" bindinput="onInputNickname"/>
+    </view>
+
+    <!-- 下一步按钮 -->
+    <view class="btn-primary next-btn" bindtap="goToStep" data-step="2">下一步</view>
+  </view>
+
+  <!-- 步骤2：添加常用约定人 -->
+  <view wx:if="{{currentStep === 2}}" class="step-section">
+    <text class="step-title">添加常用约定人</text>
+    <text class="step-subtitle">比如爸爸、妈妈、孩子等家庭成员</text>
+
+    <!-- 家庭成员列表占位 -->
+    <view class="member-list">
+      <view wx:for="{{familyMembers}}" wx:key="index" class="member-item card">
+        <image class="member-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+        <text class="member-name">{{item.name}}</text>
+      </view>
+      <!-- 添加按钮 -->
+      <view class="add-member-btn" bindtap="addFamilyMember">
+        <text class="add-icon">+</text>
+        <text>添加约定人</text>
+      </view>
+    </view>
+
+    <!-- 完成按钮 -->
+    <view class="btn-primary finish-btn" bindtap="finishOnboarding">进入信任星球</view>
+  </view>
+
+  <!-- 全局加载遮罩 -->
+  <view wx:if="{{loading}}" class="loading-mask">
+    <text>加载中...</text>
+  </view>
+
+</view>

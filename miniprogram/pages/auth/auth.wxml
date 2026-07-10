@@ -1,0 +1,65 @@
+<!-- auth.wxml -->
+<!-- 登录授权页：wx.login 获取 code，引导授权用户信息 -->
+
+<view class="container auth-container">
+
+  <!-- 品牌展示区域 -->
+  <view class="brand-section">
+    <view class="logo-placeholder">雁小约 Logo</view>
+    <text class="app-name">雁小约</text>
+    <text class="app-slogan">共同守信，从每一次约定开始</text>
+  </view>
+
+  <!-- 登录说明区域 -->
+  <view class="auth-info card">
+    <text class="info-title">登录后你可以：</text>
+    <view class="info-list">
+      <view class="info-item">
+        <text class="info-icon">✅</text>
+        <text class="info-text">创建和管理约定</text>
+      </view>
+      <view class="info-item">
+        <text class="info-icon">✅</text>
+        <text class="info-text">积累信任水滴</text>
+      </view>
+      <view class="info-item">
+        <text class="info-icon">✅</text>
+        <text class="info-text">与家庭成员互动</text>
+      </view>
+      <view class="info-item">
+        <text class="info-icon">✅</text>
+        <text class="info-text">解锁愿望岛</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 授权按钮区域 -->
+  <view class="auth-buttons">
+    <!-- 推荐使用 getUserProfile（基础库 2.10.4+） -->
+    <button wx:if="{{canIUseGetUserProfile}}" class="btn-primary auth-btn" bindtap="getUserProfile">
+      微信一键登录
+    </button>
+
+    <!-- 旧版兼容：open-type="getUserInfo" -->
+    <button wx:else class="btn-primary auth-btn" open-type="getUserInfo" bind:getuserinfo="onGetUserInfo">
+      微信一键登录
+    </button>
+
+    <!-- 游客模式 -->
+    <view class="skip-link" bindtap="skipLogin">暂不登录，先逛逛</view>
+  </view>
+
+  <!-- 用户协议提示 -->
+  <view class="agreement-tips">
+    <text class="tips-text">登录即代表同意</text>
+    <text class="tips-link">《用户协议》</text>
+    <text class="tips-text">和</text>
+    <text class="tips-link">《隐私政策》</text>
+  </view>
+
+  <!-- 全局加载遮罩 -->
+  <view wx:if="{{loading}}" class="loading-mask">
+    <text>登录中...</text>
+  </view>
+
+</view>

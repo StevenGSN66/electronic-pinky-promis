@@ -1,0 +1,16 @@
+<!-- 信任树组件 -->
+<view class="trust-tree" bindtap="onTreeTap">
+  <view class="tree-stage">{{stageMap[stage].name}}</view>
+  <image class="tree-image" src="{{stageMap[stage].icon}}" mode="aspectFit"/>
+  <view class="tree-progress">
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{totalDrops % 50 / 50 * 100}}%; background: {{themeColor}}"></view>
+    </view>
+    <text class="drops-count">{{totalDrops}} 水滴</text>
+  </view>
+  <view class="stage-dots">
+    <view wx:for="['seed','sapling','leaf','flower','fruit']" wx:key="*this"
+          class="dot {{item === stage ? 'active' : ''}}"
+          style="{{item === stage ? 'background:' + themeColor : ''}}"></view>
+  </view>
+</view>
