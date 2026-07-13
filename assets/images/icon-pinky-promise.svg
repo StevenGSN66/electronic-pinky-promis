@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!-- 左手小指：从左下方来，指尖向右弯形成钩 -->
+  <path d="M4 38 A14 14 0 0 1 22 18"
+        stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- 左手指尖弯钩 -->
+  <path d="M22 18 A4 4 0 0 1 26 22"
+        stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- 右手小指：从右下方来，指尖向左弯形成钩 -->
+  <path d="M44 38 A14 14 0 0 0 26 18"
+        stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- 右手指尖弯钩 -->
+  <path d="M26 18 A4 4 0 0 0 22 22"
+        stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
+</svg>
