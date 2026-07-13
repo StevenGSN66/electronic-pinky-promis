@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "电子拉钩",
-  "navigationBarBackgroundColor": "#7CD4A8",
-  "navigationBarTextStyle": "white",
-  "usingComponents": {
-    "mascot-guide": "../../components/mascot-guide/mascot-guide",
-    "signature-pad": "../../components/signature-pad/signature-pad"
-  }
-}

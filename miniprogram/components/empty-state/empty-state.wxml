@@ -1,9 +1,0 @@
-<!-- 空状态组件 -->
-<view class="empty-state">
-  <image class="empty-icon" src="{{icon}}" mode="aspectFit" bindtap="onIconTap"/>
-  <text class="empty-title">{{title}}</text>
-  <text class="empty-desc">{{description}}</text>
-  <view class="empty-btn" wx:if="{{showButton}}" bindtap="onButtonTap">
-    <text>{{buttonText}}</text>
-  </view>
-</view>

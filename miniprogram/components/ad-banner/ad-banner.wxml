@@ -1,8 +1,0 @@
-<!-- 广告位组件 -->
-<view class="ad-banner" wx:if="{{!closed && imageUrl}}" style="height: {{height}}rpx;">
-  <view class="ad-tag">广告</view>
-  <image class="ad-image" src="{{imageUrl}}" mode="aspectFill" bindtap="onAdTap" binderror="onAdError"/>
-  <view class="ad-close" wx:if="{{closable}}" bindtap="onClose">
-    <text>x</text>
-  </view>
-</view>

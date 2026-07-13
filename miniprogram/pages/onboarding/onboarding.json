@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "欢迎使用雁小约",
-  "usingComponents": {
-    "mascot-guide": "/components/mascot-guide/mascot-guide"
-  }
-}

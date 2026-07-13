@@ -1,8 +1,0 @@
-<!-- 星球环形进度组件 -->
-<view class="planet-ring" style="width: {{size}}px; height: {{size}}px;" bindtap="onPlanetTap">
-  <canvas type="2d" id="ringCanvas" class="ring-canvas" style="width: {{size}}px; height: {{size}}px;"></canvas>
-  <view class="planet-info">
-    <text class="planet-level">Lv.{{level}}</text>
-    <text class="planet-progress">{{progress}}%</text>
-  </view>
-</view>
