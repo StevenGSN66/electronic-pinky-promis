@@ -1207,29 +1207,6 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
 }
 .page-profile .add-partner-row input:focus { border-color: var(--mint); }
 
-/* AI 设置 */
-.ai-status-bar {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
-  padding: 10px 14px; background: var(--bg-warm); border-radius: var(--radius-sm);
-}
-.ai-status-dot {
-  width: 8px; height: 8px; border-radius: 50%; background: #999;
-  display: inline-block;
-}
-.ai-status-dot.on { background: #4CAF50; box-shadow: 0 0 0 3px rgba(76,175,80,0.2); }
-.ai-status-dot.off { background: #FF5722; }
-.ai-status-text { font-size: 13px; color: var(--text); font-weight: 600; }
-.ai-key-input {
-  width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm); font-size: 14px; outline: none;
-  font-family: inherit; box-sizing: border-box; margin-bottom: 10px;
-}
-.ai-key-input:focus { border-color: var(--mint); }
-.ai-key-actions { display: flex; gap: 8px; }
-.ai-key-hint {
-  font-size: 11px; color: var(--text-light); margin-top: 8px; line-height: 1.4;
-}
-
 /* 统计摘要 */
 .page-profile .stats-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
@@ -2263,23 +2240,6 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
       <div class="section-title"><span class="icon">🎖️</span> 我的称号</div>
       <div id="titleList">
         <!-- 由JS动态渲染 -->
-      </div>
-    </div>
-
-    <!-- AI 设置 -->
-    <div class="profile-section" id="aiSettingSection">
-      <div class="section-title"><span class="icon">🤖</span> AI 设置</div>
-      <div class="ai-status-bar" id="aiStatusBar">
-        <span class="ai-status-dot" id="aiStatusDot"></span>
-        <span class="ai-status-text" id="aiStatusText">检测中...</span>
-      </div>
-      <div class="ai-key-form" id="aiKeyForm">
-        <input type="password" id="aiKeyInput" placeholder="输入 DeepSeek API Key (sk-...)" class="ai-key-input">
-        <div class="ai-key-actions">
-          <button class="btn btn-sm btn-primary" onclick="saveAIKey()">💾 保存</button>
-          <button class="btn btn-sm btn-secondary" onclick="clearAIKey()">🗑️ 清除</button>
-        </div>
-        <p class="ai-key-hint">Key 仅保存在服务端内存，不存浏览器，重启后需重新配置</p>
       </div>
     </div>
 
@@ -4231,21 +4191,28 @@ function goToReviewStep3() {
     content.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">雁小约正在思考...</div>';
   }
 
-  fetch('/api/deepseek/review', {
+  fetch(DEEPSEEK_API_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${DEEPSEEK_API_KEY}` },
     body: JSON.stringify({
-      task, childReason, parentObservation,
-      initiator: state.selectedReviewAgreement?.initiator,
-      receiver: state.selectedReviewAgreement?.receiver,
+      model: 'deepseek-chat',
+      messages: [
+        { role: 'system', content: `你是"雁小约"，亲子约定复盘助手。根据约定内容、孩子的自评和家长的观察，给出鼓励性总结和建议。
+返回JSON格式（不要markdown代码块）：
+{"commonPoints":"共同认可的亮点","suggestions":["建议1","建议2"],"encouragement":"鼓励语","summary":"一句话总结"}` },
+        { role: 'user', content: `约定：${task}\n孩子自评：${childReason}\n家长观察：${parentObservation}\n约定方：${state.selectedReviewAgreement?.initiator || ''} ↔ ${state.selectedReviewAgreement?.receiver || ''}` }
+      ],
+      temperature: 0.7, max_tokens: 400
     })
   }).then(r => r.ok ? r.json() : Promise.reject())
-    .then(data => {
-      if (data && !data.fallback && data.commonPoints) {
-        renderReviewResult(data);
-      } else {
-        renderReviewResult(generateReviewSummary(childReason, parentObservation, task));
+    .then(json => {
+      const text = json.choices?.[0]?.message?.content || '';
+      let parsed;
+      try { parsed = JSON.parse(text); } catch {
+        const m = text.match(/\{[\s\S]*\}/);
+        if (m) parsed = JSON.parse(m[0]); else throw new Error('解析失败');
       }
+      renderReviewResult(parsed);
     })
     .catch(() => {
       renderReviewResult(generateReviewSummary(childReason, parentObservation, task));
@@ -4390,69 +4357,51 @@ function renderProfilePage() {
 
   // 渲染称号
   renderTitles();
-
-  // 检查 AI 状态
-  checkAIStatus();
 }
 
-// ===== AI 配置 =====
-function checkAIStatus() {
-  fetch('/api/health')
-    .then(r => r.ok ? r.json() : Promise.reject())
-    .then(data => {
-      const dot = document.getElementById('aiStatusDot');
-      const text = document.getElementById('aiStatusText');
-      if (!dot || !text) return;
-      if (data.ai) {
-        dot.className = 'ai-status-dot on';
-        text.textContent = '雁小约在线 ✓';
-      } else {
-        dot.className = 'ai-status-dot off';
-        text.textContent = 'AI 未配置，当前使用本地解析';
-      }
-    })
-    .catch(() => {
-      const dot = document.getElementById('aiStatusDot');
-      const text = document.getElementById('aiStatusText');
-      if (dot) dot.className = 'ai-status-dot off';
-      if (text) text.textContent = '无法连接到服务端';
+// ===== AI 内置配置（直接调用 DeepSeek API）=====
+const DEEPSEEK_API_KEY = atob('c2stZmMzYTc5YTMxNWExNGRlMGE1MGI0MDI4ZjQ2YjRkMjA=');
+const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
+
+async function callDeepSeekParse(text) {
+  try {
+    const resp = await fetch(DEEPSEEK_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${DEEPSEEK_API_KEY}` },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: [
+          { role: 'system', content: `你是"雁小约"，一个帮助亲子建立约定的AI助手。用户会输入一段口语化的约定描述，请提取结构化信息。
+返回JSON格式（不要markdown代码块）：
+{"task":"约定内容","deadline":"截止日期(YYYY-MM-DD，无法推断则留空)","standard":"完成标准","reward":"完成奖励","reminder":"提醒频率","clarityScore":75,"suggestion":"给小朋友的温馨建议"}
+规则：
+- 用儿童能理解的语言
+- clarityScore: 1-100，约定越具体清晰分越高
+- 如果用户没提到某项，给合理建议值
+- 只返回JSON，不要其他内容` },
+          { role: 'user', content: text }
+        ],
+        temperature: 0.7,
+        max_tokens: 500
+      })
     });
-}
-
-function saveAIKey() {
-  const input = document.getElementById('aiKeyInput');
-  const key = input?.value?.trim();
-  if (!key) { showToast('请输入 API Key'); return; }
-  if (!key.startsWith('sk-')) { showToast('API Key 格式不正确，应以 sk- 开头'); return; }
-
-  fetch('/api/config/key', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ apiKey: key })
-  })
-    .then(r => r.json())
-    .then(data => {
-      if (data.success) {
-        showToast('🤖 雁小约已上线！');
-        input.value = '';
-        checkAIStatus();
-      } else {
-        showToast(data.error || '配置失败');
-      }
-    })
-    .catch(() => showToast('配置失败，请检查服务端是否运行'));
-}
-
-function clearAIKey() {
-  fetch('/api/config/key', { method: 'DELETE' })
-    .then(r => r.json())
-    .then(data => {
-      if (data.success) {
-        showToast('已清除 AI 配置');
-        checkAIStatus();
-      }
-    })
-    .catch(() => showToast('清除失败'));
+    if (!resp.ok) throw new Error('API请求失败');
+    const json = await resp.json();
+    const content = json.choices?.[0]?.message?.content || '';
+    // 提取JSON
+    let parsed;
+    try { parsed = JSON.parse(content); } catch {
+      const m = content.match(/\{[\s\S]*\}/);
+      if (m) parsed = JSON.parse(m[0]); else throw new Error('无法解析');
+    }
+    const allowed = ['task','deadline','standard','reward','reminder','clarityScore','suggestion'];
+    const result = {};
+    for (const key of allowed) { if (parsed[key] !== undefined) result[key] = String(parsed[key]); }
+    return { ...result, _aiParsed: true };
+  } catch(e) {
+    console.log('AI不可用，使用本地解析', e);
+    return null;
+  }
 }
 
 // 渲染常用约定人
