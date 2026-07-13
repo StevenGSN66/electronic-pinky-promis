@@ -149,6 +149,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
 }
 .bottom-nav .nav-item.active { color: var(--mint-dark); }
 .bottom-nav .nav-item .nav-icon { font-size: 24px; }
+.bottom-nav .nav-item .nav-planet-icon { width: 24px; height: 24px; object-fit: contain; }
 .bottom-nav .nav-item .nav-label { font-size: 11px; font-weight: 600; }
 
 /* ============================================
@@ -175,6 +176,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
 .side-nav .nav-item:hover { background: var(--mint-light); color: var(--mint-dark); }
 .side-nav .nav-item.active { background: var(--mint); color: #fff; font-weight: 600; }
 .side-nav .nav-item .nav-icon { font-size: 22px; }
+.side-nav .nav-item .nav-planet-icon { width: 22px; height: 22px; object-fit: contain; }
 
 @media (min-width: 769px) {
   .side-nav { display: flex; }
@@ -1679,7 +1681,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
     <span>约定</span>
   </button>
   <button class="nav-item" data-page="page-tree" onclick="navigateTo('page-tree')">
-    <span class="nav-icon">🌍</span>
+    <span class="nav-icon"><img src="assets/images/nav-planet.png" class="nav-planet-icon" alt="星球"></span>
     <span>星球</span>
   </button>
   <button class="nav-item" data-page="page-profile" onclick="navigateTo('page-profile')">
@@ -1697,7 +1699,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
     <span class="nav-label">约定</span>
   </button>
   <button class="nav-item" data-page="page-tree" onclick="navigateTo('page-tree')">
-    <span class="nav-icon">🌍</span>
+    <span class="nav-icon"><img src="assets/images/nav-planet.png" class="nav-planet-icon" alt="星球"></span>
     <span class="nav-label">星球</span>
   </button>
   <button class="nav-item" data-page="page-profile" onclick="navigateTo('page-profile')">
@@ -2013,7 +2015,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
       <!-- 树与约定叶子 -->
       <div class="tree-v2-visual">
         <!-- 树成长阶段图片（根据完成约定数切换） -->
-        <img class="tree-stage-img" id="treeStageImg" src="trust-tree-growth/assets/stage-seed.jpg" alt="信任树">
+        <img class="tree-stage-img" id="treeStageImg" src="assets/tree-stages/stage-seed.jpg" alt="信任树">
         <!-- 约定叶子卡片（HTML层覆盖在树上） -->
         <div class="tree-leaf-cards" id="treeLeafCards"></div>
         <!-- 阶段标签 -->
@@ -3775,10 +3777,10 @@ function renderTreePage() {
 // 渲染信任树V2可视化（带叶子卡片）
 // 树阶段配置（基于信任水滴数）
 const TREE_GROWTH_STAGES = [
-  { min: 0, img: 'trust-tree-growth/assets/stage-seed.jpg', label: '🌱 信任种子', max: 0 },
-  { min: 1, img: 'trust-tree-growth/assets/stage-sprout.jpg', label: '🌿 守信新芽', max: 20 },
-  { min: 21, img: 'trust-tree-growth/assets/stage-leaves.jpg', label: '🌳 信任绿树', max: 60 },
-  { min: 61, img: 'trust-tree-growth/assets/stage-full-tree.jpg', label: '🌲 参天信任树', max: 999 }
+  { min: 0, img: 'assets/tree-stages/stage-seed.jpg', label: '🌱 信任种子', max: 0 },
+  { min: 1, img: 'assets/tree-stages/stage-sprout.jpg', label: '🌿 守信新芽', max: 20 },
+  { min: 21, img: 'assets/tree-stages/stage-leaves.jpg', label: '🌳 信任绿树', max: 60 },
+  { min: 61, img: 'assets/tree-stages/stage-full-tree.jpg', label: '🌲 参天信任树', max: 999 }
 ];
 
 function getTreeGrowthStage(completed) {
