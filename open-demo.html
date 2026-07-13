@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>信任星球 - 启动方式</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 50%, #FFF8E1 100%);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .card {
+      background: white; border-radius: 24px; padding: 48px 40px;
+      max-width: 480px; width: 90%; text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    }
+    .logo { font-size: 64px; margin-bottom: 16px; }
+    h1 { font-size: 28px; color: #2E7D32; margin-bottom: 8px; }
+    .subtitle { font-size: 14px; color: #888; margin-bottom: 32px; }
+    .options { display: flex; flex-direction: column; gap: 14px; }
+    .opt-btn {
+      display: block; padding: 18px 24px; border-radius: 16px;
+      text-decoration: none; font-size: 16px; font-weight: 600;
+      transition: all 0.2s; border: 2px solid transparent; cursor: pointer;
+    }
+    .opt-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+    .opt-primary {
+      background: linear-gradient(135deg, #66BB6A, #43A047); color: white;
+    }
+    .opt-secondary {
+      background: #F1F8E9; color: #2E7D32; border-color: #C8E6C9;
+    }
+    .opt-secondary:hover { background: #E8F5E9; }
+    .opt-desc { font-size: 12px; font-weight: 400; opacity: 0.8; margin-top: 4px; }
+    .note {
+      margin-top: 24px; font-size: 12px; color: #999; line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">🤝</div>
+    <h1>信任星球</h1>
+    <div class="subtitle">电子拉钩 - 亲子约定管理 Demo</div>
+    <div class="options">
+      <a class="opt-btn opt-primary" href="electronic-pinky-promise.html">
+        🚀 直接打开体验
+        <div class="opt-desc">无需安装，使用内置本地解析</div>
+      </a>
+      <div class="opt-btn opt-secondary" onclick="document.getElementById('aiTip').style.display='block'">
+        🤖 启用 AI 功能（需 Node.js）
+        <div class="opt-desc">双击 start.bat，自动启动服务器</div>
+      </div>
+      <div id="aiTip" style="display:none;text-align:left;background:#FFF8E1;padding:14px 16px;border-radius:12px;font-size:13px;color:#5D4037;line-height:1.6;border:1px solid #FFE0B2;">
+        <b>启用 AI 步骤：</b><br>
+        1. 安装 Node.js（<a href="https://nodejs.org" target="_blank">nodejs.org</a>）<br>
+        2. 双击 <code>start.bat</code><br>
+        3. 在"我的"页面配置 DeepSeek API Key<br>
+        4. 浏览器访问 http://localhost:3000
+      </div>
+    </div>
+    <div class="note">
+      提交 Demo 时只需将整个文件夹打包即可<br>
+      评委直接双击"直接打开体验"即可使用
+    </div>
+  </div>
+</body>
+</html>
