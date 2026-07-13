@@ -340,6 +340,44 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
   display: flex; gap: 10px; margin-top: 16px; padding: 0 16px; max-width: 600px; margin-left: auto; margin-right: auto;
 }
 
+/* AI 思考动画 */
+@keyframes aiPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.7; }
+}
+.ai-thinking-icon { display: inline-block; }
+
+/* AI 建议框 */
+.ai-suggestion-box {
+  margin: 14px 0 8px; padding: 12px 14px;
+  background: linear-gradient(135deg, #FFF8E1, #FFF3E0);
+  border-radius: var(--radius-sm); border-left: 3px solid #FFB74D;
+}
+.ai-suggestion-label {
+  font-size: 12px; font-weight: 700; color: #E65100; margin-bottom: 4px;
+}
+.ai-suggestion-text {
+  font-size: 13px; color: var(--text); line-height: 1.5;
+}
+
+/* 清晰度进度条 */
+.ai-clarity-bar {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 12px; font-size: 12px; color: var(--text-light);
+}
+.clarity-track {
+  flex: 1; height: 6px; background: var(--bg-warm);
+  border-radius: 3px; overflow: hidden;
+}
+.clarity-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, #66BB6A, #43A047);
+  transition: width 0.6s ease;
+}
+.clarity-num {
+  font-weight: 700; color: var(--mint-dark); min-width: 24px; text-align: right;
+}
+
 .pinky-ceremony { text-align: center; padding: 20px 0; }
 .step3-actions { display: flex; gap: 12px; margin-top: 20px; padding: 0 16px; max-width: 600px; margin-left: auto; margin-right: auto; }
 
@@ -2680,6 +2718,23 @@ async function goToCreateStep2() {
   const text = document.getElementById('agreementText')?.value?.trim();
   if (!text) { showToast('请先输入约定内容~'); return; }
 
+  // 切换到步骤2，显示AI思考动画
+  createStep = 2;
+  renderCreateStep();
+
+  const body = document.getElementById('aiCardBody');
+  const modeTag = document.getElementById('aiModeTag');
+  if (body) {
+    body.innerHTML = `
+      <div class="ai-thinking" style="text-align:center;padding:40px 20px;">
+        <div class="ai-thinking-icon" style="font-size:48px;animation:aiPulse 1.5s ease-in-out infinite;">🤖</div>
+        <div class="ai-thinking-text" style="margin-top:16px;font-size:15px;color:var(--text);font-weight:600;">雁小约正在帮你整理约定...</div>
+        <div class="ai-thinking-sub" style="margin-top:8px;font-size:13px;color:var(--text-light);">识别约定双方、提取时间和标准</div>
+      </div>
+    `;
+  }
+  if (modeTag) modeTag.textContent = 'AI 处理中...';
+
   let parsed = null;
   let usedAI = false;
 
@@ -2709,14 +2764,14 @@ async function goToCreateStep2() {
     deadline: parsed.deadline || '',
     standard: parsed.standard || '',
     reward: parsed.reward || '',
+    suggestion: parsed.suggestion || '',
+    clarityScore: parsed.clarityScore || '',
     initiator: document.getElementById('initiatorName')?.textContent || '我',
     receiver: document.getElementById('receiverName')?.textContent || '爸爸',
     status: 'awaiting_confirmation',
   };
 
   renderAICard(pendingAgreement, usedAI);
-  createStep = 2;
-  renderCreateStep();
 }
 
 function renderAICard(data, usedAI) {
@@ -2739,6 +2794,19 @@ function renderAICard(data, usedAI) {
       <label>鼓励方式</label>
       <input type="text" id="editReward" value="${escapeHtml(data.reward || '')}" placeholder="完成后的小奖励（可选）">
     </div>
+    ${data.suggestion ? `
+    <div class="ai-suggestion-box">
+      <div class="ai-suggestion-label">💡 雁小约建议</div>
+      <div class="ai-suggestion-text">${escapeHtml(data.suggestion)}</div>
+    </div>
+    ` : ''}
+    ${data.clarityScore ? `
+    <div class="ai-clarity-bar">
+      <span>约定清晰度</span>
+      <div class="clarity-track"><div class="clarity-fill" style="width:${Math.min(100, data.clarityScore)}%"></div></div>
+      <span class="clarity-num">${data.clarityScore}</span>
+    </div>
+    ` : ''}
   `;
 
   const modeTag = document.getElementById('aiModeTag');
