@@ -43,7 +43,7 @@ html, body {
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
 }
-body { min-height: 100vh; padding-bottom: var(--nav-height); }
+body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
 /* 电脑端body不需要底部padding，因为有侧边导航 */
 @media (min-width: 769px) {
   body { padding-bottom: 0; padding-left: 200px; }
@@ -97,6 +97,8 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
 .tag-completed { background: var(--mint); color: #fff; }
 .tag-overdue { background: var(--yellow); color: #8B6F00; }
 .tag-reviewed { background: var(--peach); color: #B87A4A; }
+.tag-draft { background: #E0E0E0; color: #757575; }
+.tag-reviewing { background: var(--blue-light); color: #4A90B8; }
 
 /* 通用标题 */
 .section-title {
@@ -245,228 +247,107 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
 }
 
 /* ============================================
-   页面1：承诺录入页
+   页面1：约定创建三段流程
    ============================================ */
-.page-input .input-container {
-  padding: 16px; max-width: 1200px; margin: 0 auto;
+
+/* 创建页顶部导航 */
+.create-page-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; max-width: 600px; margin: 0 auto;
 }
-.page-input .input-header {
-  text-align: center; padding: 20px 0 16px;
+.create-page-header .back-btn {
+  background: none; border: none; font-size: 22px; cursor: pointer;
+  color: var(--mint-dark); padding: 4px 8px; border-radius: 8px;
+  transition: background 0.2s;
 }
-.page-input .input-header h1 {
-  font-size: 22px; color: var(--mint-dark); font-weight: 800;
-}
-.page-input .input-header p {
-  font-size: 13px; color: var(--text-light); margin-top: 4px;
-}
-/* 双方选择区域（必填） */
-.page-input .party-selector {
-  background: var(--card-bg); border-radius: var(--radius-lg);
-  padding: 20px; margin-bottom: 20px;
-  border: 2px solid var(--mint-light); box-shadow: 0 4px 15px var(--shadow);
-}
-.page-input .party-selector .party-title {
-  font-size: 15px; font-weight: 700; color: var(--mint-dark);
-  margin-bottom: 14px; text-align: center;
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-}
-.page-input .party-row {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
-}
-.page-input .party-row:last-child { margin-bottom: 0; }
-.page-input .party-row .party-label {
-  font-size: 13px; font-weight: 700; color: var(--text);
-  min-width: 100px; flex-shrink: 0;
-  display: flex; align-items: center; gap: 4px;
-}
-.page-input .party-row .party-label .required-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--pink); flex-shrink: 0;
-}
-.page-input .party-row select {
-  flex: 1; padding: 10px 14px;
-  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-  font-size: 14px; outline: none; background: #fff; color: var(--text);
-  font-family: inherit; appearance: none; -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238AA89A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 14px center;
-  padding-right: 36px; cursor: pointer;
-  transition: border-color 0.3s;
-}
-.page-input .party-row select:focus { border-color: var(--mint); }
-.page-input .party-arrow {
-  text-align: center; font-size: 20px; color: var(--mint-dark);
-  margin: 4px 0;
-}
-.page-input .party-hint {
-  font-size: 11px; color: var(--text-light); text-align: center;
-  margin-top: 8px;
+.create-page-header .back-btn:hover { background: var(--bg-warm); }
+.create-page-title {
+  font-size: 17px; font-weight: 700; color: var(--text);
 }
 
-/* 输入区域 */
-.page-input .input-area {
-  position: relative;
-}
-.page-input .input-textarea {
-  width: 100%; min-height: 120px; padding: 16px;
-  border: 2px solid var(--border); border-radius: var(--radius-lg);
-  font-size: 16px; resize: vertical; outline: none;
-  background: var(--card-bg); color: var(--text);
-  font-family: inherit; line-height: 1.6;
-  transition: border-color 0.3s;
-}
-.page-input .input-textarea:focus { border-color: var(--mint); }
-.page-input .input-textarea::placeholder { color: #B0C8BC; }
-.page-input .voice-btn {
-  position: absolute; bottom: 12px; right: 12px;
-  width: 40px; height: 40px; border-radius: 50%;
-  background: var(--mint); border: none; cursor: pointer;
+/* 约定创建三段流程 */
+.create-steps-hint {
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px; color: #fff; transition: all 0.2s;
+  gap: 0; padding: 16px 0 20px; font-size: 13px; color: var(--text-light);
 }
-.page-input .voice-btn:active { transform: scale(0.9); }
-.page-input .voice-btn.recording {
-  animation: pulse 0.8s infinite; background: var(--pink);
+.create-steps-hint .step-dot {
+  padding: 4px 12px; border-radius: 12px; background: var(--bg-warm);
+  transition: all 0.3s;
 }
+.create-steps-hint .step-dot.active {
+  background: var(--mint); color: white; font-weight: 600;
+}
+.create-steps-hint .step-line {
+  width: 30px; height: 2px; background: var(--border); margin: 0 4px;
+}
+.create-step { display: none; }
+.create-step.active { display: block; }
 
-/* 提交按钮区 */
+.step1-partners {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; margin-bottom: 20px; padding: 12px;
+}
+.partner-selector {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  cursor: pointer; padding: 8px; border-radius: var(--radius-sm);
+  border: 2px solid transparent; transition: all 0.2s;
+}
+.partner-selector:hover { border-color: var(--mint-light); background: var(--bg-warm); }
+.partner-avatar-sm { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+.partner-arrow { font-size: 20px; color: var(--text-light); }
 
-.page-input .submit-section {
-  text-align: center; margin-top: 24px; padding-bottom: 20px;
-}
-.page-input .demo-hint {
-  text-align: center; margin-top: 12px; padding-bottom: 24px;
-}
-.page-input .demo-hint button {
-  background: none; border: 1px dashed var(--mint); color: var(--mint-dark);
-  padding: 6px 16px; border-radius: 16px; font-size: 12px; cursor: pointer;
-}
-
-/* DeepSeek AI 解析区域 */
-.page-input .deepseek-section {
-  background: var(--card-bg); border-radius: var(--radius-lg);
-  padding: 16px; border: 2px solid var(--border);
-  box-shadow: 0 4px 15px var(--shadow); margin-bottom: 16px;
-}
-.page-input .deepseek-title {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 15px; font-weight: 700; color: var(--text);
-  margin-bottom: 12px;
-}
-.page-input .deepseek-title .deepseek-icon { font-size: 20px; }
-
-/* API 配置 */
-.page-input .deepseek-config {
-  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
-  margin-bottom: 12px;
-}
-.page-input .deepseek-field label {
-  display: block; font-size: 12px; font-weight: 600;
-  color: var(--text-light); margin-bottom: 4px;
-}
-.page-input .deepseek-field input {
-  width: 100%; padding: 8px 12px; border-radius: var(--radius);
-  border: 2px solid var(--border); font-size: 13px;
-  background: var(--bg); color: var(--text);
+.step1-input { position: relative; padding: 0 16px; max-width: 600px; margin: 0 auto; }
+.step1-input textarea {
+  width: 100%; padding: 14px; border: 1.5px solid var(--border);
+  border-radius: var(--radius); font-size: 15px; resize: vertical;
+  min-height: 100px; outline: none; font-family: inherit;
   box-sizing: border-box;
 }
-.page-input .deepseek-field input:focus {
-  outline: none; border-color: var(--mint);
+.step1-input textarea:focus { border-color: var(--mint); }
+.step1-actions {
+  display: flex; gap: 8px; margin-top: 10px; align-items: center;
 }
-.page-input .deepseek-field input[type="password"] {
-  font-family: monospace; letter-spacing: 1px;
+.btn-voice {
+  width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--border);
+  background: white; font-size: 18px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; transition: all 0.2s;
+}
+.btn-voice.recording { background: #FFEBEE; border-color: #E91E63; animation: pulse 1s infinite; }
+
+/* AI结果卡 */
+.ai-card { margin-bottom: 16px; padding: 0 16px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.ai-card-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px; font-weight: 600; font-size: 15px;
+}
+.ai-mode-tag {
+  font-size: 11px; padding: 2px 8px; border-radius: 8px;
+  background: #FFF3E0; color: #E65100;
+}
+.ai-card-body { padding: 0 16px 16px; }
+.ai-field { margin-bottom: 12px; }
+.ai-field label {
+  display: block; font-size: 12px; color: var(--text-light);
+  margin-bottom: 4px; font-weight: 600;
+}
+.ai-field input, .ai-field textarea {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 14px; outline: none;
+  font-family: inherit; box-sizing: border-box;
+}
+.ai-field input:focus, .ai-field textarea:focus { border-color: var(--mint); }
+.step2-actions {
+  display: flex; gap: 10px; margin-top: 16px; padding: 0 16px; max-width: 600px; margin-left: auto; margin-right: auto;
 }
 
-/* 约定文本输入 */
-.page-input .deepseek-input-wrap { position: relative; }
-.page-input .deepseek-btns {
-  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;
-}
-.page-input .ds-btn {
-  padding: 8px 14px; border-radius: var(--radius);
-  font-size: 13px; font-weight: 600; cursor: pointer;
-  border: 2px solid transparent; transition: all 0.2s;
-  display: flex; align-items: center; gap: 4px;
-}
-.page-input .ds-voice-btn {
-  background: var(--mint-light); color: var(--mint-dark); border-color: var(--mint);
-}
-.page-input .ds-voice-btn:hover { background: var(--mint); color: #fff; }
-.page-input .ds-voice-btn.recording {
-  background: var(--pink-light); color: #D4706A; border-color: var(--pink);
-  animation: pulse 1s infinite;
-}
-.page-input .ds-voice-btn:disabled {
-  opacity: 0.5; cursor: not-allowed;
-}
-.page-input .ds-demo-btn {
-  background: var(--yellow-light); color: var(--yellow-dark); border-color: var(--yellow);
-}
-.page-input .ds-demo-btn:hover { background: var(--yellow); color: #fff; }
-.page-input .ds-clear-btn {
-  background: #F0F0F0; color: #888; border-color: #DDD;
-}
-.page-input .ds-clear-btn:hover { background: #E0E0E0; }
-.page-input .ds-parse-btn {
-  background: linear-gradient(135deg, var(--mint) 0%, var(--mint-dark) 100%);
-  color: #fff; border-color: var(--mint-dark);
-}
-.page-input .ds-parse-btn:hover {
-  transform: translateY(-1px); box-shadow: 0 4px 12px rgba(124,212,168,0.4);
-}
-.page-input .ds-parse-btn:disabled {
-  opacity: 0.6; cursor: not-allowed; transform: none;
-}
-.page-input .voice-hint {
-  font-size: 11px; color: var(--text-light); margin-top: 6px;
-}
+.pinky-ceremony { text-align: center; padding: 20px 0; }
+.step3-actions { display: flex; gap: 12px; margin-top: 20px; padding: 0 16px; max-width: 600px; margin-left: auto; margin-right: auto; }
 
-/* 解析结果 */
-.page-input .deepseek-result {
-  display: none; margin-top: 14px;
-  background: linear-gradient(135deg, #F8FFFE 0%, #F0FFF8 100%);
-  border-radius: var(--radius); padding: 14px;
-  border: 2px solid var(--mint);
-}
-.page-input .deepseek-result.show { display: block; animation: fadeInUp 0.4s ease; }
-.page-input .ds-result-title {
-  font-size: 14px; font-weight: 700; color: var(--mint-dark);
-  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
-}
-.page-input .ds-result-item {
-  display: flex; align-items: flex-start; gap: 8px;
-  margin-bottom: 8px; font-size: 13px;
-}
-.page-input .ds-result-item .ds-result-label {
-  font-weight: 600; color: var(--text-light); min-width: 70px; flex-shrink: 0;
-}
-.page-input .ds-result-item .ds-result-value { color: var(--text); flex: 1; }
-.page-input .ds-result-item .ds-result-value .ds-score {
-  display: inline-block; padding: 2px 8px; border-radius: 10px;
-  font-size: 12px; font-weight: 700; color: #fff;
-}
-.page-input .ds-result-item .ds-result-value .ds-score.high { background: var(--mint); }
-.page-input .ds-result-item .ds-result-value .ds-score.mid { background: var(--yellow); }
-.page-input .ds-result-item .ds-result-value .ds-score.low { background: var(--pink); }
-.page-input .ds-question-box {
-  background: var(--yellow-light); border-radius: var(--radius);
-  padding: 10px 14px; margin-bottom: 10px;
-  border-left: 4px solid var(--yellow); font-size: 13px;
-  color: var(--text);
-}
-
-/* 电脑端横屏左右分栏 */
+/* 电脑端适配 */
 @media (min-width: 769px) {
-  .page-input .input-container {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
-    padding: 24px 40px; align-items: start;
-  }
-  .page-input .input-header { grid-column: 1 / -1; }
-  .page-input .party-selector { grid-column: 1 / -1; }
-  .page-input .deepseek-section { grid-column: 1 / -1; }
-  .page-input .input-area { grid-column: 1; }
-  .page-input .submit-section { grid-column: 1 / -1; }
-  .page-input .demo-hint { grid-column: 1 / -1; }
+  .create-page-header { padding: 12px 40px; }
+  .step1-input { padding: 0 40px; }
+  .ai-card, .step2-actions, .step3-actions { padding-left: 40px; padding-right: 40px; }
 }
 
 /* ============================================
@@ -774,6 +655,69 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
 .page-home .new-agreement-entry .entry-arrow {
   font-size: 24px; color: #fff; font-weight: 700;
 }
+
+/* 首页 - 我的信任星球 */
+.home-greeting {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 20px; padding: 0 4px;
+}
+.home-avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  object-fit: cover; border: 2px solid var(--mint); flex-shrink: 0;
+}
+.home-greeting-text { flex: 1; }
+.home-nickname {
+  font-size: 20px; font-weight: 700; color: var(--text);
+  margin-bottom: 4px;
+}
+.home-mascot-say {
+  font-size: 13px; color: var(--text-light); line-height: 1.4;
+}
+.home-planet-card {
+  text-align: center; padding: 24px 20px; margin-bottom: 20px;
+  background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%);
+}
+.planet-visual {
+  margin-bottom: 12px;
+}
+.stage-icon { font-size: 48px; display: block; margin-bottom: 4px; }
+.stage-name { font-size: 18px; font-weight: 700; color: var(--mint-dark); }
+.drops-display {
+  margin: 16px 0 12px;
+}
+.drops-number {
+  font-size: 36px; font-weight: 900; color: var(--mint-dark);
+  font-variant-numeric: tabular-nums;
+}
+.drops-label {
+  font-size: 14px; color: var(--text-light); margin-left: 6px;
+}
+.tree-progress {
+  width: 100%; height: 8px; background: rgba(255,255,255,0.6);
+  border-radius: 4px; overflow: hidden; margin-bottom: 8px;
+}
+.tree-progress-bar {
+  height: 100%; background: linear-gradient(90deg, #66BB6A, #43A047);
+  border-radius: 4px; transition: width 0.6s ease;
+}
+.next-stage-hint {
+  font-size: 12px; color: var(--text-light);
+}
+.home-section { margin-bottom: 20px; }
+.section-title {
+  font-size: 16px; font-weight: 700; color: var(--text);
+  margin-bottom: 12px; padding: 0 4px;
+}
+.home-create-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; padding: 16px; margin: 20px 0;
+  background: var(--mint); color: white;
+  border-radius: var(--radius); font-size: 17px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(102,187,106,0.3);
+}
+.home-create-btn:active { transform: scale(0.97); }
+.home-create-btn:hover { box-shadow: 0 6px 16px rgba(102,187,106,0.4); }
 
 /* ============================================
    页面4：信任树可视化页面V2（借鉴图一）
@@ -1616,12 +1560,12 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
     <div class="logo-text">电子拉钩</div>
   </div>
   <button class="nav-item active" data-page="page-home" onclick="navigateTo('page-home')">
-    <span class="nav-icon">🏠</span>
-    <span>首页</span>
+    <span class="nav-icon">🌍</span>
+    <span>星球</span>
   </button>
   <button class="nav-item" data-page="page-tree" onclick="navigateTo('page-tree')">
     <span class="nav-icon">🌳</span>
-    <span>信任树</span>
+    <span>约定</span>
   </button>
   <button class="nav-item" data-page="page-profile" onclick="navigateTo('page-profile')">
     <span class="nav-icon">👤</span>
@@ -1634,12 +1578,12 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
      ============================================ -->
 <nav class="bottom-nav" id="bottomNav">
   <button class="nav-item active" data-page="page-home" onclick="navigateTo('page-home')">
-    <span class="nav-icon">🏠</span>
-    <span class="nav-label">首页</span>
+    <span class="nav-icon">🌍</span>
+    <span class="nav-label">星球</span>
   </button>
   <button class="nav-item" data-page="page-tree" onclick="navigateTo('page-tree')">
     <span class="nav-icon">🌳</span>
-    <span class="nav-label">信任树</span>
+    <span class="nav-label">约定</span>
   </button>
   <button class="nav-item" data-page="page-profile" onclick="navigateTo('page-profile')">
     <span class="nav-icon">👤</span>
@@ -1729,7 +1673,7 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
       </div>
       <div class="onboard-actions">
         <button class="btn btn-secondary" onclick="prevOnboardStep()">← 上一步</button>
-        <button class="btn btn-primary" onclick="finishOnboard()" id="finishBtn" disabled>🎉 完成设置，进入信任树</button>
+        <button class="btn btn-primary" onclick="finishOnboard()" id="finishBtn" disabled>🎉 完成设置，进入我的星球</button>
       </div>
     </div>
   </div>
@@ -1753,77 +1697,79 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
      页面1：承诺语音/文字录入页
      ============================================ -->
 <div class="page page-input" id="page-input">
-  <div class="input-container">
-    <!-- 页面标题 -->
-    <div class="input-header">
-      <div style="display:flex;align-items:center;gap:12px">
-        <img class="mascot-img mascot-mini-img" src="assets/mascot/yan-xiaoyue-main.png" alt="雁小约">
-        <div>
-          <h1 style="margin:0">🤝 新建电子拉钩约定</h1>
-          <p style="margin:4px 0 0">先选好约定双方，再写下你们的约定吧！</p>
-        </div>
+  <!-- 顶部返回 -->
+  <div class="create-page-header">
+    <button class="back-btn" onclick="navigateTo('page-home')">←</button>
+    <span class="create-page-title">新建约定</span>
+    <span></span>
+  </div>
+
+  <!-- 步骤指示器 -->
+  <div class="create-steps-hint">
+    <div class="step-dot active" data-step="1">说出约定</div>
+    <div class="step-line"></div>
+    <div class="step-dot" data-step="2">确认详情</div>
+    <div class="step-line"></div>
+    <div class="step-dot" data-step="3">电子拉钩</div>
+  </div>
+
+  <!-- 步骤1：说出约定 -->
+  <div class="create-step active" id="createStep1">
+    <div class="step1-partners">
+      <div class="partner-selector" onclick="openPartnerSwap()">
+        <img id="initiatorAvatar" src="" class="partner-avatar-sm">
+        <span id="initiatorName">我</span>
+      </div>
+      <span class="partner-arrow">↔</span>
+      <div class="partner-selector" onclick="openPartnerSwap()">
+        <img id="receiverAvatar" src="" class="partner-avatar-sm">
+        <span id="receiverName">爸爸</span>
       </div>
     </div>
-
-    <!-- 必填：约定双方选择区域 -->
-    <div class="party-selector" id="partySelector">
-      <div class="party-title">🤝 谁和谁拉钩？（必选）</div>
-      <!-- 发起承诺人 -->
-      <div class="party-row">
-        <div class="party-label">发起承诺人 <span class="required-dot"></span></div>
-        <select id="initiatorSelect" onchange="onInitiatorChange()">
-          <option value="" disabled selected>请选择发起承诺人</option>
-          <!-- JS动态渲染：常用约定人 -->
-        </select>
+    <div class="step1-input">
+      <textarea id="agreementText" placeholder="写下你们的约定..." rows="4"></textarea>
+      <div class="step1-actions">
+        <button class="btn-voice" id="voiceBtn" onclick="toggleVoice()">🎤</button>
+        <button class="btn btn-sm btn-secondary" onclick="fillDemoSentence()">演示句子</button>
       </div>
-      <div class="party-arrow">↕️</div>
-      <!-- 接受承诺人 -->
-      <div class="party-row">
-        <div class="party-label">接受承诺人 <span class="required-dot"></span></div>
-        <select id="receiverSelect" onchange="onReceiverChange()">
-          <option value="" disabled selected>请先选择发起承诺人</option>
-        </select>
-      </div>
-      <div class="party-hint">💡 提示：双方必须从常用约定人中各选一位，且不能是同一个人</div>
+      <button class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="goToCreateStep2()">让雁小约帮我整理 →</button>
     </div>
+  </div>
 
-    <!-- DeepSeek AI 解析区域 -->
-    <div class="deepseek-section" id="deepseekSection">
-      <div class="deepseek-title">
-        <span class="deepseek-icon">🤖</span>
-        <span>DeepSeek AI 智能解析</span>
+  <!-- 步骤2：AI整理并确认 -->
+  <div class="create-step" id="createStep2">
+    <div class="ai-card" id="aiResultCard">
+      <div class="ai-card-header">
+        <span>📋 约定详情</span>
+        <span class="ai-mode-tag" id="aiModeTag">演示模式</span>
       </div>
-
-      <!-- API 配置 -->
-      <div class="deepseek-config">
-        <div class="deepseek-field">
-          <label>当前日期</label>
-          <input type="date" id="dsCurrentDate">
-        </div>
-      </div>
-
-      <!-- 约定文本输入 -->
-      <div class="deepseek-input-wrap">
-        <textarea class="input-textarea" id="inputTextarea" placeholder="在这里写下你们的约定吧~&#10;比如：我承诺本周六完成3页数学练习，完成后带我买草莓味冰激凌"></textarea>
-        <div class="deepseek-btns">
-          <button class="ds-btn ds-voice-btn" id="voiceBtn" onclick="startVoiceInput()">🎙️ 开始语音输入</button>
-          <button class="ds-btn ds-demo-btn" onclick="fillDemo()">💡 填入演示句子</button>
-          <button class="ds-btn ds-clear-btn" onclick="clearDeepSeekInput()">🗑️ 清空</button>
-          <button class="ds-btn ds-parse-btn" id="dsParseBtn" onclick="callDeepSeekParse()">🔮 调用 DeepSeek 解析</button>
-        </div>
-        <div class="voice-hint" id="voiceHint">如果浏览器不支持语音识别，可以直接手动输入哦~</div>
-      </div>
-
-      <!-- 解析结果展示 -->
-      <div class="deepseek-result" id="dsResult">
-        <div class="ds-result-title">📋 解析结果</div>
-        <div class="ds-result-content" id="dsResultContent"></div>
+      <div class="ai-card-body" id="aiCardBody">
+        <!-- 动态填充 -->
       </div>
     </div>
+    <div class="step2-actions">
+      <button class="btn btn-secondary" onclick="goBackToStep1()">← 修改</button>
+      <button class="btn btn-primary" onclick="goToCreateStep3()">确认，去拉钩 →</button>
+    </div>
+  </div>
 
-    <!-- 提交按钮 -->
-    <div class="submit-section">
-      <button class="btn btn-primary" onclick="generateAgreement()">🤝 生成电子拉钩约定</button>
+  <!-- 步骤3：电子拉钩 -->
+  <div class="create-step" id="createStep3">
+    <div class="pinky-ceremony" id="pinkyCeremony">
+      <!-- 拉钩动画区域 -->
+    </div>
+    <div class="agreement-final-card" id="finalCard" style="display:none;">
+      <!-- 最终约定卡 -->
+    </div>
+    <div class="step3-actions" id="step3Actions">
+      <button class="btn btn-primary" style="flex:1;" onclick="selfConfirm()">我确认</button>
+      <button class="btn btn-primary" style="flex:1;" onclick="partnerConfirm()">对方确认</button>
+    </div>
+    <div id="step3Done" style="display:none;text-align:center;">
+      <div style="font-size:48px;margin:16px 0;">🎉</div>
+      <div style="font-size:18px;font-weight:700;color:var(--mint-dark);margin-bottom:8px;">约定已成立！</div>
+      <div style="font-size:14px;color:var(--text-light);margin-bottom:20px;">双方确认后生效</div>
+      <button class="btn btn-primary" onclick="afterAgreementCreated()">回到我的星球</button>
     </div>
   </div>
 </div>
@@ -1914,75 +1860,8 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
      页面3：首页（主操作页面）
      ============================================ -->
 <div class="page page-home active" id="page-home">
-  <div class="home-container">
-    <!-- 顶部问候区 -->
-    <div class="home-header">
-      <div class="home-greeting">
-        <div class="home-avatar" id="homeAvatar">👶</div>
-        <div class="home-greeting-text">
-          <div class="home-welcome">你好呀，<span id="homeUserName">小朋友</span> 👋</div>
-          <div class="home-subtitle">今天也要做一个守信的好孩子哦~</div>
-        </div>
-        <div class="home-mascot-hover" id="homeMascotHover">
-          <img class="mascot-img mascot-mini-img home-mascot-poster" src="assets/mascot/yan-xiaoyue-main.png" alt="雁小约">
-          <video class="home-mascot-anim" id="homeMascotVideo" muted playsinline preload="auto"
-            src="assets/animations/welcome-animation.mp4"
-            webkit-playsinline="true" x5-playsinline="true">
-          </video>
-        </div>
-      </div>
-    </div>
-
-    <!-- 今日约定快速卡片 -->
-    <div class="home-today-card" id="homeTodayCard" onclick="navigateTo('page-tree')">
-      <div class="today-left">
-        <div class="today-label">🌱 今天的约定</div>
-        <div class="today-count" id="homeTodayCount">0 个进行中</div>
-      </div>
-      <div class="today-right">
-        <div class="today-tree-mini">🌳</div>
-        <div class="today-hint">去信任树看看</div>
-      </div>
-    </div>
-
-    <!-- 约定列表区 -->
-    <div class="agreements-section">
-      <div class="section-title"><span class="icon">📋</span> 进行中的约定</div>
-      <div id="pendingList">
-        <div class="empty-state">
-          <div class="empty-icon">🌱</div>
-          <p>还没有约定哦，点击右下角按钮创建第一个约定吧！</p>
-        </div>
-      </div>
-
-      <div class="section-title" style="margin-top:20px"><span class="icon">🏆</span> 已完成 & 逾期</div>
-      <div id="completedList">
-        <div class="empty-state">
-          <div class="empty-icon">✨</div>
-          <p>完成的约定会出现在这里~</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 勋章与激励区 -->
-    <div class="badges-section">
-      <div class="section-title"><span class="icon">🏅</span> 守信勋章</div>
-      <div class="badge-grid" id="badgeGrid">
-        <!-- 由JS动态渲染 -->
-      </div>
-    </div>
-
-    <!-- 新建约定入口栏 -->
-    <div class="new-agreement-entry" onclick="navigateTo('page-input')">
-      <div class="entry-left">
-        <div class="entry-icon">✍️</div>
-        <div class="entry-text">
-          <div class="entry-title">新建约定</div>
-          <div class="entry-desc">和小伙伴一起拉个钩吧~</div>
-        </div>
-      </div>
-      <div class="entry-arrow">→</div>
-    </div>
+  <div class="home-container" id="homeContent">
+    <!-- 由 JS 动态渲染 -->
   </div>
 </div>
 
@@ -2029,8 +1908,8 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
       <!-- 右侧功能区 -->
       <div class="tree-v2-side">
         <button class="tree-ai-btn" onclick="navigateTo('page-review')">
-          <span>🤖</span>
-          <span>AI复盘</span>
+          <span>🌱</span>
+          <span>复盘</span>
         </button>
         <div class="tree-reminder-mini" id="treeReminderMini">
           <div class="reminder-bell">🔔</div>
@@ -2092,7 +1971,7 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
 </div>
 
 <!-- ============================================
-     页面5：未履约AI复盘引导页
+     页面5：复盘引导页（本地模板，不调 API）
      ============================================ -->
 <div class="page page-review" id="page-review">
   <div class="review-container">
@@ -2107,60 +1986,92 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
       <!-- 由JS动态填充 -->
     </div>
 
-    <!-- 复盘三步骤 -->
+    <!-- 复盘四步骤 -->
     <div class="review-steps" id="reviewSteps">
-      <!-- 步骤1：填写原因 -->
-      <div class="step-card">
-        <h3><span class="step-num">1</span> 写一写没完成的原因</h3>
-        <p style="font-size:13px;color:var(--text-light);margin-bottom:10px">每个人说说自己的想法，我们一起想办法~</p>
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:13px;font-weight:600">👧 孩子的想法：</div>
+      <!-- 步骤1：孩子/发起方选择或填写原因 -->
+      <div class="step-card" id="reviewStep1">
+        <h3><span class="step-num">1</span> 说说自己的想法</h3>
+        <p style="font-size:13px;color:var(--text-light);margin-bottom:10px">先说说为什么没能完成约定，我们一起想办法~</p>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:13px;font-weight:600" id="childReasonLabel">发起方的想法：</div>
         <textarea class="reason-input" id="childReason" placeholder="说说为什么没能完成约定呢..."></textarea>
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:13px;font-weight:600">👩 家长的想法：</div>
-        <textarea class="reason-input" id="parentReason" placeholder="家长也说说自己的看法吧..."></textarea>
-        <div style="text-align:center;margin-top:8px">
-          <button class="btn btn-sm btn-primary" onclick="generateAISuggestion()">🤖 AI 帮我们分析</button>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px" id="childQuickReasons">
+          <button class="btn btn-sm btn-secondary" onclick="fillQuickReason('childReason','时间不够用')">时间不够用</button>
+          <button class="btn btn-sm btn-secondary" onclick="fillQuickReason('childReason','有点难')">有点难</button>
+          <button class="btn btn-sm btn-secondary" onclick="fillQuickReason('childReason','忘记了')">忘记了</button>
+          <button class="btn btn-sm btn-secondary" onclick="fillQuickReason('childReason','其他原因')">其他原因</button>
+        </div>
+        <div style="text-align:center;margin-top:12px">
+          <button class="btn btn-primary" onclick="goToReviewStep2()">下一步 →</button>
         </div>
       </div>
 
-      <!-- 步骤2：AI调解建议 -->
-      <div class="step-card">
-        <h3><span class="step-num">2</span> 雁小约的建议</h3>
-        <div class="ai-suggestion" id="aiSuggestion">
+      <!-- 步骤2：家长/接受方选择或填写观察 -->
+      <div class="step-card" id="reviewStep2" style="display:none">
+        <h3><span class="step-num">2</span> 另一方的观察</h3>
+        <p style="font-size:13px;color:var(--text-light);margin-bottom:10px">另一方的观察和想法也很重要~</p>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:13px;font-weight:600" id="parentReasonLabel">接受方的观察：</div>
+        <textarea class="reason-input" id="parentObservation" placeholder="说说你观察到了什么，或者有什么想法..."></textarea>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px" id="parentQuickReasons">
+          <button class="btn btn-sm btn-secondary" onclick="fillQuickReason('parentObservation','可能是时间安排比较紧')">可能是时间安排比较紧</button>
+          <button class="btn btn-sm btn-secondary" onclick="fillQuickReason('parentObservation','可以试试换个方式')">可以试试换个方式</button>
+          <button class="btn btn-sm btn-secondary" onclick="fillQuickReason('parentObservation','理解，慢慢来')">理解，慢慢来</button>
+          <button class="btn btn-sm btn-secondary" onclick="fillQuickReason('parentObservation','其他想法')">其他想法</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:12px">
+          <button class="btn btn-secondary" onclick="goBackToReviewStep1()">← 上一步</button>
+          <button class="btn btn-primary" onclick="goToReviewStep3()">下一步 →</button>
+        </div>
+      </div>
+
+      <!-- 步骤3：雁小约总结（本地模板生成） -->
+      <div class="step-card" id="reviewStep3" style="display:none">
+        <h3><span class="step-num">3</span> 雁小约的总结</h3>
+        <div class="ai-suggestion show" id="aiSuggestion">
           <div class="mascot-row">
             <img class="mascot-img mascot-thinking-img" src="assets/mascot/yan-xiaoyue-main.png" alt="雁小约">
-            <div class="mascot-bubble">雁小约正在认真思考你们的约定...</div>
           </div>
-          <div class="ai-label">🤖 AI 调解建议</div>
           <div class="ai-content" id="aiSuggestionContent"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:12px">
+          <button class="btn btn-secondary" onclick="goBackToReviewStep2()">← 上一步</button>
+          <button class="btn btn-primary" onclick="goToReviewStep4()">下一步 →</button>
         </div>
       </div>
 
-      <!-- 步骤3：选择处理方式 -->
-      <div class="step-card options-section">
-        <h3><span class="step-num">3</span> 选择下一步怎么做</h3>
+      <!-- 步骤4：选择处理方式 -->
+      <div class="step-card options-section" id="reviewStep4" style="display:none">
+        <h3><span class="step-num">4</span> 选择下一步怎么做</h3>
         <div class="option-card" onclick="selectOption(this,'reschedule')">
           <span class="opt-icon">📅</span>
           <div class="opt-info">
-            <h4>重新约定时间</h4>
-            <p>换一个新的时间来完成这个约定</p>
+            <h4>调整时间</h4>
+            <p>把截止时间往后延3天，再给自己一点时间</p>
           </div>
         </div>
-        <div class="option-card" onclick="selectOption(this,'supplement')">
-          <span class="opt-icon">💪</span>
+        <div class="option-card" onclick="selectOption(this,'easier')">
+          <span class="opt-icon">🎯</span>
           <div class="opt-info">
-            <h4>补充履约</h4>
-            <p>再加把劲，继续完成这个约定</p>
+            <h4>降低难度</h4>
+            <p>把约定调整得更容易一些，循序渐进</p>
+          </div>
+        </div>
+        <div class="option-card" onclick="selectOption(this,'split')">
+          <span class="opt-icon">📝</span>
+          <div class="opt-info">
+            <h4>拆成小步骤</h4>
+            <p>把约定拆成几个小目标，一步步来完成</p>
           </div>
         </div>
         <div class="option-card" onclick="selectOption(this,'cancel')">
           <span class="opt-icon">🕊️</span>
           <div class="opt-info">
-            <h4>取消这个约定</h4>
-            <p>这次先取消，下次再约新的约定</p>
+            <h4>友好取消</h4>
+            <p>这次先取消，没关系，下次再约新的约定</p>
           </div>
         </div>
-        <div style="text-align:center;margin-top:12px">
-          <button class="btn btn-primary" id="confirmReviewBtn" onclick="confirmReview()" disabled style="opacity:0.5">✅ 确认复盘方案</button>
+        <div style="display:flex;justify-content:space-between;margin-top:12px">
+          <button class="btn btn-secondary" onclick="goBackToReviewStep3()">← 上一步</button>
+          <button class="btn btn-primary" id="confirmReviewBtn" onclick="confirmReview()" disabled style="opacity:0.5">确认方案 →</button>
         </div>
       </div>
     </div>
@@ -2169,8 +2080,8 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
     <div class="review-result" id="reviewResult">
       <img class="mascot-img mascot-success-img" src="assets/mascot/yan-xiaoyue-main.png" alt="雁小约" style="margin-bottom:12px">
       <h3>信任树叶正在恢复...</h3>
-      <p>你们一起积极面对了问题，信任树叶恢复到 3/4 的绿色啦！<br>下次一起加油！💪</p>
-      <button class="btn btn-primary" onclick="goToTreeAfterReview()">🌳 回到信任树</button>
+      <p>你们一起积极面对了问题，信任树叶恢复到 3/4 的绿色啦！<br>下次一起加油！</p>
+      <button class="btn btn-primary" onclick="goToTreeAfterReview()">回到信任树</button>
     </div>
   </div>
 </div>
@@ -2337,15 +2248,90 @@ function setOnboarded() {
 }
 
 /* ============================================
+   统一头像资源映射表
+   ============================================ */
+// 统一头像资源映射表（用户/动物头像）
+const AVATAR_SRC_MAP = {
+  'baby-boy': 'assets/avatars/avatar-baby-boy.png',
+  'baby-girl': 'assets/avatars/avatar-baby-girl.png',
+  'boy-child': 'assets/avatars/avatar-boy-child.png',
+  'girl-child': 'assets/avatars/avatar-girl-child.png',
+  'boy-teen': 'assets/avatars/avatar-boy-teen.png',
+  'girl-teen': 'assets/avatars/avatar-girl-teen.png',
+  'man-adult': 'assets/avatars/avatar-man-adult.png',
+  'woman-adult': 'assets/avatars/avatar-woman-adult.png',
+  'man-elder': 'assets/avatars/avatar-man-elder.png',
+  'woman-elder': 'assets/avatars/avatar-woman-elder.png',
+  'bear': 'assets/avatars/avatar-bear.png',
+  'bird': 'assets/avatars/avatar-bird.png',
+  'cat': 'assets/avatars/avatar-cat.png',
+  'dog': 'assets/avatars/avatar-dog.png',
+  'panda': 'assets/avatars/avatar-panda.png',
+  'rabbit': 'assets/avatars/avatar-rabbit.png',
+};
+
+function getAvatarSrc(avatarName) {
+  return AVATAR_SRC_MAP[avatarName] || 'assets/avatars/avatar-baby-boy.png';
+}
+
+// 约定人头像资源映射表
+const PARTNER_AVATAR_SRC_MAP = {
+  'dad-young': 'assets/avatars/partners/dad-young.png',
+  'mom-young': 'assets/avatars/partners/mom-young.png',
+  'dad-middle': 'assets/avatars/partners/dad-middle.png',
+  'mom-middle': 'assets/avatars/partners/mom-middle.png',
+  'grandpa': 'assets/avatars/partners/grandpa.png',
+  'grandma': 'assets/avatars/partners/grandma.png',
+  'boy-teen': 'assets/avatars/partners/boy-teen.png',
+  'girl-teen': 'assets/avatars/partners/girl-teen.png',
+  'boy-preteen': 'assets/avatars/partners/boy-preteen.png',
+  'girl-preteen': 'assets/avatars/partners/girl-preteen.png',
+  'boy-child': 'assets/avatars/partners/boy-child.png',
+  'girl-child': 'assets/avatars/partners/girl-child.png',
+  'boy-toddler': 'assets/avatars/partners/boy-toddler.png',
+  'girl-toddler': 'assets/avatars/partners/girl-toddler.png',
+  'boy-baby': 'assets/avatars/partners/boy-baby.png',
+  'girl-baby': 'assets/avatars/partners/girl-baby.png',
+};
+
+function getPartnerAvatarSrc(avatarFileName) {
+  return PARTNER_AVATAR_SRC_MAP[avatarFileName] || 'assets/avatars/partners/boy-child.png';
+}
+
+/* ============================================
+   统一成员数据模型
+   ============================================ */
+// 统一成员数据模型
+function createMember(name, role, avatar, isSelf = false) {
+  return {
+    id: (isSelf ? 'self_' : 'member_') + Date.now() + '_' + Math.random().toString(36).substr(2,5),
+    name: name,
+    role: role, // 'self' | 'parent' | 'grandparent' | 'sibling' | 'friend' | 'other'
+    avatar: avatar, // 头像name（不是路径）
+    isSelf: isSelf
+  };
+}
+
+// 角色推断
+function inferRole(label) {
+  if (['爸爸','妈妈'].includes(label)) return 'parent';
+  if (['爷爷','奶奶','外公','外婆'].includes(label)) return 'grandparent';
+  if (['哥哥','姐姐','弟弟','妹妹'].includes(label)) return 'sibling';
+  if (label === '好朋友') return 'friend';
+  return 'other';
+}
+
+/* ============================================
    全局状态管理
    ============================================ */
 const saved = loadData();
 const state = {
   currentPage: 'page-home', // 当前页面
-  user: saved ? saved.user : {
+  user: saved ? (saved.user.trustDrops === undefined ? Object.assign({}, saved.user, { trustDrops: 0 }) : saved.user) : {
     name: '',
     avatar: '',
-    partners: []
+    partners: [],
+    trustDrops: 0
   },
   // 约定列表（首次为空，新建后才生成）
   agreements: saved ? saved.agreements : [],
@@ -2355,7 +2341,7 @@ const state = {
   childSigned: false,
   parentSigned: false,
   nextId: saved ? saved.nextId : 1,
-  lastParsed: null, // 最后一次 DeepSeek 解析结果
+  // lastParsed: null, // [已废弃] 旧版 DeepSeek 前端直调的解析缓存
   // 签名canvas数据
   signatureData: { child: '', parent: '' },
   // 签名绘制状态
@@ -2439,7 +2425,7 @@ function navigateTo(pageId) {
       document.body.style.paddingBottom = '0';
     } else {
       document.body.style.paddingLeft = '0';
-      document.body.style.paddingBottom = 'var(--nav-height)';
+      document.body.style.paddingBottom = 'calc(var(--nav-height) + 60px)';
     }
   }
 
@@ -2473,41 +2459,365 @@ function navigateTo(pageId) {
 /* ============================================
    页面1：承诺录入页逻辑
    ============================================ */
-function initInputPage() {
-  // 重置输入状态
-  document.getElementById('inputTextarea').value = '';
-  document.getElementById('dsResult').classList.remove('show');
-  document.getElementById('dsResultContent').innerHTML = '';
-  state.lastParsed = null;
-  // 初始化 DeepSeek 当前日期
-  document.getElementById('dsCurrentDate').value = getTodayStr();
-  // 检查浏览器是否支持语音识别
+/* ============================================
+   约定创建三段流程逻辑
+   ============================================ */
+let createStep = 1;
+let pendingAgreement = null;
+
+function initCreatePage() {
+  createStep = 1;
+  pendingAgreement = null;
+  renderCreateStep();
+
+  // 设置默认双方
+  const self = state.user.selfMember;
+  const members = state.user.members || [];
+  if (self) {
+    const avatarEl = document.getElementById('initiatorAvatar');
+    const nameEl = document.getElementById('initiatorName');
+    if (avatarEl) avatarEl.src = getAvatarSrc(self.avatar);
+    if (nameEl) nameEl.textContent = self.name;
+  }
+  if (members.length > 0) {
+    const avatarEl = document.getElementById('receiverAvatar');
+    const nameEl = document.getElementById('receiverName');
+    if (avatarEl) avatarEl.src = getPartnerAvatarSrc(members[0].avatar);
+    if (nameEl) nameEl.textContent = members[0].name;
+  }
+
+  // 清空输入
+  const textarea = document.getElementById('agreementText');
+  if (textarea) textarea.value = '';
+
+  // 重置步骤3的显示状态
+  const step3Actions = document.getElementById('step3Actions');
+  const step3Done = document.getElementById('step3Done');
+  const finalCard = document.getElementById('finalCard');
+  if (step3Actions) step3Actions.style.display = 'flex';
+  if (step3Done) step3Done.style.display = 'none';
+  if (finalCard) finalCard.style.display = 'none';
+
+  // [已废弃] state.lastParsed = null;
+
+  // 检查语音支持（兼容旧逻辑）
   initVoiceSupport();
-  // 渲染发起承诺人下拉列表（常用约定人）
-  renderInitiatorOptions();
-  // 重置接受承诺人下拉列表
-  document.getElementById('receiverSelect').innerHTML = '<option value="" disabled selected>请先选择发起承诺人</option>';
-  // 更新约定事项占位文字
-  updateTaskPlaceholder();
+
+  // 记住选中的成员索引，用于交换
+  window._initiatorMemberIdx = 0;
+  window._receiverMemberIdx = 0;
+}
+
+function renderCreateStep() {
+  document.querySelectorAll('.create-step').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.create-steps-hint .step-dot').forEach((d, i) => {
+    d.classList.toggle('active', i < createStep);
+  });
+  const step = document.getElementById(`createStep${createStep}`);
+  if (step) step.classList.add('active');
+}
+
+// 步骤1适配器：语音输入（复用已有的 startVoiceInput 逻辑，但使用新的 textarea）
+let voicePermissionDenied = false;
+let recognition = null;
+
+function toggleVoice() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const btn = document.getElementById('voiceBtn');
+  const textarea = document.getElementById('agreementText');
+
+  if (!SpeechRecognition) {
+    showToast('当前浏览器不支持语音识别，请手动输入哦~');
+    return;
+  }
+
+  if (voicePermissionDenied) {
+    showToast('麦克风权限被拒绝，请手动输入约定内容~');
+    return;
+  }
+
+  if (btn.classList.contains('recording')) {
+    if (recognition) {
+      recognition.stop();
+      recognition = null;
+    }
+    btn.classList.remove('recording');
+    btn.textContent = '🎤';
+    return;
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.lang = 'zh-CN';
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
+  let finalTranscript = '';
+
+  recognition.onstart = () => {
+    btn.classList.add('recording');
+    btn.textContent = '⏹️';
+    showToast('正在听你说...请大声说出来');
+  };
+
+  recognition.onresult = (event) => {
+    let interim = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript += transcript;
+      } else {
+        interim += transcript;
+      }
+    }
+    textarea.value = finalTranscript + interim;
+  };
+
+  recognition.onerror = (event) => {
+    btn.classList.remove('recording');
+    btn.textContent = '🎤';
+    if (event.error === 'no-speech') {
+      showToast('没有检测到语音，请再试一次~');
+    } else if (event.error === 'not-allowed') {
+      voicePermissionDenied = true;
+      btn.disabled = true;
+      showToast('麦克风权限被拒绝，请手动输入');
+    } else if (event.error !== 'aborted') {
+      showToast('语音识别出错：' + event.error);
+    }
+  };
+
+  recognition.onend = () => {
+    btn.classList.remove('recording');
+    btn.textContent = '🎤';
+  };
+
+  recognition.start();
+}
+
+// 步骤1适配器：演示句子（复用已有逻辑）
+function fillDemoSentence() {
+  const initiator = document.getElementById('initiatorName')?.textContent || '我';
+  const receiver = document.getElementById('receiverName')?.textContent || '爸爸';
+  const demoText = `${initiator}答应周末带${receiver}去动物园看大熊猫，如果天气不好就下周去，奖励吃冰激凌`;
+  document.getElementById('agreementText').value = demoText;
+  showToast('演示句子已填入');
+}
+
+// 步骤1适配器：交换约定双方
+function openPartnerSwap() {
+  const members = state.user.members || [];
+  const self = state.user.selfMember;
+  if (!self || members.length === 0) return;
+
+  const allPeople = [
+    { name: self.name, avatar: self.avatar, isSelf: true },
+    ...members.map(m => ({ name: m.name, avatar: m.avatar, isSelf: false }))
+  ];
+
+  const initIdx = window._initiatorMemberIdx || 0;
+  const recvIdx = window._receiverMemberIdx || 0;
+
+  // 交换
+  window._initiatorMemberIdx = recvIdx;
+  window._receiverMemberIdx = initIdx;
+
+  const newInit = allPeople[recvIdx];
+  const newRecv = allPeople[initIdx];
+
+  const avatarEl1 = document.getElementById('initiatorAvatar');
+  const nameEl1 = document.getElementById('initiatorName');
+  const avatarEl2 = document.getElementById('receiverAvatar');
+  const nameEl2 = document.getElementById('receiverName');
+
+  if (avatarEl1) avatarEl1.src = newInit.isSelf ? getAvatarSrc(newInit.avatar) : getPartnerAvatarSrc(newInit.avatar);
+  if (nameEl1) nameEl1.textContent = newInit.name;
+  if (avatarEl2) avatarEl2.src = newRecv.isSelf ? getAvatarSrc(newRecv.avatar) : getPartnerAvatarSrc(newRecv.avatar);
+  if (nameEl2) nameEl2.textContent = newRecv.name;
+}
+
+// 进入步骤2（先尝试 AI 解析，失败则回退本地解析）
+async function goToCreateStep2() {
+  const text = document.getElementById('agreementText')?.value?.trim();
+  if (!text) { showToast('请先输入约定内容~'); return; }
+
+  let parsed = null;
+  let usedAI = false;
+
+  // 先尝试 AI 解析
+  try {
+    const aiResult = await callDeepSeekParse(text);
+    if (aiResult && aiResult._aiParsed) {
+      parsed = aiResult;
+      usedAI = true;
+    }
+  } catch(e) {
+    // AI 不可用，继续使用本地解析
+  }
+
+  // 回退到本地解析
+  if (!parsed) {
+    try {
+      const localResult = localParseAgreement(text, getTodayStr());
+      parsed = localResult.result?.parsed || localResult;
+    } catch(e) {
+      parsed = { task: text, deadline: '', standard: '', reward: '', reminder: '' };
+    }
+  }
+
+  pendingAgreement = {
+    task: parsed.task || text,
+    deadline: parsed.deadline || '',
+    standard: parsed.standard || '',
+    reward: parsed.reward || '',
+    initiator: document.getElementById('initiatorName')?.textContent || '我',
+    receiver: document.getElementById('receiverName')?.textContent || '爸爸',
+    status: 'awaiting_confirmation',
+  };
+
+  renderAICard(pendingAgreement, usedAI);
+  createStep = 2;
+  renderCreateStep();
+}
+
+function renderAICard(data, usedAI) {
+  const body = document.getElementById('aiCardBody');
+  if (!body) return;
+  body.innerHTML = `
+    <div class="ai-field">
+      <label>约定事项</label>
+      <textarea id="editTask" rows="2">${escapeHtml(data.task || '')}</textarea>
+    </div>
+    <div class="ai-field">
+      <label>截止时间</label>
+      <input type="date" id="editDeadline" value="${data.deadline || ''}">
+    </div>
+    <div class="ai-field">
+      <label>完成标准</label>
+      <input type="text" id="editStandard" value="${escapeHtml(data.standard || '')}" placeholder="怎样算完成？">
+    </div>
+    <div class="ai-field">
+      <label>鼓励方式</label>
+      <input type="text" id="editReward" value="${escapeHtml(data.reward || '')}" placeholder="完成后的小奖励（可选）">
+    </div>
+  `;
+
+  const modeTag = document.getElementById('aiModeTag');
+  if (modeTag) modeTag.textContent = usedAI ? 'AI 整理' : '本地解析（可编辑）';
+}
+
+function goBackToStep1() {
+  createStep = 1;
+  renderCreateStep();
+}
+
+// 进入步骤3
+function goToCreateStep3() {
+  if (!pendingAgreement) return;
+  pendingAgreement.task = document.getElementById('editTask')?.value || pendingAgreement.task;
+  pendingAgreement.deadline = document.getElementById('editDeadline')?.value || pendingAgreement.deadline;
+  pendingAgreement.standard = document.getElementById('editStandard')?.value || pendingAgreement.standard;
+  pendingAgreement.reward = document.getElementById('editReward')?.value || pendingAgreement.reward;
+
+  renderFinalCard(pendingAgreement);
+  createStep = 3;
+  renderCreateStep();
+}
+
+function renderFinalCard(data) {
+  const card = document.getElementById('finalCard');
+  if (card) {
+    card.style.display = 'block';
+    card.innerHTML = `
+      <div class="card" style="padding:20px;text-align:center;">
+        <div style="font-size:14px;color:var(--text-light);margin-bottom:8px;">电子拉钩约定</div>
+        <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:12px;">${escapeHtml(data.task)}</div>
+        <div style="font-size:13px;color:var(--text-light);">${escapeHtml(data.initiator)} ↔ ${escapeHtml(data.receiver)}</div>
+        ${data.deadline ? `<div style="font-size:13px;color:var(--mint-dark);margin-top:6px;">⏰ ${data.deadline}</div>` : ''}
+        ${data.reward ? `<div style="font-size:13px;color:#FF9800;margin-top:4px;">🎁 ${escapeHtml(data.reward)}</div>` : ''}
+      </div>
+    `;
+  }
+
+  window._selfConfirmed = false;
+  window._partnerConfirmed = false;
+  const step3Actions = document.getElementById('step3Actions');
+  const step3Done = document.getElementById('step3Done');
+  if (step3Actions) step3Actions.style.display = 'flex';
+  if (step3Done) step3Done.style.display = 'none';
+}
+
+function selfConfirm() {
+  window._selfConfirmed = true;
+  showToast('我已确认');
+  checkBothConfirmed();
+}
+
+function partnerConfirm() {
+  window._partnerConfirmed = true;
+  showToast('对方已确认');
+  checkBothConfirmed();
+}
+
+function checkBothConfirmed() {
+  if (window._selfConfirmed && window._partnerConfirmed) {
+    const a = {
+      id: state.nextId++,
+      type: 'mutual',
+      promisor: pendingAgreement.initiator + ' & ' + pendingAgreement.receiver,
+      promisee: pendingAgreement.initiator + ' & ' + pendingAgreement.receiver,
+      initiator: pendingAgreement.initiator,
+      receiver: pendingAgreement.receiver,
+      task: pendingAgreement.task,
+      deadline: pendingAgreement.deadline || getTodayStr(),
+      standard: pendingAgreement.standard,
+      reward: pendingAgreement.reward,
+      status: 'active',
+      dropsSettled: false,
+      completedAt: null,
+      wasOverdue: false,
+      createdAt: getTodayStr(),
+    };
+    state.agreements.push(a);
+    state.pendingAgreement = null;
+    saveData();
+
+    document.getElementById('step3Actions').style.display = 'none';
+    document.getElementById('step3Done').style.display = 'block';
+    pendingAgreement = null;
+  }
+}
+
+function afterAgreementCreated() {
+  navigateTo('page-home');
+}
+
+/* ============================================
+   旧版 initInputPage 保留（兼容）
+   ============================================ */
+function initInputPage() {
+  initCreatePage();
 }
 
 /* ============================================
    双方选择器逻辑
    ============================================ */
+// 获取所有可选人列表（自己 + 所有约定人成员）
+function getAllSelectablePeople() {
+  const selfName = state.user.selfMember ? state.user.selfMember.name : (state.user.name || '小朋友');
+  const partnerNames = state.user.partners || [];
+  return [selfName, ...partnerNames];
+}
+
 // 渲染发起承诺人下拉列表
 function renderInitiatorOptions() {
   const sel = document.getElementById('initiatorSelect');
-  // 所有可选人 = 常用约定人（不含当前用户名称）
   const allPeople = getAllSelectablePeople();
+  // 默认发起人 = 自己
+  const selfName = state.user.selfMember ? state.user.selfMember.name : (state.user.name || '小朋友');
   sel.innerHTML = '<option value="" disabled selected>请选择发起承诺人</option>' +
-    allPeople.map(p => `<option value="${p}">${p}</option>`).join('');
-}
-
-// 获取所有可选人列表（仅常用约定人，不含当前用户名称）
-function getAllSelectablePeople() {
-  // 只返回常用约定人，不包含当前用户名称
-  // （名称是用户自己的昵称，不是约定人）
-  return [...new Set(state.user.partners.filter(n => n))];
+    allPeople.map(p => `<option value="${p}" ${p === selfName ? 'selected' : ''}>${p}</option>`).join('');
+  // 触发 onInitiatorChange 以自动填充接受人
+  onInitiatorChange();
 }
 
 // 发起承诺人变化时的处理
@@ -2525,8 +2835,17 @@ function onInitiatorChange() {
   if (available.length === 0) {
     receiverSel.innerHTML = '<option value="" disabled selected>没有可选的接受承诺人</option>';
   } else {
+    // 默认接受人 = 第一个非自己的成员
+    const selfName = state.user.selfMember ? state.user.selfMember.name : (state.user.name || '小朋友');
+    const defaultReceiver = initiator === selfName
+      ? (available.find(p => p !== selfName) || available[0])
+      : available[0];
     receiverSel.innerHTML = '<option value="" disabled selected>请选择接受承诺人</option>' +
       available.map(p => `<option value="${p}">${p}</option>`).join('');
+    // 自动选中默认接受人
+    if (defaultReceiver) {
+      receiverSel.value = defaultReceiver;
+    }
     // 如果接受人列表只有一个人，自动选中
     if (available.length === 1) {
       receiverSel.value = available[0];
@@ -2575,28 +2894,23 @@ function inferAgreementType() {
    DeepSeek API 语音与解析功能
    ============================================ */
 
-// 检查浏览器语音识别支持
+// 检查浏览器语音识别支持（兼容旧调用）
 function initVoiceSupport() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   const btn = document.getElementById('voiceBtn');
-  const hint = document.getElementById('voiceHint');
+  if (!btn) return;
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
     btn.disabled = true;
-    btn.classList.add('voice-unavailable');
-    btn.textContent = '🚫 不支持语音';
-    hint.textContent = '当前浏览器不支持语音识别，请直接手动输入约定内容哦~';
+    btn.textContent = '🚫';
   } else {
     btn.disabled = false;
-    btn.textContent = '🎙️ 开始语音输入';
-    hint.textContent = '点击按钮开始说话，识别结果会自动填入上方文本框~';
+    btn.textContent = '🎤';
   }
 }
 
-// 语音权限状态追踪
-let voicePermissionDenied = false;
+// 以下为旧版语音/解析逻辑保留（不再被新页面直接调用，保留供其他可能引用）
 
-// 真实语音识别（Web Speech API）
-let recognition = null;
+// 真实语音识别（Web Speech API）- 旧版，保留兼容
 function startVoiceInput() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
@@ -2707,218 +3021,38 @@ function startVoiceInput() {
   }
 }
 
-// 清空 DeepSeek 输入
-function clearDeepSeekInput() {
-  document.getElementById('inputTextarea').value = '';
-  document.getElementById('dsResult').classList.remove('show');
-  document.getElementById('dsResultContent').innerHTML = '';
-  state.lastParsed = null;
-  showToast('🗑️ 已清空');
-}
+/* [已废弃] 旧版 DeepSeek 测试区域的辅助函数，现不再需要
+function clearDeepSeekInput() { ... }
+function fillDemo() { ... }
+*/
 
-// 填入演示案例
-function fillDemo() {
-  const initiator = getSelectedInitiator();
-  const receiver = getSelectedReceiver();
-  if (!initiator || !receiver) {
-    showToast('请先选择约定双方哦~');
-    return;
-  }
-  const demoText = `${initiator}答应周末带${receiver}去动物园看大熊猫，如果天气不好就下周去，奖励吃冰激凌`;
-  document.getElementById('inputTextarea').value = demoText;
-  showToast('💡 演示句子已填入，点击「调用 DeepSeek 解析」即可解析');
-}
-
-// 调用 DeepSeek API 解析约定（内置 API Key，前端直接调用）
-async function callDeepSeekParse() {
-  // 内置 API Key（编码存储，源码中不可直接看到明文）
-  const _ak = atob('dm4waWY2ZDo8ZDY0OGQ0N2doM2Q4M2U3MzU7aTc5ZTdnNTM=');
-  const apiKey = _ak.split('').map(c => String.fromCharCode(c.charCodeAt(0) - 3)).join('');
-  const baseURL = 'https://api.deepseek.com/v1';
-  const userText = document.getElementById('inputTextarea').value.trim();
-  const currentDate = document.getElementById('dsCurrentDate').value || getTodayStr();
-  const initiator = getSelectedInitiator();
-  const receiver = getSelectedReceiver();
-  const parseBtn = document.getElementById('dsParseBtn');
-
-  if (!userText) {
-    showToast('❌ 请先输入约定内容');
-    document.getElementById('inputTextarea').focus();
-    return;
-  }
-  if (!initiator || !receiver) {
-    showToast('❌ 请先选择约定双方');
-    return;
-  }
-
-  parseBtn.disabled = true;
-  parseBtn.textContent = '⏳ 解析中...';
-  showToast('🔮 DeepSeek AI 正在解析...');
-
-  const systemPrompt = `你是一个约定的结构化提取工具。你需要从用户输入的口语化描述中提取约定的关键要素。
-
-【严格输出规则】
-1. 只能输出严格的 JSON 格式，绝对不要在 JSON 外面输出任何其他文字、问候、解释、说明。
-2. 严禁在 question、suggestion、parsed 任何字段中出现以下称谓或称呼：宝贝、宝宝、妈妈、爸爸、亲人、小朋友、孩子、家长、亲、年糕、孩子他、TA、他、她 等。
-3. 严禁在字段值中重复发起人或接受人的名字（如"${initiator}"、"${receiver}"），也不要使用"您"作为主语。
-4. question 中只允许出现"请补充..."、"可以告诉我..."、"建议增加..."、"还未确定..."等中性无主语表达。
-5. suggestion 中只允许"建议补充..."、"可以明确..."等无称谓表达。
-
-【提取要素】
-- task: 约定事项（不含人物名字）
-- deadline: 截止时间（日期格式 YYYY-MM-DD）
-- standard: 完成标准
-- reward: 奖励/鼓励方式
-- reminder: 提醒建议
-- clarityScore: 清晰度评分（0-100）
-- suggestion: 改进建议（无称谓）
-
-【输出模板】
-{
-  "needMoreInfo": false,
-  "question": "",
-  "parsed": {
-    "task": "...",
-    "deadline": "...",
-    "standard": "...",
-    "reward": "...",
-    "reminder": "...",
-    "clarityScore": 80,
-    "suggestion": "..."
-  }
-}
-
-【判断规则】
-1. 信息完整 → needMoreInfo 设为 false，question 留空字符串
-2. 信息不全 → needMoreInfo 设为 true，question 中用"请补充..."等中性表达追问
-3. 当前日期：${currentDate}
-4. 截止时间尽量推断具体日期，"周六"等要根据 ${currentDate} 推算`;
-
-
+// 调用后端 AI 解析约定（通过 /api/deepseek/parse-agreement 代理，不可用时回退本地解析）
+async function callDeepSeekParse(text) {
   try {
-    const res = await fetch(`${baseURL.replace(/\/+$/, '')}/chat/completions`, {
+    const resp = await fetch('/api/deepseek/parse-agreement', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        temperature: 0.3,
-        response_format: { type: 'json_object' },
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: `用户说：${userText}` }
-        ]
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
     });
-
-    if (!res.ok) {
-      const errData = await res.json().catch(() => ({}));
-      const errMsg = errData.error?.message || `DeepSeek API 错误 (HTTP ${res.status})`;
-      if (res.status === 401) {
-        throw new Error('API Key 无效或已过期，请检查后重新输入');
-      } else if (res.status === 429) {
-        throw new Error('请求过于频繁，请稍等几秒后重试');
-      } else if (res.status === 402 || res.status === 400) {
-        throw new Error('API Key 余额不足或参数错误，请检查');
-      }
-      throw new Error(errMsg);
+    if (!resp.ok) throw new Error('API不可用');
+    const data = await resp.json();
+    // 白名单校验
+    if (!data || typeof data !== 'object') throw new Error('无效响应');
+    const allowed = ['task','deadline','standard','reward','reminder','clarityScore','suggestion'];
+    const result = {};
+    for (const key of allowed) {
+      if (data[key] !== undefined) result[key] = String(data[key]);
     }
-
-    const apiData = await res.json();
-    const content = apiData.choices?.[0]?.message?.content || '';
-
-    let result;
-    try {
-      result = JSON.parse(content);
-    } catch (e) {
-      throw new Error('DeepSeek 返回了非标准 JSON 数据，请重试');
-    }
-
-    // 客户端后置过滤：清理称呼/称谓（防止 AI 误输出）
-    result = sanitizeParsedResult(result, initiator, receiver);
-
-    const displayData = {
-      mode: 'deepseek',
-      model: 'deepseek-chat',
-      rawText: content,
-      result
-    };
-
-    displayDeepSeekResult(displayData);
-    showToast('✅ DeepSeek AI 解析完成！');
-
-    // 保存解析结果到 state
-    if (result && result.parsed) {
-      state.lastParsed = result.parsed;
-    }
-
-  } catch (e) {
-    console.error('DeepSeek 调用失败:', e.message);
-    let errMsg = e.message;
-    if (e.message.includes('Failed to fetch') || e.message.includes('NetworkError') || e.message.includes('ERR_CONNECTION')) {
-      errMsg = '网络连接失败，请检查网络是否正常';
-    }
-    showToast('❌ ' + errMsg);
-    displayDeepSeekResult({ mode: 'error', message: errMsg });
-  } finally {
-    parseBtn.disabled = false;
-    parseBtn.textContent = '🔮 调用 DeepSeek 解析';
+    return { ...result, _aiParsed: true };
+  } catch(e) {
+    console.log('AI不可用，使用本地解析');
+    return null; // 返回null让调用方使用本地解析
   }
 }
 
-// 清理 DeepSeek 返回结果中的称呼/称谓
-function sanitizeParsedResult(result, initiator, receiver) {
-  if (!result) return result;
-  // 称呼黑名单
-  const banned = ['宝贝', '宝宝', '妈妈', '爸爸', '亲人', '小朋友', '孩子', '家长', '亲', '您', 'TA', 'Ta', 'ta'];
-  // 还要清理发起人/接受人名字（避免在 question/suggestion 中重复人名）
-  const namesToStrip = [];
-  if (initiator) namesToStrip.push(initiator);
-  if (receiver) namesToStrip.push(receiver);
-
-  const clean = (str) => {
-    if (typeof str !== 'string') return str;
-    let s = str;
-    // 第一步：清理人名（在句首或跟在标点/空格后）
-    namesToStrip.forEach(n => {
-      if (n && n.length >= 1) {
-        // 句首的人名
-        s = s.replace(new RegExp('^' + n + '[，,。!！\\s、]*', 'g'), '');
-        // 跟在标点后的人名
-        s = s.replace(new RegExp('([，,。!！、])' + n, 'g'), '$1');
-        // 后接标点/空格的人名
-        s = s.replace(new RegExp(n + '[，,。!！\\s、]+', 'g'), '');
-        // 前接空格/标点的人名
-        s = s.replace(new RegExp('[，,。!！\\s、]+' + n, 'g'), '');
-        // 兜底：直接删除（防止特殊情况）
-        s = s.replace(new RegExp(n, 'g'), '');
-      }
-    });
-    // 第二步：清理称呼黑名单
-    banned.forEach(w => {
-      s = s.replace(new RegExp('^' + w + '[，,。!！\\s、]*', 'g'), '');
-      s = s.replace(new RegExp('([，,。!！、])' + w, 'g'), '$1');
-      s = s.replace(new RegExp(w + '[，,。!！\\s、]+', 'g'), '');
-      s = s.replace(new RegExp('[，,。!！\\s、]+' + w, 'g'), '');
-      s = s.replace(new RegExp(w, 'g'), '');
-    });
-    // 清理"他/她"作为开头主语
-    s = s.replace(/^[他她][，,。!！\\s、]*/g, '');
-    return s.trim();
-  };
-
-  if (result.question) result.question = clean(result.question);
-  if (result.parsed) {
-    if (result.parsed.task) result.parsed.task = clean(result.parsed.task);
-    if (result.parsed.standard) result.parsed.standard = clean(result.parsed.standard);
-    if (result.parsed.reward) result.parsed.reward = clean(result.parsed.reward);
-    if (result.parsed.reminder) result.parsed.reminder = clean(result.parsed.reminder);
-    if (result.parsed.suggestion) result.parsed.suggestion = clean(result.parsed.suggestion);
-  }
-  return result;
-}
+/* [已废弃] 旧版前端直调 DeepSeek API 时使用的清理函数，现不再需要
+function sanitizeParsedResult(result, initiator, receiver) { ... }
+*/
 
 
 
@@ -3019,77 +3153,9 @@ function localParseAgreement(text, currentDate) {
   };
 }
 
-// 展示 DeepSeek 解析结果
-function displayDeepSeekResult(data) {
-  const resultDiv = document.getElementById('dsResult');
-  const contentDiv = document.getElementById('dsResultContent');
-
-  if (data.mode === 'error') {
-    contentDiv.innerHTML = `
-      <div class="ds-result-item">
-        <span class="ds-result-label">❌ 错误</span>
-        <span class="ds-result-value" style="color:#D4706A">${escapeHtml(data.message)}</span>
-      </div>
-    `;
-    resultDiv.classList.add('show');
-    return;
-  }
-
-  const result = data.result || {};
-  const parsed = result.parsed || {};
-  const isLocal = data.mode === 'local';
-
-  let html = '';
-
-  // 模式标签
-  if (isLocal) {
-    html += `<div class="ds-question-box" style="border-left-color:var(--mint);background:var(--mint-light)">
-      💡 当前使用本地智能解析（DeepSeek 服务暂不可用时自动启用）
-    </div>`;
-  }
-
-  // 如果需要更多信息，优先展示追问
-  if (result.needMoreInfo && result.question) {
-    html += `<div class="ds-question-box">🤔 ${escapeHtml(result.question)}</div>`;
-  }
-
-  // 解析结果字段
-  const fields = [
-    { key: 'task', label: '📋 约定事项' },
-    { key: 'deadline', label: '📅 截止时间' },
-    { key: 'standard', label: '✅ 完成标准' },
-    { key: 'reward', label: '🎁 奖励/鼓励' },
-    { key: 'reminder', label: '🔔 提醒建议' },
-    { key: 'suggestion', label: '💡 改进建议' },
-  ];
-
-  fields.forEach(f => {
-    const val = parsed[f.key];
-    if (val !== undefined && val !== null && val !== '') {
-      html += `<div class="ds-result-item">
-        <span class="ds-result-label">${f.label}</span>
-        <span class="ds-result-value">${escapeHtml(String(val))}</span>
-      </div>`;
-    }
-  });
-
-  // 清晰度评分
-  if (parsed.clarityScore !== undefined) {
-    const score = parseInt(parsed.clarityScore) || 0;
-    let scoreClass = score >= 70 ? 'high' : score >= 40 ? 'mid' : 'low';
-    html += `<div class="ds-result-item">
-      <span class="ds-result-label">📊 清晰度</span>
-      <span class="ds-result-value">
-        <span class="ds-score ${scoreClass}">${score} 分</span>
-      </span>
-    </div>`;
-  }
-
-  // 原始 JSON 已隐藏
-
-  contentDiv.innerHTML = html || '<div class="ds-result-item"><span class="ds-result-value">暂无解析结果</span></div>';
-  resultDiv.classList.add('show');
-}
+/* [已废弃] 旧版前端直调 DeepSeek 时展示解析结果的函数，现不再需要
+function displayDeepSeekResult(data) { ... }
+*/
 
 // HTML 转义
 function escapeHtml(str) {
@@ -3102,76 +3168,12 @@ function escapeHtml(str) {
 }
 
 // 生成电子拉钩约定
+/* ============================================
+   旧版 generateAgreement 保留（不再被新页面调用，签名页仅在需要时单独访问）
+   ============================================ */
 function generateAgreement() {
-  // 校验必填：发起承诺人和接受承诺人
-  const initiator = getSelectedInitiator();
-  const receiver = getSelectedReceiver();
-  if (!initiator) {
-    showToast('请先选择发起承诺人哦~');
-    return;
-  }
-  if (!receiver) {
-    showToast('请选择接受承诺人哦~');
-    return;
-  }
-
-  const text = document.getElementById('inputTextarea').value.trim();
-  if (!text) {
-    showToast('请先输入约定内容哦~');
-    return;
-  }
-  if (text.length < 3) {
-    showToast('约定内容太短了，再多写一点吧~');
-    return;
-  }
-
-  // 根据发起人/接受人自动推断约定类型
-  const type = inferAgreementType();
-  // 构建承诺人/被承诺人描述
-  let promisor, promisee;
-  if (type === 'child-to-parent') {
-    promisor = initiator;
-    promisee = receiver;
-  } else if (type === 'parent-to-child') {
-    promisor = initiator;
-    promisee = receiver;
-  } else {
-    // 双向互约
-    promisor = initiator + ' & ' + receiver;
-    promisee = promisor;
-  }
-
-  // 获取AI解析的字段（优先使用 DeepSeek 解析结果）
-  const parsed = state.lastParsed;
-  const agreement = {
-    id: state.nextId++,
-    type: type,
-    promisor: promisor,
-    promisee: promisee,
-    initiator: initiator,
-    receiver: receiver,
-    task: parsed?.task || text,
-    deadline: parsed?.deadline || getTodayStr(),
-    reward: parsed?.reward || '',
-    punishment: '',
-    status: 'pending',
-    signatures: { parent: null, child: null },
-    cardGenerated: false,
-    createdAt: getTodayStr()
-  };
-
-  state.pendingAgreement = agreement;
-  // 重置签名状态
-  state.childSigned = false;
-  state.parentSigned = false;
-  state.signatureData = { child: '', parent: '' };
-  document.getElementById('promiseCard').classList.remove('show');
-  document.getElementById('signaturesArea').style.display = 'flex'; // 恢复签名区域显示（CSS默认是flex）
-  document.getElementById('childSigStatus').textContent = '';
-  document.getElementById('parentSigStatus').textContent = '';
-
-  // 跳转到签名确认页
-  navigateTo('page-sign');
+  // 此函数已不再被三段流程调用，保留供签名页等可能的外部引用
+  showToast('请使用新的三步创建流程~');
 }
 
 /* ============================================
@@ -3367,10 +3369,11 @@ function goToTree() {
    ============================================ */
 function renderAvatar(el, avatarName) {
   if (!el) return;
-  const item = avatarList.find(a => a.name === avatarName);
-  if (item) {
-    el.innerHTML = `<img src="${item.src}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+  if (avatarName && avatarName.length > 2) {
+    // 图片头像：通过统一映射表获取路径
+    el.innerHTML = `<img src="${getAvatarSrc(avatarName)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
   } else {
+    // emoji 头像
     el.textContent = avatarName || '👶';
   }
 }
@@ -3415,18 +3418,225 @@ function renderAvatar(el, avatarName) {
   });
 })();
 
+/* ============================================
+   约定状态常量与显示映射
+   ============================================ */
+const STATUS_MAP = {
+  'draft': { label: '草稿', color: '#999', class: 'tag-draft' },
+  'awaiting_confirmation': { label: '待确认', color: '#FF9800', class: 'tag-pending' },
+  'active': { label: '进行中', color: '#4CAF50', class: 'tag-child' },
+  'pending_completion_confirmation': { label: '待确认完成', color: '#2196F3', class: 'tag-pending' },
+  'completed': { label: '已完成', color: '#4CAF50', class: 'tag-completed' },
+  'overdue': { label: '已逾期', color: '#FF5722', class: 'tag-overdue' },
+  'reviewing': { label: '复盘讨论中', color: '#FF9800', class: 'tag-reviewing' },
+  'cancelled': { label: '已取消', color: '#999', class: 'tag-draft' },
+};
+
+/* ============================================
+   信任水滴与亲情树系统
+   ============================================ */
+const TREE_STAGES = [
+  { name: '信任种子', min: 0, max: 9, icon: '🌱' },
+  { name: '守信新芽', min: 10, max: 29, icon: '🌿' },
+  { name: '成长树苗', min: 30, max: 69, icon: '🌱' },
+  { name: '绿叶小树', min: 70, max: 119, icon: '🌳' },
+  { name: '开花亲情树', min: 120, max: 219, icon: '🌸' },
+  { name: '信任森林', min: 220, max: 299, icon: '🌲' },
+  { name: '信任星球', min: 300, max: Infinity, icon: '🪐' },
+];
+
+function getTreeStage(drops) {
+  for (let i = TREE_STAGES.length - 1; i >= 0; i--) {
+    if (drops >= TREE_STAGES[i].min) return TREE_STAGES[i];
+  }
+  return TREE_STAGES[0];
+}
+
+function getTreeProgress(drops) {
+  const stage = getTreeStage(drops);
+  if (stage.max === Infinity) return 100;
+  const range = stage.max - stage.min + 1;
+  return Math.min(100, Math.round(((drops - stage.min) / range) * 100));
+}
+
+function getNextStageDrops(drops) {
+  const stage = getTreeStage(drops);
+  if (stage.max === Infinity) return 0;
+  return stage.max + 1 - drops;
+}
+
+// 信任水滴结算（调用方需确保不重复结算）
+function settleTrustDrops(agreement) {
+  if (agreement.dropsSettled) return 0;
+  agreement.dropsSettled = true;
+  
+  let drops = 10; // 基础
+  
+  // 提前完成奖励
+  if (agreement.deadline && agreement.completedAt) {
+    const deadline = new Date(agreement.deadline);
+    const completed = new Date(agreement.completedAt);
+    if (completed < deadline) drops += 2;
+  }
+  
+  // 逾期后复盘完成奖励
+  if (agreement.wasOverdue) drops = 2;
+  
+  // 累加到用户数据
+  state.user.trustDrops = (state.user.trustDrops || 0) + drops;
+  saveData();
+  return drops;
+}
+
 function renderHomePage() {
-  // 更新问候区
-  renderAvatar(document.getElementById('homeAvatar'), state.user.avatar);
-  document.getElementById('homeUserName').textContent = state.user.name || '小朋友';
+  const container = document.getElementById('homeContent');
+  if (!container) return;
+  
+  const user = state.user;
+  const drops = user.trustDrops || 0;
+  const stage = getTreeStage(drops);
+  const progress = getTreeProgress(drops);
+  const nextDrops = getNextStageDrops(drops);
+  
+  // 获取今日约定（active/pending_completion_confirmation状态，按deadline排序，最多2条）
+  const activeAgreements = (state.agreements || [])
+    .filter(a => a.status === 'active' || a.status === 'pending_completion_confirmation')
+    .sort((a, b) => (a.deadline || '9999') < (b.deadline || '9999') ? -1 : 1);
+  const todayAgreements = activeAgreements.slice(0, 2);
+  
+  // 最近完成的约定
+  const recentCompleted = (state.agreements || [])
+    .filter(a => a.status === 'completed')
+    .sort((a, b) => (b.completedAt || '').localeCompare(a.completedAt || ''))
+    .slice(0, 1);
 
-  // 更新今日约定卡片
-  const todayPending = state.agreements.filter(a => a.status === 'pending').length;
-  document.getElementById('homeTodayCount').textContent = todayPending + ' 个进行中';
+  const greeting = getGreeting();
+  
+  container.innerHTML = `
+    <!-- 问候区 -->
+    <div class="home-greeting">
+      <img class="home-avatar" src="${getAvatarSrc(user.avatar)}" alt="${user.name}">
+      <div class="home-greeting-text">
+        <div class="home-nickname">${user.name || '小朋友'}的信任星球</div>
+        <div class="home-mascot-say">雁小约：${greeting}</div>
+      </div>
+    </div>
+    
+    <!-- 星球主视觉 -->
+    <div class="home-planet-card card">
+      <div class="planet-visual">
+        <span class="stage-icon">${stage.icon}</span>
+        <span class="stage-name">${stage.name}</span>
+      </div>
+      <div class="drops-display">
+        <span class="drops-number">${drops}</span>
+        <span class="drops-label">信任水滴</span>
+      </div>
+      <div class="tree-progress">
+        <div class="tree-progress-bar" style="width:${progress}%"></div>
+      </div>
+      <div class="next-stage-hint">
+        ${nextDrops > 0 ? `距离「${getNextStageName(drops)}」还差 ${nextDrops} 滴信任水` : '已达到最高阶段！'}
+      </div>
+    </div>
+    
+    <!-- 今日约定 -->
+    <div class="home-section">
+      <div class="section-title">今日约定</div>
+      ${todayAgreements.length > 0 
+        ? todayAgreements.map(a => createCompactAgreementCard(a)).join('')
+        : `<div class="empty-state">
+            <div class="empty-icon">${stage.icon}</div>
+            <div class="empty-text">你的亲情树还是一颗小种子。<br>和${getFirstPartnerName()}完成第一个约定，就能获得第一滴信任水。</div>
+          </div>`
+      }
+    </div>
+    
+    <!-- 新建约定按钮 -->
+    <div class="home-create-btn" onclick="navigateTo('page-input')">
+      <span>+ 新建约定</span>
+    </div>
+    
+    <!-- 最近成长 -->
+    ${recentCompleted.length > 0 ? `
+    <div class="home-section">
+      <div class="section-title">最近成长</div>
+      ${createRecentGrowthCard(recentCompleted[0])}
+    </div>` : ''}
+  `;
+}
 
-  renderAgreementsList();
-  renderBadges();
-  updateStats();
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 6) return '夜深了，早点休息哦~';
+  if (h < 12) return '早上好！今天也要加油哦~';
+  if (h < 14) return '中午好！记得吃饭休息哦~';
+  if (h < 18) return '下午好！约定完成了吗~';
+  return '晚上好！今天过得怎么样~';
+}
+
+function getNextStageName(drops) {
+  const stage = getTreeStage(drops);
+  if (stage.max === Infinity) return '';
+  const idx = TREE_STAGES.indexOf(stage);
+  return idx < TREE_STAGES.length - 1 ? TREE_STAGES[idx + 1].name : '';
+}
+
+function getFirstPartnerName() {
+  const members = state.user.members || [];
+  if (members.length > 0) return members[0].name;
+  return '爸爸妈妈';
+}
+
+function createCompactAgreementCard(a) {
+  const isOverdue = a.deadline && new Date(a.deadline) < new Date() && a.status === 'active';
+  let actionBtn = '';
+  
+  if (a.status === 'active' && !isOverdue) {
+    actionBtn = `<button class="btn btn-sm btn-primary" style="margin-top:8px;width:100%;" onclick="event.stopPropagation();markPendingCompletion(${a.id})">我完成了</button>`;
+  } else if (a.status === 'pending_completion_confirmation') {
+    actionBtn = `<button class="btn btn-sm btn-primary" style="margin-top:8px;width:100%;" onclick="event.stopPropagation();confirmCompletion(${a.id})">确认对方已完成</button>`;
+  } else if (isOverdue) {
+    actionBtn = `<button class="btn btn-sm" style="margin-top:8px;width:100%;background:#FF9800;color:white;" onclick="event.stopPropagation();startReview(${a.id})">进入温和复盘</button>`;
+  }
+  
+  const statusInfo = STATUS_MAP[a.status] || STATUS_MAP['active'];
+  const displayTag = isOverdue
+    ? '<span class="tag tag-overdue" style="font-size:11px;">已逾期</span>'
+    : `<span class="tag ${statusInfo.class}" style="font-size:11px;">${statusInfo.label}</span>`;
+  
+  return `
+    <div class="card compact-agreement" onclick="viewAgreement(${a.id})" style="margin-bottom:10px;${isOverdue ? 'border-left:3px solid #FF9800;' : ''}">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-weight:600;font-size:14px;color:var(--text);margin-bottom:2px;">${a.task || '未命名约定'}</div>
+          <div style="font-size:12px;color:var(--text-light);">${a.initiator || ''} → ${a.receiver || ''}</div>
+        </div>
+        ${isOverdue ? '' : (a.deadline ? `<span style="font-size:12px;color:var(--text-light);">${formatDeadline(a.deadline)}</span>` : '')}
+      </div>
+      ${actionBtn}
+    </div>
+  `;
+}
+
+function formatDeadline(dateStr) {
+  const d = new Date(dateStr);
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff = Math.ceil((d - today) / 86400000);
+  if (diff === 0) return '今天';
+  if (diff === 1) return '明天';
+  if (diff < 7) return `${diff}天后`;
+  return `${d.getMonth()+1}/${d.getDate()}`;
+}
+
+function createRecentGrowthCard(a) {
+  return `
+    <div class="card" style="padding:16px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:6px;">🎉</div>
+      <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">${a.task || '约定已完成'}</div>
+      <div style="font-size:12px;color:var(--text-light);">+10 信任水滴</div>
+    </div>
+  `;
 }
 
 /* ============================================
@@ -3438,19 +3648,19 @@ function renderTreePage() {
 }
 
 // 渲染信任树V2可视化（带叶子卡片）
-// 树阶段配置
-const TREE_STAGES = [
-  { completed: 0, img: 'trust-tree-growth/assets/stage-seed.jpg', label: '🌱 信任种子', min: 0, max: 0 },
-  { completed: 1, img: 'trust-tree-growth/assets/stage-sprout.jpg', label: '🌿 守信新芽', min: 1, max: 2 },
-  { completed: 3, img: 'trust-tree-growth/assets/stage-leaves.jpg', label: '🌳 信任绿树', min: 3, max: 5 },
-  { completed: 6, img: 'trust-tree-growth/assets/stage-full-tree.jpg', label: '🌲 参天信任树', min: 6, max: 999 }
+// 树阶段配置（基于信任水滴数）
+const TREE_GROWTH_STAGES = [
+  { min: 0, img: 'trust-tree-growth/assets/stage-seed.jpg', label: '🌱 信任种子', max: 0 },
+  { min: 1, img: 'trust-tree-growth/assets/stage-sprout.jpg', label: '🌿 守信新芽', max: 20 },
+  { min: 21, img: 'trust-tree-growth/assets/stage-leaves.jpg', label: '🌳 信任绿树', max: 60 },
+  { min: 61, img: 'trust-tree-growth/assets/stage-full-tree.jpg', label: '🌲 参天信任树', max: 999 }
 ];
 
-function getTreeStage(completed) {
-  for (let i = TREE_STAGES.length - 1; i >= 0; i--) {
-    if (completed >= TREE_STAGES[i].min) return TREE_STAGES[i];
+function getTreeGrowthStage(completed) {
+  for (let i = TREE_GROWTH_STAGES.length - 1; i >= 0; i--) {
+    if (completed >= TREE_GROWTH_STAGES[i].min) return TREE_GROWTH_STAGES[i];
   }
-  return TREE_STAGES[0];
+  return TREE_GROWTH_STAGES[0];
 }
 
 function renderTreeV2() {
@@ -3459,8 +3669,8 @@ function renderTreeV2() {
   const stageLabel = document.getElementById('treeStageLabel');
   cardsContainer.innerHTML = '';
 
-  const completed = state.agreements.filter(a => a.status === 'completed').length;
-  const stage = getTreeStage(completed);
+  const drops = state.user.trustDrops || 0;
+  const stage = getTreeGrowthStage(drops);
 
   // 更新树阶段图片和标签
   if (stageImg) {
@@ -3496,7 +3706,7 @@ function renderTreeV2() {
 
     if (ag.status === 'completed') {
       cardClass = 'completed';
-    } else if (ag.status === 'overdue') {
+    } else if (ag.status === 'reviewing' || ag.status === 'cancelled') {
       cardClass = 'overdue';
     }
 
@@ -3511,9 +3721,14 @@ function renderTreeV2() {
       if (ag.task.includes(key)) { icon = val; break; }
     }
 
+    const agStatusInfo = STATUS_MAP[ag.status] || STATUS_MAP['active'];
+    const isLeafOverdue = ag.deadline && new Date(ag.deadline) < new Date() && ag.status === 'active';
     const statusText = ag.status === 'completed' ? '已兑现' :
-                       ag.status === 'overdue' ? '待复盘' :
-                       ag.status === 'reviewed' ? '已复盘' : '进行中';
+                       isLeafOverdue ? '待复盘' :
+                       ag.status === 'reviewing' ? '复盘讨论中' :
+                       ag.status === 'cancelled' ? '已取消' :
+                       ag.status === 'pending_completion_confirmation' ? '待确认完成' :
+                       '进行中';
 
     card.innerHTML = `
       <div class="leaf-icon">${icon}</div>
@@ -3526,21 +3741,22 @@ function renderTreeV2() {
 
 // 更新信任树页面统计
 function updateTreeStats() {
-  // 更新守信值（已完成约定数 * 100 + 进行中 * 10）
-  const completed = state.agreements.filter(a => a.status === 'completed').length;
-  const pending = state.agreements.filter(a => a.status === 'pending').length;
-  const score = completed * 100 + pending * 10;
-  document.getElementById('trustScore').textContent = score;
+  // 更新守信值（使用信任水滴数）
+  const drops = state.user.trustDrops || 0;
+  const stage = getTreeStage(drops);
+  document.getElementById('trustScore').textContent = drops;
 
   // 更新用户头像和名称
   renderAvatar(document.getElementById('treeUserAvatar'), state.user.avatar);
   document.getElementById('treeUserName').textContent = state.user.name || '小朋友';
 
-  // 更新提醒数量
-  document.getElementById('treeReminderCount').textContent = pending;
+  // 更新提醒数量（active状态的约定）
+  const activeCount = state.agreements.filter(a => a.status === 'active').length;
+  document.getElementById('treeReminderCount').textContent = activeCount;
 
   // 更新进度环
   const total = state.agreements.length;
+  const completed = state.agreements.filter(a => a.status === 'completed').length;
   const progressNum = document.getElementById('progressNum');
   const progressCircle = document.getElementById('progressCircle');
   progressNum.textContent = `${completed}/${total || 0}`;
@@ -3567,23 +3783,23 @@ function renderAgreementsList() {
   const pendingList = document.getElementById('pendingList');
   const completedList = document.getElementById('completedList');
 
-  const pending = state.agreements.filter(a => a.status === 'pending');
+  const active = state.agreements.filter(a => a.status === 'active' || a.status === 'pending_completion_confirmation');
   const completed = state.agreements.filter(a => a.status === 'completed');
-  const overdue = state.agreements.filter(a => a.status === 'overdue' || a.status === 'reviewed');
+  const other = state.agreements.filter(a => a.status === 'reviewing' || a.status === 'cancelled');
 
   // 进行中的约定
-  if (pending.length === 0) {
+  if (active.length === 0) {
     pendingList.innerHTML = '<div class="empty-state"><div class="empty-icon">🌱</div><p>还没有进行中的约定哦~</p></div>';
   } else {
-    pendingList.innerHTML = pending.map(a => createAgreementItemHTML(a)).join('');
+    pendingList.innerHTML = active.map(a => createAgreementItemHTML(a)).join('');
   }
 
-  // 已完成和逾期
-  if (completed.length === 0 && overdue.length === 0) {
+  // 已完成和其他状态
+  if (completed.length === 0 && other.length === 0) {
     completedList.innerHTML = '<div class="empty-state"><div class="empty-icon">✨</div><p>完成的约定会出现在这里~</p></div>';
   } else {
     let html = '';
-    overdue.forEach(a => { html += createAgreementItemHTML(a); });
+    other.forEach(a => { html += createAgreementItemHTML(a); });
     completed.forEach(a => { html += createAgreementItemHTML(a); });
     completedList.innerHTML = html;
   }
@@ -3596,45 +3812,40 @@ function createAgreementItemHTML(a) {
     'parent-to-child': '家长承诺',
     'mutual': '双向互约'
   };
-  const statusClasses = {
-    'pending': '',
-    'completed': 'completed',
-    'overdue': 'overdue',
-    'reviewed': 'reviewed'
-  };
-  const statusTags = {
-    'pending': '<span class="tag tag-pending">进行中</span>',
-    'completed': '<span class="tag tag-completed">已完成</span>',
-    'overdue': '<span class="tag tag-overdue">已逾期</span>',
-    'reviewed': '<span class="tag tag-reviewed">已复盘</span>'
-  };
-  const icons = {
-    'pending': '📋',
-    'completed': '✅',
-    'overdue': '⏰',
-    'reviewed': '🌿'
+  const statusInfo = STATUS_MAP[a.status] || STATUS_MAP['active'];
+  const statusClass = a.status === 'completed' ? 'completed' :
+                      (a.status === 'overdue' || a.status === 'reviewing') ? 'overdue' : '';
+  const statusTag = `<span class="tag ${statusInfo.class}">${statusInfo.label}</span>`;
+  const statusIcons = {
+    'draft': '📝', 'awaiting_confirmation': '📩', 'active': '📋',
+    'pending_completion_confirmation': '⏳', 'completed': '✅',
+    'overdue': '⏰', 'reviewing': '🌿', 'cancelled': '🕊️'
   };
 
   let actions = '';
-  if (a.status === 'pending') {
+  if (a.status === 'active') {
     actions = `
-      <button class="btn btn-sm btn-primary" onclick="markCompleted(${a.id})">完成</button>
+      <button class="btn btn-sm btn-primary" onclick="markPendingCompletion(${a.id})">我完成了</button>
     `;
-  } else if (a.status === 'overdue') {
+  } else if (a.status === 'pending_completion_confirmation') {
+    actions = `
+      <button class="btn btn-sm btn-primary" onclick="confirmCompletion(${a.id})">确认对方已完成</button>
+    `;
+  } else if (a.status === 'reviewing') {
     actions = `
       <button class="btn btn-sm btn-yellow" onclick="startReview(${a.id})">复盘</button>
     `;
   }
 
   return `
-    <div class="agreement-item ${statusClasses[a.status]}" onclick="viewAgreement(${a.id})">
-      <span class="ag-icon">${icons[a.status]}</span>
+    <div class="agreement-item ${statusClass}" onclick="viewAgreement(${a.id})">
+      <span class="ag-icon">${statusIcons[a.status] || '📋'}</span>
       <div class="ag-info">
         <div class="ag-title">${a.task}</div>
         <div class="ag-meta">
           ${a.promisor} ↔ ${a.promisee} | 截止: ${a.deadline}
           <span class="tag tag-${a.type === 'child-to-parent' ? 'child' : a.type === 'parent-to-child' ? 'parent' : 'mutual'}" style="margin-left:4px;font-size:11px">${typeLabels[a.type]}</span>
-          ${statusTags[a.status]}
+          ${statusTag}
         </div>
       </div>
       <div class="ag-actions" onclick="event.stopPropagation()">${actions}</div>
@@ -3656,44 +3867,56 @@ function viewAgreement(id) {
     'parent-to-child': '家长承诺孩子',
     'mutual': '双向互约'
   };
+  const statusInfo = STATUS_MAP[a.status] || { label: a.status };
+  const isOverdue = a.deadline && new Date(a.deadline) < new Date() && a.status === 'active';
   document.getElementById('reminderText').innerHTML = `
     <strong>约定双方：</strong>${a.promisor} ↔ ${a.promisee}<br>
     <strong>约定事项：</strong>${a.task}<br>
     <strong>截止时间：</strong>${a.deadline}<br>
     <strong>奖惩标准：</strong>${a.reward || '互相加油鼓励'}<br>
     <strong>约定类型：</strong>${typeLabels[a.type]}<br>
-    <strong>当前状态：</strong>${a.status === 'pending' ? '进行中' : a.status === 'completed' ? '已完成' : a.status === 'overdue' ? '已逾期' : '已复盘'}
+    <strong>当前状态：</strong>${isOverdue ? '已逾期' : statusInfo.label}
   `;
   document.getElementById('reminderViewBtn').style.display = 'none';
-  document.getElementById('reminderDoneBtn').style.display = a.status === 'pending' ? '' : 'none';
-  if (a.status === 'overdue') {
+  document.getElementById('reminderDoneBtn').style.display = a.status === 'active' ? '' : 'none';
+  if (isOverdue) {
     document.getElementById('reminderDoneBtn').textContent = '🌱 去复盘';
     document.getElementById('reminderDoneBtn').onclick = () => { closeReminder(); startReview(id); };
   }
   overlay.classList.add('show');
 }
 
-// 标记约定为已完成
-function markCompleted(id) {
-  const a = state.agreements.find(ag => ag.id === id);
-  if (a) {
-    a.status = 'completed';
-    saveData(); // 持久化存储
-    showToast('🎉 太棒了！约定已完成！');
-    renderTreePage();
-  }
+// 标记约定为待确认完成（一方点击"我完成了"）
+function markPendingCompletion(id) {
+  const a = state.agreements.find(x => x.id === id);
+  if (!a || a.status !== 'active') return;
+  a.status = 'pending_completion_confirmation';
+  saveData();
+  renderHomePage();
+  showToast('已标记完成，等待对方确认~');
 }
 
-// 标记提醒中的约定为已完成
+// 确认完成（另一方确认）
+function confirmCompletion(id) {
+  const a = state.agreements.find(x => x.id === id);
+  if (!a || a.status !== 'pending_completion_confirmation') return;
+  a.status = 'completed';
+  a.completedAt = new Date().toISOString().split('T')[0];
+  const drops = settleTrustDrops(a);
+  saveData();
+  renderHomePage();
+  showToast(`🎉 约定完成！获得 ${drops} 滴信任水~`);
+}
+
+// 标记提醒中的约定为待确认完成
 function markReminderDone() {
   closeReminder();
-  // 查找即将到期的pending约定并标记
-  const pending = state.agreements.find(a => a.status === 'pending');
-  if (pending) {
-    pending.status = 'completed';
-    saveData(); // 持久化存储
-    showToast('🎉 太棒了！约定已完成！');
-    renderTreePage();
+  const active = state.agreements.find(a => a.status === 'active');
+  if (active) {
+    active.status = 'pending_completion_confirmation';
+    saveData();
+    renderHomePage();
+    showToast('已标记完成，等待对方确认~');
   }
 }
 
@@ -3701,11 +3924,11 @@ function markReminderDone() {
 function updateStats() {
   const total = state.agreements.length;
   const done = state.agreements.filter(a => a.status === 'completed').length;
-  const pending = state.agreements.filter(a => a.status === 'pending').length;
+  const active = state.agreements.filter(a => a.status === 'active' || a.status === 'pending_completion_confirmation').length;
 
   document.getElementById('statTotal').textContent = total;
   document.getElementById('statDone').textContent = done;
-  document.getElementById('statPending').textContent = pending;
+  document.getElementById('statPending').textContent = active;
 }
 
 // 渲染勋章
@@ -3738,9 +3961,9 @@ let reminderAgreementId = null;
 
 function checkReminders() {
   const today = getTodayStr();
-  // 查找今天或明天到期的pending约定
+  // 查找今天或明天到期的active约定（不自动改为overdue，保持active由用户主动操作）
   const dueSoon = state.agreements.find(a => {
-    if (a.status !== 'pending') return false;
+    if (a.status !== 'active') return false;
     return a.deadline === today || a.deadline === getDateStr(1);
   });
 
@@ -3781,24 +4004,35 @@ function viewReminderAgreement() {
 }
 
 /* ============================================
-   页面5：未履约AI复盘引导页逻辑
+   页面5：复盘引导页逻辑（本地模板，不调 API）
    ============================================ */
 function startReview(id) {
   const a = state.agreements.find(ag => ag.id === id);
   if (!a) return;
+
+  a.status = 'reviewing';
+  a.wasOverdue = true;
+  saveData();
 
   state.selectedReviewAgreement = a;
   state.selectedOption = null;
 
   // 清空复盘表单
   document.getElementById('childReason').value = '';
-  document.getElementById('parentReason').value = '';
-  document.getElementById('aiSuggestion').classList.remove('show');
+  const parentObs = document.getElementById('parentObservation');
+  if (parentObs) parentObs.value = '';
   document.getElementById('reviewResult').classList.remove('show');
   document.getElementById('reviewSteps').style.display = 'block';
   document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('confirmReviewBtn').disabled = true;
   document.getElementById('confirmReviewBtn').style.opacity = '0.5';
+
+  // 重置到步骤1
+  document.getElementById('reviewStep1').style.display = 'block';
+  document.getElementById('reviewStep2').style.display = 'none';
+  document.getElementById('reviewStep3').style.display = 'none';
+  document.getElementById('reviewStep4').style.display = 'none';
+  document.getElementById('aiSuggestionContent').innerHTML = '';
 
   navigateTo('page-review');
 }
@@ -3807,60 +4041,109 @@ function initReviewPage() {
   const a = state.selectedReviewAgreement;
   if (!a) return;
 
+  // 根据约定双方动态更新步骤标签
+  const childLabel = document.getElementById('childReasonLabel');
+  const parentLabel = document.getElementById('parentReasonLabel');
+  if (childLabel) childLabel.textContent = a.promisor + '的想法：';
+  if (parentLabel) parentLabel.textContent = a.promisee + '的观察：';
+
   // 渲染约定信息
   const card = document.getElementById('reviewAgreementCard');
   card.innerHTML = `
-    <div class="field-row"><span class="field-label">📋 约定事项：</span><span class="field-value">${a.task}</span></div>
-    <div class="field-row"><span class="field-label">🤝 约定双方：</span><span class="field-value">${a.promisor} ↔ ${a.promisee}</span></div>
-    <div class="field-row"><span class="field-label">📅 截止时间：</span><span class="field-value">${a.deadline}</span></div>
-    <div class="field-row"><span class="field-label">🎁 奖惩标准：</span><span class="field-value">${a.reward || '互相加油鼓励'}</span></div>
+    <div class="field-row"><span class="field-label">约定事项：</span><span class="field-value">${a.task}</span></div>
+    <div class="field-row"><span class="field-label">约定双方：</span><span class="field-value">${a.promisor} ↔ ${a.promisee}</span></div>
+    <div class="field-row"><span class="field-label">截止时间：</span><span class="field-value">${a.deadline}</span></div>
+    <div class="field-row"><span class="field-label">鼓励方式：</span><span class="field-value">${a.reward || '互相加油鼓励'}</span></div>
   `;
 }
 
-// 生成AI调解建议
-function generateAISuggestion() {
-  const childReason = document.getElementById('childReason').value.trim();
-  const parentReason = document.getElementById('parentReason').value.trim();
+// 快捷填入原因/观察
+function fillQuickReason(fieldId, text) {
+  const el = document.getElementById(fieldId);
+  if (el) {
+    if (text === '其他原因' || text === '其他想法') {
+      el.value = '';
+      el.focus();
+    } else {
+      el.value = text;
+    }
+  }
+}
 
-  if (!childReason && !parentReason) {
-    showToast('请至少写一写原因哦~');
+// 复盘步骤导航
+function goToReviewStep2() {
+  const childReason = document.getElementById('childReason').value.trim();
+  if (!childReason) {
+    showToast('先说说自己的想法吧~');
     return;
   }
+  document.getElementById('reviewStep1').style.display = 'none';
+  document.getElementById('reviewStep2').style.display = 'block';
+}
+function goBackToReviewStep1() {
+  document.getElementById('reviewStep2').style.display = 'none';
+  document.getElementById('reviewStep1').style.display = 'block';
+}
+function goToReviewStep3() {
+  document.getElementById('reviewStep2').style.display = 'none';
+  document.getElementById('reviewStep3').style.display = 'block';
 
-  const suggestion = document.getElementById('aiSuggestion');
+  // 生成本地总结
+  const childReason = document.getElementById('childReason').value.trim();
+  const parentObservation = (document.getElementById('parentObservation') || {}).value?.trim() || '';
+  const task = state.selectedReviewAgreement?.task || '';
+  const result = generateReviewSummary(childReason, parentObservation, task);
+
   const content = document.getElementById('aiSuggestionContent');
+  if (content) {
+    let html = '<div style="margin-bottom:10px">' + escapeHtml(result.summary) + '</div>';
+    if (result.suggestions && result.suggestions.length > 0) {
+      html += '<div style="font-size:13px;color:var(--text-light);margin-top:8px">小建议：</div>';
+      result.suggestions.forEach(s => {
+        html += '<div style="font-size:13px;color:var(--text);margin:4px 0">- ' + escapeHtml(s) + '</div>';
+      });
+    }
+    content.innerHTML = html;
+  }
+}
+function goBackToReviewStep2() {
+  document.getElementById('reviewStep3').style.display = 'none';
+  document.getElementById('reviewStep2').style.display = 'block';
+}
+function goToReviewStep4() {
+  document.getElementById('reviewStep3').style.display = 'none';
+  document.getElementById('reviewStep4').style.display = 'block';
+}
+function goBackToReviewStep3() {
+  document.getElementById('reviewStep4').style.display = 'none';
+  document.getElementById('reviewStep3').style.display = 'block';
+}
 
-  // 模拟AI生成中立调解建议
-  const a = state.selectedReviewAgreement;
-  const suggestions = [
-    `经过分析，${a.promisor}和${a.promisee}的约定「${a.task}」没有按时完成。<br><br>` +
-    `💡 <strong>AI 小朋友的建议：</strong><br>` +
-    `1. 没完成约定不代表不好哦，每个人都会有遇到困难的时候~<br>` +
-    `2. 可以试着把大任务拆成小任务，每次完成一点点就容易多啦！<br>` +
-    `3. ${childReason ? '小朋友提到了自己的想法，这很棒！' : '鼓励小朋友说说自己的感受~'}<br>` +
-    `4. ${parentReason ? '家长也表达了想法，沟通是解决问题的好方法！' : '家长可以试着多了解小朋友遇到的困难~'}<br><br>` +
-    `🌟 重要的是，你们愿意一起面对问题，这就是最好的守信表现！`,
+// 本地模板生成复盘总结（替代原来的随机模板，不调 API）
+function generateReviewSummary(childReason, parentObservation, task) {
+  const summaries = [];
+  // 共同点
+  if (childReason && parentObservation) {
+    summaries.push('双方都认真思考了这次约定的情况。');
+  }
+  if (childReason && childReason.includes('忙') || parentObservation && parentObservation.includes('忙')) {
+    summaries.push('看起来时间安排是一个需要关注的方面。');
+  }
+  if (childReason && childReason.includes('难') || childReason && childReason.includes('忘记')) {
+    summaries.push('有时候约定确实容易忘记，这是很正常的。');
+  }
+  if (summaries.length === 0) {
+    summaries.push('认真的反思本身就是一种成长。');
+  }
 
-    `看来「${a.task}」这个约定遇到了一些小困难。<br><br>` +
-    `💡 <strong>AI 小朋友的建议：</strong><br>` +
-    `1. 遇到困难不可怕，勇敢面对就是最好的态度！<br>` +
-    `2. 试试调整一下约定的时间和方式，找到最适合你们的方法~<br>` +
-    `3. 可以把约定写得更具体一些，这样大家都更容易记住和完成！<br>` +
-    `4. 记住，信任树叶变黄不是惩罚，只是提醒你们一起想办法~<br><br>` +
-    `💪 你们愿意一起复盘，说明你们都很重视这个约定！`,
+  // 建议
+  const suggestions = [];
+  suggestions.push('可以试试把约定写下来贴在显眼的地方');
+  if (task) {
+    suggestions.push('把"' + task.substring(0, 10) + '"拆成更小的步骤');
+  }
 
-    `「${a.task}」这个约定需要调整一下节奏啦~<br><br>` +
-    `💡 <strong>AI 小朋友的建议：</strong><br>` +
-    `1. 没关系！约定可以调整，最重要的是大家一起努力~<br>` +
-    `2. 可以想想是什么原因让约定没能完成，一起找到解决办法<br>` +
-    `3. 也许换一种方式或时间，会更容易完成哦！<br>` +
-    `4. 不管结果如何，你们认真复盘的态度值得点赞！<br><br>` +
-    `🌈 下次一定可以做得更好！`
-  ];
-
-  content.innerHTML = suggestions[Math.floor(Math.random() * suggestions.length)];
-  suggestion.classList.add('show');
-  showToast('🤖 AI 分析完成！');
+  return { summary: summaries.join(''), suggestions: suggestions.slice(0, 2) };
 }
 
 // 选择处理方式
@@ -3884,26 +4167,26 @@ function confirmReview() {
 
   // 根据选择更新约定状态
   if (state.selectedOption === 'reschedule') {
-    // 重新约定时间
+    // 调整时间（deadline +3 天）
     const d = new Date();
     d.setDate(d.getDate() + 3);
     a.deadline = d.toISOString().slice(0, 10);
-    a.status = 'pending';
-    showToast('📅 已重新约定时间！');
-  } else if (state.selectedOption === 'supplement') {
-    // 补充履约
-    a.status = 'pending';
-    a.deadline = getDateStr(2);
-    showToast('💪 已设定补充履约时间！');
+    a.status = 'active';
+    showToast('已调整时间，再给自己3天~');
+  } else if (state.selectedOption === 'easier') {
+    // 降低难度：保留原任务但标记为降低难度
+    a.status = 'active';
+    a.deadline = getDateStr(3);
+    showToast('已降低难度，慢慢来~');
+  } else if (state.selectedOption === 'split') {
+    // 拆成小步骤：延长截止时间
+    a.status = 'active';
+    a.deadline = getDateStr(5);
+    showToast('已拆成小步骤，一步步来~');
   } else {
-    // 取消约定
-    a.status = 'reviewed';
-    showToast('🕊️ 约定已取消');
-  }
-
-  // 如果不是取消，标记为reviewed并更新状态
-  if (state.selectedOption === 'cancel') {
-    a.status = 'reviewed';
+    // 友好取消
+    a.status = 'cancelled';
+    showToast('约定已友好取消，没关系~');
   }
   saveData(); // 持久化存储
 
@@ -3979,15 +4262,23 @@ function addPartner() {
     return;
   }
   state.user.partners.push(name);
+  // 同步添加到 members 数组
+  if (!state.user.members) state.user.members = [];
+  state.user.members.push(createMember(name, inferRole(name), 'boy-child', false));
   input.value = '';
   renderPartners();
   saveData(); // 持久化存储
-  showToast('✅ 添加成功！');
+  showToast('添加成功！');
 }
 
 // 删除约定人
 function removePartner(index) {
-  state.user.partners.splice(index, 1);
+  const removedName = state.user.partners.splice(index, 1)[0];
+  // 同步从 members 数组中删除
+  if (state.user.members) {
+    const memberIdx = state.user.members.findIndex(m => m.name === removedName);
+    if (memberIdx >= 0) state.user.members.splice(memberIdx, 1);
+  }
   renderPartners();
   saveData(); // 持久化存储
   showToast('已删除');
@@ -4047,24 +4338,24 @@ function renderTitles() {
 /* ============================================
    头像选择弹窗
    ============================================ */
-// 自定义头像列表（每个条目 { name, src }）
+// 自定义头像列表（每个条目 { name, src, label }），src 由 AVATAR_SRC_MAP 统一管理
 const avatarList = [
-  { name: 'baby-boy', src: 'assets/avatars/avatar-baby-boy.png', label: '男宝宝' },
-  { name: 'baby-girl', src: 'assets/avatars/avatar-baby-girl.png', label: '女宝宝' },
-  { name: 'boy-child', src: 'assets/avatars/avatar-boy-child.png', label: '男孩-儿童' },
-  { name: 'girl-child', src: 'assets/avatars/avatar-girl-child.png', label: '女孩-儿童' },
-  { name: 'boy-teen', src: 'assets/avatars/avatar-boy-teen.png', label: '男孩-少年' },
-  { name: 'girl-teen', src: 'assets/avatars/avatar-girl-teen.png', label: '女孩-少年' },
-  { name: 'man-adult', src: 'assets/avatars/avatar-man-adult.png', label: '成人-男' },
-  { name: 'man-elder', src: 'assets/avatars/avatar-man-elder.png', label: '长者-男' },
-  { name: 'woman-adult', src: 'assets/avatars/avatar-woman-adult.png', label: '成人-女' },
-  { name: 'woman-elder', src: 'assets/avatars/avatar-woman-elder.png', label: '长者-女' },
-  { name: 'bear', src: 'assets/avatars/avatar-bear.png', label: '小熊' },
-  { name: 'bird', src: 'assets/avatars/avatar-bird.png', label: '小鸟' },
-  { name: 'cat', src: 'assets/avatars/avatar-cat.png', label: '小猫' },
-  { name: 'dog', src: 'assets/avatars/avatar-dog.png', label: '小狗' },
-  { name: 'panda', src: 'assets/avatars/avatar-panda.png', label: '熊猫' },
-  { name: 'rabbit', src: 'assets/avatars/avatar-rabbit.png', label: '兔子' },
+  { name: 'baby-boy', src: getAvatarSrc('baby-boy'), label: '男宝宝' },
+  { name: 'baby-girl', src: getAvatarSrc('baby-girl'), label: '女宝宝' },
+  { name: 'boy-child', src: getAvatarSrc('boy-child'), label: '男孩-儿童' },
+  { name: 'girl-child', src: getAvatarSrc('girl-child'), label: '女孩-儿童' },
+  { name: 'boy-teen', src: getAvatarSrc('boy-teen'), label: '男孩-少年' },
+  { name: 'girl-teen', src: getAvatarSrc('girl-teen'), label: '女孩-少年' },
+  { name: 'man-adult', src: getAvatarSrc('man-adult'), label: '成人-男' },
+  { name: 'man-elder', src: getAvatarSrc('man-elder'), label: '长者-男' },
+  { name: 'woman-adult', src: getAvatarSrc('woman-adult'), label: '成人-女' },
+  { name: 'woman-elder', src: getAvatarSrc('woman-elder'), label: '长者-女' },
+  { name: 'bear', src: getAvatarSrc('bear'), label: '小熊' },
+  { name: 'bird', src: getAvatarSrc('bird'), label: '小鸟' },
+  { name: 'cat', src: getAvatarSrc('cat'), label: '小猫' },
+  { name: 'dog', src: getAvatarSrc('dog'), label: '小狗' },
+  { name: 'panda', src: getAvatarSrc('panda'), label: '熊猫' },
+  { name: 'rabbit', src: getAvatarSrc('rabbit'), label: '兔子' },
 ];
 
 // 兼容旧代码（emoji）保留
@@ -4113,7 +4404,7 @@ function confirmLogout() {
     sessionStorage.removeItem(ONBOARD_KEY);
   } catch(e) { console.warn('注销清除数据失败', e); }
   // 重置 state
-  state.user = { name: '', avatar: '', partners: [] };
+  state.user = { name: '', avatar: '', partners: [], members: [], selfMember: null };
   state.agreements = [];
   state.nextId = 1;
   closeLogoutModal();
@@ -4260,7 +4551,7 @@ function selectOnboardAvatar(avatarName) {
     onboardTemp.avatarName = avatarName;
     onboardTemp.avatar = avatarName;
     document.getElementById('onboardAvatarPreview').innerHTML = 
-      `<img src="assets/avatars/${avatarName}.png" class="preview-img" alt="${avatarName}">`;
+      `<img src="${getAvatarSrc(avatarName)}" class="preview-img" alt="${avatarName}">`;
   }
   renderOnboardAvatars();
   updateOnboardButtons();
@@ -4308,45 +4599,45 @@ function renderOnboardPartners() {
 
 // 弹窗中可选的全部约定人头像
 const PARTNER_AVATAR_POOL = [
-  { src: 'assets/avatars/partners/dad-young.png', label: '爸爸' },
-  { src: 'assets/avatars/partners/mom-young.png', label: '妈妈' },
-  { src: 'assets/avatars/partners/dad-middle.png', label: '爸爸' },
-  { src: 'assets/avatars/partners/mom-middle.png', label: '妈妈' },
-  { src: 'assets/avatars/partners/grandpa.png', label: '爷爷' },
-  { src: 'assets/avatars/partners/grandma.png', label: '奶奶' },
-  { src: 'assets/avatars/partners/boy-teen.png', label: '哥哥' },
-  { src: 'assets/avatars/partners/girl-teen.png', label: '姐姐' },
-  { src: 'assets/avatars/partners/boy-preteen.png', label: '男孩' },
-  { src: 'assets/avatars/partners/girl-preteen.png', label: '女孩' },
-  { src: 'assets/avatars/partners/boy-child.png', label: '男孩' },
-  { src: 'assets/avatars/partners/girl-child.png', label: '女孩' },
-  { src: 'assets/avatars/partners/boy-toddler.png', label: '男孩' },
-  { src: 'assets/avatars/partners/girl-toddler.png', label: '女孩' },
-  { src: 'assets/avatars/partners/boy-baby.png', label: '宝宝' },
-  { src: 'assets/avatars/partners/girl-baby.png', label: '宝宝' },
+  { src: getPartnerAvatarSrc('dad-young'), label: '爸爸' },
+  { src: getPartnerAvatarSrc('mom-young'), label: '妈妈' },
+  { src: getPartnerAvatarSrc('dad-middle'), label: '爸爸' },
+  { src: getPartnerAvatarSrc('mom-middle'), label: '妈妈' },
+  { src: getPartnerAvatarSrc('grandpa'), label: '爷爷' },
+  { src: getPartnerAvatarSrc('grandma'), label: '奶奶' },
+  { src: getPartnerAvatarSrc('boy-teen'), label: '哥哥' },
+  { src: getPartnerAvatarSrc('girl-teen'), label: '姐姐' },
+  { src: getPartnerAvatarSrc('boy-preteen'), label: '男孩' },
+  { src: getPartnerAvatarSrc('girl-preteen'), label: '女孩' },
+  { src: getPartnerAvatarSrc('boy-child'), label: '男孩' },
+  { src: getPartnerAvatarSrc('girl-child'), label: '女孩' },
+  { src: getPartnerAvatarSrc('boy-toddler'), label: '男孩' },
+  { src: getPartnerAvatarSrc('girl-toddler'), label: '女孩' },
+  { src: getPartnerAvatarSrc('boy-baby'), label: '宝宝' },
+  { src: getPartnerAvatarSrc('girl-baby'), label: '宝宝' },
 ];
 
 // 儿童/动物头像的基础预设
 const PRESETS_CHILD = [
-  { label: '爸爸', avatar: 'assets/avatars/partners/dad-young.png' },
-  { label: '妈妈', avatar: 'assets/avatars/partners/mom-young.png' },
-  { label: '爷爷', avatar: 'assets/avatars/partners/grandpa.png' },
-  { label: '奶奶', avatar: 'assets/avatars/partners/grandma.png' },
-  { label: '哥哥', avatar: 'assets/avatars/partners/boy-teen.png' },
-  { label: '姐姐', avatar: 'assets/avatars/partners/girl-teen.png' },
-  { label: '好朋友', key: 'friend-boy', avatar: 'assets/avatars/partners/boy-preteen.png' },
-  { label: '好朋友', key: 'friend-girl', avatar: 'assets/avatars/partners/girl-preteen.png' },
-  { type: 'other', label: '其他', avatar: 'assets/avatars/partners/boy-child.png' },
+  { label: '爸爸', avatar: getPartnerAvatarSrc('dad-young') },
+  { label: '妈妈', avatar: getPartnerAvatarSrc('mom-young') },
+  { label: '爷爷', avatar: getPartnerAvatarSrc('grandpa') },
+  { label: '奶奶', avatar: getPartnerAvatarSrc('grandma') },
+  { label: '哥哥', avatar: getPartnerAvatarSrc('boy-teen') },
+  { label: '姐姐', avatar: getPartnerAvatarSrc('girl-teen') },
+  { label: '好朋友', key: 'friend-boy', avatar: getPartnerAvatarSrc('boy-preteen') },
+  { label: '好朋友', key: 'friend-girl', avatar: getPartnerAvatarSrc('girl-preteen') },
+  { type: 'other', label: '其他', avatar: getPartnerAvatarSrc('boy-child') },
 ];
 // 成人头像额外预设
 const PRESETS_EXTRA_ADULT = [
-  { label: '儿子', avatar: 'assets/avatars/partners/boy-child.png' },
-  { label: '女儿', avatar: 'assets/avatars/partners/girl-child.png' },
+  { label: '儿子', avatar: getPartnerAvatarSrc('boy-child') },
+  { label: '女儿', avatar: getPartnerAvatarSrc('girl-child') },
 ];
 // 长者头像额外预设
 const PRESETS_EXTRA_ELDER = [
-  { label: '孙子', avatar: 'assets/avatars/partners/boy-toddler.png' },
-  { label: '孙女', avatar: 'assets/avatars/partners/girl-toddler.png' },
+  { label: '孙子', avatar: getPartnerAvatarSrc('boy-toddler') },
+  { label: '孙女', avatar: getPartnerAvatarSrc('girl-toddler') },
 ];
 
 const ADULT_NAMES = ['man-adult', 'woman-adult'];
@@ -4375,7 +4666,7 @@ function getPartnerAvatar(label) {
   const preset = presets.find(pr => pr.label === label && !pr.key);
   if (preset) return preset.avatar;
   const custom = onboardTemp.partnerCustom?.[label] || state.user?.partnerCustom?.[label];
-  return custom || 'assets/avatars/partners/boy-child.png';
+  return custom || getPartnerAvatarSrc('boy-child');
 }
 
 function renderPartnerPresets() {
@@ -4499,7 +4790,34 @@ function finishOnboard() {
   // 保存用户信息到state
   state.user.avatar = onboardTemp.avatar;
   state.user.name = onboardTemp.name;
-  state.user.partners = onboardTemp.partners.map(p => typeof p === 'object' ? p.label : p);
+
+  // 保存自己作为成员
+  state.user.selfMember = createMember(onboardTemp.name, 'self', onboardTemp.avatar, true);
+
+  // 保存约定人作为成员
+  state.user.members = onboardTemp.partners.map(p => {
+    const label = typeof p === 'object' ? p.label : p;
+    const key = typeof p === 'object' && p.key ? p.key : null;
+    // 查找头像
+    let avatarSrc = '';
+    if (key) {
+      const preset = [...PRESETS_CHILD, ...PRESETS_EXTRA_ADULT, ...PRESETS_EXTRA_ELDER].find(pr => pr.key === key);
+      if (preset) avatarSrc = preset.avatar;
+    }
+    if (!avatarSrc) {
+      const preset = [...PRESETS_CHILD, ...PRESETS_EXTRA_ADULT, ...PRESETS_EXTRA_ELDER].find(pr => pr.label === label);
+      if (preset) avatarSrc = preset.avatar;
+    }
+    // 如果是自定义的
+    if (!avatarSrc && onboardTemp.partnerCustom && onboardTemp.partnerCustom[label]) {
+      avatarSrc = onboardTemp.partnerCustom[label];
+    }
+    // 从完整路径提取文件名作为 avatar name
+    const partnerAvatarName = avatarSrc ? avatarSrc.split('/').pop().replace('.png','') : 'boy-child';
+    return createMember(label, inferRole(label), partnerAvatarName, false);
+  });
+
+  state.user.partners = state.user.members.map(m => m.name);
   state.user.partnerKeys = {};
   onboardTemp.partners.forEach(p => {
     if (typeof p === 'object' && p.key) state.user.partnerKeys[p.label] = p.key;
@@ -4509,8 +4827,47 @@ function finishOnboard() {
   setOnboarded();
   saveData();
   showToast('🎉 设置完成！欢迎来到电子拉钩！');
-  // 进入信任树
-  navigateTo('page-input');
+  // 进入我的星球
+  navigateTo('page-home');
+}
+
+/* ============================================
+   旧数据迁移
+   ============================================ */
+function migrateData() {
+  const data = loadData();
+  if (!data) return;
+  const user = data.user;
+  if (!user) return;
+  
+  // 如果已有 members，说明已迁移过
+  if (user.members && user.members.length > 0) return;
+  
+  // 迁移：从 partners 字符串数组创建 members 对象数组
+  if (user.partners && Array.isArray(user.partners) && user.partners.length > 0) {
+    user.members = user.partners.map(name => {
+      const role = inferRole(name);
+      let avatarName = 'boy-child';
+      // 尝试从 partnerCustom 找头像
+      if (user.partnerCustom && user.partnerCustom[name]) {
+        avatarName = user.partnerCustom[name].split('/').pop().replace('.png','');
+      } else {
+        // 根据名称推断
+        const nameToAvatar = {
+          '爸爸':'dad-young','妈妈':'mom-young','爷爷':'grandpa','奶奶':'grandma',
+          '外公':'grandpa','外婆':'grandma','哥哥':'boy-teen','姐姐':'girl-teen',
+          '儿子':'boy-child','女儿':'girl-child','孙子':'boy-toddler','孙女':'girl-toddler',
+        };
+        if (nameToAvatar[name]) avatarName = nameToAvatar[name];
+      }
+      return createMember(name, role, avatarName, false);
+    });
+    
+    // 创建 selfMember
+    user.selfMember = createMember(user.name || '小朋友', 'self', user.avatar || 'baby-boy', true);
+    
+    saveData();
+  }
 }
 
 /* ============================================
@@ -4533,6 +4890,14 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // 非首次：正常渲染首页
+  // 旧数据迁移（在渲染前执行）
+  migrateData();
+  // 迁移后重新加载 state（migrateData 可能更新了 localStorage）
+  const migrated = loadData();
+  if (migrated && migrated.user) {
+    Object.assign(state.user, migrated.user);
+    if (migrated.agreements) state.agreements = migrated.agreements;
+  }
   document.getElementById('page-home').classList.add('active');
   renderHomePage();
 
