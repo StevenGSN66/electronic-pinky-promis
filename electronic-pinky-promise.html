@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>电子拉钩 - 亲子信任约定</title>
+<title>信任星球 - 亲子信任约定</title>
 <style>
 /* ============================================
    全局样式变量 - 马卡龙童趣配色体系
@@ -1608,7 +1608,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
   <div class="capsule">
     <span class="dot green"></span>
     <span class="dot yellow"></span>
-    <span class="title" id="navTitle">电子拉钩</span>
+    <span class="title" id="navTitle">信任星球</span>
   </div>
 </div>
 
@@ -1617,8 +1617,8 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
      ============================================ -->
 <nav class="side-nav" id="sideNav">
   <div class="nav-logo">
-    <div class="logo-icon">🤝</div>
-    <div class="logo-text">电子拉钩</div>
+    <img src="assets/images/trust-planet-logo.png" alt="信任星球" style="width:44px;height:44px;border-radius:50%;object-fit:cover;">
+    <div class="logo-text">信任星球</div>
   </div>
   <button class="nav-item active" data-page="page-home" onclick="navigateTo('page-home')">
     <span class="nav-icon">🌍</span>
@@ -1663,7 +1663,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
         <div class="onboard-hero-text">
           <img src="assets/images/title-banner.png" alt="信任星球" class="title-banner-img">
         </div>
-        <div class="mascot-welcome-video-wrapper" id="mascotVideoWrapper" style="display:none;">
+        <div class="mascot-welcome-video-wrapper" id="mascotVideoWrapper">
           <video class="mascot-video mascot-welcome-video" id="welcomeVideo" autoplay playsinline loop
             src="assets/animations/welcome-animation.mp4"
             webkit-playsinline="true" x5-playsinline="true">
@@ -2462,7 +2462,7 @@ const navTitles = {
   'page-sign': '签名确认',
   'page-review': '约定复盘',
   'page-profile': '我的',
-  'page-onboard': '欢迎来到电子拉钩'
+  'page-onboard': '欢迎来到信任星球'
 };
 
 function navigateTo(pageId) {
@@ -2515,7 +2515,7 @@ function navigateTo(pageId) {
   });
 
   // 更新顶部标题
-  document.getElementById('navTitle').textContent = navTitles[pageId] || '电子拉钩';
+  document.getElementById('navTitle').textContent = navTitles[pageId] || '信任星球';
 
   // 页面进入时的特殊逻辑
   if (pageId === 'page-home') renderHomePage();
@@ -5026,7 +5026,7 @@ function finishOnboard() {
   // 标记已完成引导
   setOnboarded();
   saveData();
-  showToast('🎉 设置完成！欢迎来到电子拉钩！');
+  showToast('🎉 设置完成！欢迎来到信任星球！');
   // 进入我的星球
   navigateTo('page-home');
 }
