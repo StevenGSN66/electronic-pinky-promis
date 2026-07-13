@@ -1280,16 +1280,18 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
 }
 /* 雁小约欢迎动画视频 - 背景融合 */
 .mascot-welcome-video-wrapper {
-  width: 300px; height: 300px;
+  width: 240px; height: 240px;
   flex-shrink: 0;
   border-radius: 50%;
   overflow: hidden;
+  position: relative;
 }
 .mascot-welcome-video {
   width: 100%; height: 100%;
   border: none;
   object-fit: contain;
   object-position: center bottom;
+  transition: opacity 0.15s ease;
 }
 /* 开场主视觉：标题+雁小约并排 */
 .onboard-hero {
@@ -1300,20 +1302,17 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
   margin-bottom: 8px;
 }
 .onboard-hero-text {
-  text-align: left;
+  text-align: center;
+  flex-shrink: 0;
 }
-.onboard-hero-text h1 {
-  font-size: 28px;
-  color: var(--mint-dark);
-  font-weight: 800;
-  line-height: 1.3;
-  margin: 0;
-}
-.onboard-hero-text .hero-slogan {
-  font-size: 16px;
-  color: var(--text);
-  margin-top: 8px;
-  font-weight: 600;
+.title-banner-img {
+  height: 200px;
+  width: auto;
+  max-width: 160px;
+  display: block;
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
 .mascot-success-img {
   width: 80px; height: 80px;
@@ -1463,9 +1462,112 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
   display: flex; align-items: center; justify-content: center;
   font-size: 11px; color: #D4706A;
 }
+/* 预设约定人标签网格 */
+.partner-preset-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 320px;
+  margin: 0 auto 12px;
+}
+.partner-preset-item {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  padding: 14px 8px;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.partner-preset-item:hover { border-color: var(--mint); transform: translateY(-2px); }
+.partner-preset-item.selected {
+  border-color: var(--mint);
+  background: var(--mint-light);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.partner-preset-item .preset-emoji { font-size: 32px; }
+.partner-preset-item .preset-avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}
+.partner-preset-item.preset-other { background: var(--bg-warm); }
+.partner-preset-item .preset-label { font-size: 13px; font-weight: 600; color: var(--text); }
+
+/* 其他约定人弹窗 */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000; padding: 20px;
+}
+.modal-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  max-width: 380px; width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  text-align: center;
+}
+.modal-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.modal-desc { font-size: 13px; color: var(--text-light); margin-bottom: 16px; }
+.other-avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.other-avatar-item {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+  padding: 8px 4px;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.other-avatar-item:hover { background: var(--mint-light); }
+.other-avatar-item.selected {
+  border-color: var(--mint);
+  background: var(--mint-light);
+}
+.other-avatar-item img {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.other-avatar-item span { font-size: 11px; color: var(--text-light); }
+.other-name-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  outline: none;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+.other-name-input:focus { border-color: var(--mint); }
+.modal-actions {
+  display: flex; gap: 10px; justify-content: center;
+}
+.partner-preset-item.selected .preset-label { color: var(--mint-dark); }
+.partner-preset-item .preset-check {
+  position: absolute; top: 4px; right: 6px;
+  font-size: 14px; color: var(--mint-dark);
+  opacity: 0; transition: opacity 0.2s;
+}
+.partner-preset-item.selected .preset-check { opacity: 1; }
+.partner-preset-item { position: relative; }
+/* 自定义添加 */
 .onboard-add-partner {
   display: flex; gap: 8px; justify-content: center;
-  max-width: 300px; margin: 0 auto;
+  max-width: 300px; margin: 8px auto 0;
 }
 .onboard-add-partner input {
   flex: 1; padding: 10px 14px; border: 1.5px solid var(--border);
@@ -1552,13 +1654,24 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
     <div class="onboard-welcome">
       <div class="onboard-hero">
         <div class="onboard-hero-text">
-          <h1>欢迎来到<br>信任星球</h1>
-          <div class="hero-slogan">愿望有回信，信任不打折。</div>
+          <img src="assets/images/title-banner.png" alt="信任星球" class="title-banner-img">
         </div>
-        <div class="mascot-welcome-video-wrapper">
-          <video class="mascot-video mascot-welcome-video" id="welcomeVideo" autoplay playsinline
+        <div class="mascot-welcome-video-wrapper" id="mascotVideoWrapper">
+          <video class="mascot-video mascot-welcome-video" id="welcomeVideo" autoplay playsinline loop
             src="assets/animations/welcome-animation.mp4"
             webkit-playsinline="true" x5-playsinline="true">
+          </video>
+          <!-- 第二步视频（步骤2时显示） -->
+          <video class="mascot-video mascot-welcome-video" id="step2Video" playsinline preload="auto"
+            src="assets/animations/step2-animation.mp4"
+            webkit-playsinline="true" x5-playsinline="true"
+            style="position:absolute;top:0;left:0;opacity:0;">
+          </video>
+          <!-- 第三步视频（步骤3时显示） -->
+          <video class="mascot-video mascot-welcome-video" id="step3Video" playsinline preload="auto"
+            src="assets/animations/step3-animation.mp4"
+            webkit-playsinline="true" x5-playsinline="true"
+            style="position:absolute;top:0;left:0;opacity:0;">
           </video>
         </div>
       </div>
@@ -1596,22 +1709,40 @@ body { min-height: 100vh; padding-bottom: var(--nav-height); }
       </div>
     </div>
 
-    <!-- 步骤3：添加常用约定人 -->
+    <!-- 步骤3：选择约定人 -->
     <div class="onboard-step" data-step="3">
-      <div class="step-title">👥 第三步：添加常用约定人</div>
-      <div class="step-desc">你和谁一起拉钩？比如爸爸、妈妈、爷爷、奶奶...</div>
+      <div class="step-title">👥 第三步：选择约定人</div>
+      <div class="step-desc">你要和谁建立约定？点击选择即可~</div>
       <div class="onboard-partners-area">
+        <!-- 已选择的约定人 -->
         <div class="onboard-partners-list" id="onboardPartnerList"></div>
+        <!-- 预设约定人标签 -->
+        <div class="partner-preset-grid" id="partnerPresetGrid"></div>
+        <!-- 自定义添加 -->
         <div class="onboard-add-partner">
-          <input type="text" id="onboardNewPartner" placeholder="输入称呼，如：妈妈" maxlength="8">
+          <input type="text" id="onboardNewPartner" placeholder="其他称呼，如：舅舅" maxlength="8">
           <button class="btn btn-sm btn-primary" onclick="onboardAddPartner()">➕ 添加</button>
         </div>
-        <div class="onboard-partner-hint">至少添加1个约定人才能开始哦~</div>
+        <div class="onboard-partner-hint">至少选择1个约定人才能开始哦~</div>
       </div>
       <div class="onboard-actions">
         <button class="btn btn-secondary" onclick="prevOnboardStep()">← 上一步</button>
         <button class="btn btn-primary" onclick="finishOnboard()" id="finishBtn" disabled>🎉 完成设置，进入信任树</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- 其他约定人弹窗 -->
+<div class="modal-overlay" id="partnerOtherModal" style="display:none;">
+  <div class="modal-card">
+    <div class="modal-title">添加其他约定人</div>
+    <div class="modal-desc">选择一个头像，并输入称呼</div>
+    <div class="other-avatar-grid" id="partnerOtherGrid"></div>
+    <input type="text" class="other-name-input" id="partnerOtherName" placeholder="输入称呼，如：舅舅" maxlength="8">
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closePartnerOtherModal()">取消</button>
+      <button class="btn btn-primary" onclick="confirmOtherPartner()">确认添加</button>
     </div>
   </div>
 </div>
@@ -3817,13 +3948,16 @@ function renderProfilePage() {
 // 渲染常用约定人
 function renderPartners() {
   const list = document.getElementById('partnerList');
-  list.innerHTML = state.user.partners.map((p, i) => `
-    <div class="partner-item">
-      <span>👤</span>
-      <span>${p}</span>
-      <button class="remove-btn" onclick="removePartner(${i})">✕</button>
-    </div>
-  `).join('');
+  list.innerHTML = state.user.partners.map((p, i) => {
+    const avatar = getPartnerAvatar(p);
+    return `
+      <div class="partner-item">
+        <img src="${avatar}" style="width:24px;height:24px;border-radius:50%;object-fit:cover" onerror="this.outerHTML='<span>👤</span>'">
+        <span>${p}</span>
+        <button class="remove-btn" onclick="removePartner(${i})">✕</button>
+      </div>
+    `;
+  }).join('');
 }
 
 // 添加约定人
@@ -3992,36 +4126,42 @@ function confirmLogout() {
    首次启动引导页逻辑
    ============================================ */
 let onboardStepIndex = 1;
-let onboardTemp = { avatar: '', name: '', partners: [] };
+let onboardTemp = { avatar: '', name: '', partners: [], partnerCustom: {} };
 
 function initOnboardPage() {
   onboardStepIndex = 1;
-  onboardTemp = { avatar: '', name: '', partners: [] };
+  onboardTemp = { avatar: '', name: '', partners: [], partnerCustom: {} };
   renderOnboardStep();
   renderOnboardAvatars();
   renderOnboardPartners();
+  renderPartnerPresets();
   updateOnboardButtons();
 
-  // 播放欢迎动画声音（仅一遍）
-  const video = document.getElementById('welcomeVideo');
-  if (video) {
-    // 先静音启动（绕过浏览器自动播放限制），等用户首次交互后再开声音
-    video.muted = true;
-    video.currentTime = 0;
-    video.play().catch(() => {});
-    // 用户首次点击/触摸时开启声音
-    const unmuteOnce = function() {
-      if (!video.muted) return; // 已经开过声音了
-      video.muted = false;
-      document.removeEventListener('click', unmuteOnce);
-      document.removeEventListener('touchstart', unmuteOnce);
-    };
-    document.addEventListener('click', unmuteOnce, { once: false });
-    document.addEventListener('touchstart', unmuteOnce, { once: false });
-    // 播放一遍后静音并停止循环
-    video.addEventListener('ended', function onEnded() {
-      video.removeEventListener('ended', onEnded);
-      video.pause();
+  // 欢迎视频：直接播放（有声音），每30秒循环一次
+  const vid = document.getElementById('welcomeVideo');
+  if (vid) {
+    vid.muted = false;
+    vid.volume = 1;
+    vid.currentTime = 0;
+    vid.play().catch(() => {});
+
+    // 阻止 loop 自动循环，改为手动控制30秒间隔
+    vid.removeAttribute('loop');
+
+    function playOnce() {
+      if (!document.getElementById('page-onboard')?.classList.contains('active')) return;
+      vid.currentTime = 0;
+      vid.play().catch(() => {});
+    }
+
+    vid.addEventListener('ended', function() {
+      vid.pause(); // 暂停在最后一帧作为等待画面
+      // 30秒后如果还在注册页，再播一遍
+      setTimeout(() => {
+        if (document.getElementById('page-onboard')?.classList.contains('active')) {
+          playOnce();
+        }
+      }, 30000);
     });
   }
 }
@@ -4034,6 +4174,41 @@ function renderOnboardStep() {
   document.querySelectorAll('.onboard-steps-hint .step-dot').forEach((d, i) => {
     d.classList.toggle('active', i < onboardStepIndex);
   });
+
+  // 切换视频：步骤1=欢迎视频，步骤2=步骤2视频，步骤3=步骤3视频
+  const welcomeVid = document.getElementById('welcomeVideo');
+  const step2Vid = document.getElementById('step2Video');
+  const step3Vid = document.getElementById('step3Video');
+
+  // 先全部隐藏/暂停
+  [step2Vid, step3Vid].forEach(v => { if (v) { v.style.opacity = '0'; v.pause(); } });
+
+  if (onboardStepIndex === 1) {
+    if (welcomeVid) welcomeVid.style.opacity = '1';
+  } else if (onboardStepIndex === 2) {
+    if (welcomeVid) { welcomeVid.style.opacity = '0'; welcomeVid.pause(); }
+    if (step2Vid) {
+      step2Vid.muted = false;
+      step2Vid.currentTime = 0;
+      step2Vid.style.opacity = '1';
+      step2Vid.play().catch(() => {});
+      step2Vid.onended = function() { step2Vid.pause(); };
+    }
+  } else if (onboardStepIndex === 3) {
+    if (welcomeVid) { welcomeVid.style.opacity = '0'; welcomeVid.pause(); }
+    if (step3Vid) {
+      step3Vid.muted = false;
+      step3Vid.currentTime = 0;
+      step3Vid.style.opacity = '1';
+      step3Vid.play().catch(() => {});
+      step3Vid.onended = function() { step3Vid.pause(); };
+    }
+  }
+
+  // 进入步骤3时重新渲染预设列表（根据步骤1选的头像动态调整）
+  if (onboardStepIndex === 3) {
+    renderPartnerPresets();
+  }
 }
 
 function nextOnboardStep() {
@@ -4113,32 +4288,196 @@ function renderOnboardPartners() {
   const list = document.getElementById('onboardPartnerList');
   if (!list) return;
   if (onboardTemp.partners.length === 0) {
-    list.innerHTML = '<span style="color:#ccc;font-size:13px">还没有添加约定人</span>';
+    list.innerHTML = '<span style="color:#ccc;font-size:13px">还没有选择约定人</span>';
     return;
   }
-  list.innerHTML = onboardTemp.partners.map((p, i) => `
-    <div class="partner-item">
-      <span>👤</span>
-      <span>${p}</span>
-      <button class="remove-btn" onclick="onboardRemovePartner(${i})">✕</button>
+  list.innerHTML = onboardTemp.partners.map((p, i) => {
+    const label = typeof p === 'object' ? p.label : p;
+    const avatar = getPartnerAvatar(label);
+    return `
+      <div class="partner-item">
+        <img src="${avatar}" style="width:24px;height:24px;border-radius:50%;object-fit:cover" onerror="this.outerHTML='<span>👤</span>'">
+        <span>${label}</span>
+        <button class="remove-btn" onclick="onboardRemovePartner(${i})">✕</button>
+      </div>
+    `;
+  }).join('');
+}
+
+// 弹窗中可选的全部约定人头像
+const PARTNER_AVATAR_POOL = [
+  { src: 'assets/avatars/partners/dad-young.png', label: '爸爸' },
+  { src: 'assets/avatars/partners/mom-young.png', label: '妈妈' },
+  { src: 'assets/avatars/partners/dad-middle.png', label: '爸爸' },
+  { src: 'assets/avatars/partners/mom-middle.png', label: '妈妈' },
+  { src: 'assets/avatars/partners/grandpa.png', label: '爷爷' },
+  { src: 'assets/avatars/partners/grandma.png', label: '奶奶' },
+  { src: 'assets/avatars/partners/boy-teen.png', label: '哥哥' },
+  { src: 'assets/avatars/partners/girl-teen.png', label: '姐姐' },
+  { src: 'assets/avatars/partners/boy-preteen.png', label: '男孩' },
+  { src: 'assets/avatars/partners/girl-preteen.png', label: '女孩' },
+  { src: 'assets/avatars/partners/boy-child.png', label: '男孩' },
+  { src: 'assets/avatars/partners/girl-child.png', label: '女孩' },
+  { src: 'assets/avatars/partners/boy-toddler.png', label: '男孩' },
+  { src: 'assets/avatars/partners/girl-toddler.png', label: '女孩' },
+  { src: 'assets/avatars/partners/boy-baby.png', label: '宝宝' },
+  { src: 'assets/avatars/partners/girl-baby.png', label: '宝宝' },
+];
+
+// 儿童/动物头像的基础预设
+const PRESETS_CHILD = [
+  { label: '爸爸', avatar: 'assets/avatars/partners/dad-young.png' },
+  { label: '妈妈', avatar: 'assets/avatars/partners/mom-young.png' },
+  { label: '爷爷', avatar: 'assets/avatars/partners/grandpa.png' },
+  { label: '奶奶', avatar: 'assets/avatars/partners/grandma.png' },
+  { label: '哥哥', avatar: 'assets/avatars/partners/boy-teen.png' },
+  { label: '姐姐', avatar: 'assets/avatars/partners/girl-teen.png' },
+  { label: '好朋友', key: 'friend-boy', avatar: 'assets/avatars/partners/boy-preteen.png' },
+  { label: '好朋友', key: 'friend-girl', avatar: 'assets/avatars/partners/girl-preteen.png' },
+  { type: 'other', label: '其他', avatar: 'assets/avatars/partners/boy-child.png' },
+];
+// 成人头像额外预设
+const PRESETS_EXTRA_ADULT = [
+  { label: '儿子', avatar: 'assets/avatars/partners/boy-child.png' },
+  { label: '女儿', avatar: 'assets/avatars/partners/girl-child.png' },
+];
+// 长者头像额外预设
+const PRESETS_EXTRA_ELDER = [
+  { label: '孙子', avatar: 'assets/avatars/partners/boy-toddler.png' },
+  { label: '孙女', avatar: 'assets/avatars/partners/girl-toddler.png' },
+];
+
+const ADULT_NAMES = ['man-adult', 'woman-adult'];
+const ELDER_NAMES = ['man-elder', 'woman-elder'];
+
+function getPartnerPresets(avatarName) {
+  const name = avatarName || onboardTemp.avatar || state.user?.avatar || '';
+  if (ADULT_NAMES.includes(name)) {
+    return [...PRESETS_CHILD, ...PRESETS_EXTRA_ADULT];
+  }
+  if (ELDER_NAMES.includes(name)) {
+    return [...PRESETS_CHILD, ...PRESETS_EXTRA_ELDER];
+  }
+  return PRESETS_CHILD;
+}
+
+function getPartnerAvatar(label) {
+  const partnerKey = state.user?.partnerKeys?.[label];
+  const presets = getPartnerPresets();
+  // 如果有 key（如 friend-boy），精确匹配
+  if (partnerKey) {
+    const found = presets.find(pr => pr.key === partnerKey);
+    if (found) return found.avatar;
+  }
+  // 默认按 label 匹配
+  const preset = presets.find(pr => pr.label === label && !pr.key);
+  if (preset) return preset.avatar;
+  const custom = onboardTemp.partnerCustom?.[label] || state.user?.partnerCustom?.[label];
+  return custom || 'assets/avatars/partners/boy-child.png';
+}
+
+function renderPartnerPresets() {
+  const grid = document.getElementById('partnerPresetGrid');
+  if (!grid) return;
+  const presets = getPartnerPresets();
+  grid.innerHTML = presets.map((p, i) => {
+    const matchKey = p.key || p.label;
+    const selected = onboardTemp.partners.some(pp => (pp.key || pp) === matchKey);
+    const isOther = p.type === 'other';
+    return `
+      <div class="partner-preset-item ${selected ? 'selected' : ''} ${isOther ? 'preset-other' : ''}" onclick="togglePartnerPreset(${i})">
+        ${isOther ? '' : '<span class="preset-check">✓</span>'}
+        <img class="preset-avatar" src="${p.avatar}" alt="${p.label}" onerror="this.style.display='none'">
+        <span class="preset-label">${p.label}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function togglePartnerPreset(index) {
+  const presets = getPartnerPresets();
+  const preset = presets[index];
+  if (preset.type === 'other') {
+    openPartnerOtherModal();
+    return;
+  }
+  const matchKey = preset.key || preset.label;
+  const existIdx = onboardTemp.partners.findIndex(pp => (pp.key || pp) === matchKey);
+  if (existIdx >= 0) {
+    onboardTemp.partners.splice(existIdx, 1);
+  } else {
+    if (onboardTemp.partners.length >= 6) { showToast('最多选择6个约定人~'); return; }
+    onboardTemp.partners.push(preset.key ? { key: preset.key, label: preset.label } : preset.label);
+  }
+  renderPartnerPresets();
+  renderOnboardPartners();
+  updateOnboardButtons();
+}
+
+// 弹窗状态
+let _otherSelectedAvatar = '';
+
+function openPartnerOtherModal() {
+  _otherSelectedAvatar = '';
+  const modal = document.getElementById('partnerOtherModal');
+  const grid = document.getElementById('partnerOtherGrid');
+  const input = document.getElementById('partnerOtherName');
+  if (!modal || !grid) return;
+  input.value = '';
+  grid.innerHTML = PARTNER_AVATAR_POOL.map((a, i) => `
+    <div class="other-avatar-item" data-index="${i}" data-src="${a.src}" onclick="selectOtherAvatar(this)">
+      <img src="${a.src}" alt="${a.label}">
+      <span>${a.label}</span>
     </div>
   `).join('');
+  modal.style.display = 'flex';
+}
+
+function selectOtherAvatar(el) {
+  document.querySelectorAll('.other-avatar-item').forEach(item => item.classList.remove('selected'));
+  el.classList.add('selected');
+  _otherSelectedAvatar = el.dataset.src;
+}
+
+function confirmOtherPartner() {
+  const input = document.getElementById('partnerOtherName');
+  const name = input.value.trim();
+  if (!name) { showToast('请输入称呼~'); return; }
+  if (!_otherSelectedAvatar) { showToast('请选择一个头像~'); return; }
+  if (onboardTemp.partners.some(p => (typeof p === 'object' ? p.label : p) === name)) { showToast('这个约定人已经选择过了~'); return; }
+  if (onboardTemp.partners.length >= 6) { showToast('最多选择6个约定人~'); return; }
+  onboardTemp.partners.push(name);
+  if (!onboardTemp.partnerCustom) onboardTemp.partnerCustom = {};
+  onboardTemp.partnerCustom[name] = _otherSelectedAvatar;
+  closePartnerOtherModal();
+  renderPartnerPresets();
+  renderOnboardPartners();
+  updateOnboardButtons();
+}
+
+function closePartnerOtherModal() {
+  const modal = document.getElementById('partnerOtherModal');
+  if (modal) modal.style.display = 'none';
 }
 
 function onboardAddPartner() {
   const input = document.getElementById('onboardNewPartner');
   const name = input.value.trim();
   if (!name) { showToast('请输入约定人称呼~'); return; }
-  if (onboardTemp.partners.includes(name)) { showToast('这个约定人已经添加过了~'); return; }
-  if (onboardTemp.partners.length >= 6) { showToast('最多添加6个常用约定人~'); return; }
+  if (onboardTemp.partners.some(p => (typeof p === 'object' ? p.label : p) === name)) { showToast('这个约定人已经选择过了~'); return; }
+  if (onboardTemp.partners.length >= 6) { showToast('最多选择6个约定人~'); return; }
   onboardTemp.partners.push(name);
   input.value = '';
+  renderPartnerPresets();
   renderOnboardPartners();
   updateOnboardButtons();
 }
 
 function onboardRemovePartner(index) {
-  onboardTemp.partners.splice(index, 1);
+  const removed = onboardTemp.partners.splice(index, 1)[0];
+  if (onboardTemp.partnerCustom && onboardTemp.partnerCustom[removed]) {
+    delete onboardTemp.partnerCustom[removed];
+  }
   renderOnboardPartners();
   updateOnboardButtons();
 }
@@ -4148,19 +4487,28 @@ function finishOnboard() {
     showToast('请完成所有设置哦~');
     return;
   }
-  // 停止欢迎动画
+  // 停止所有欢迎动画
   const video = document.getElementById('welcomeVideo');
   if (video) { video.pause(); video.src = ''; }
+  const s2v = document.getElementById('step2Video');
+  if (s2v) { s2v.pause(); s2v.src = ''; }
+  const s3v = document.getElementById('step3Video');
+  if (s3v) { s3v.pause(); s3v.src = ''; }
   // 保存用户信息到state
   state.user.avatar = onboardTemp.avatar;
   state.user.name = onboardTemp.name;
-  state.user.partners = onboardTemp.partners;
+  state.user.partners = onboardTemp.partners.map(p => typeof p === 'object' ? p.label : p);
+  state.user.partnerKeys = {};
+  onboardTemp.partners.forEach(p => {
+    if (typeof p === 'object' && p.key) state.user.partnerKeys[p.label] = p.key;
+  });
+  state.user.partnerCustom = onboardTemp.partnerCustom || {};
   // 标记已完成引导
   setOnboarded();
   saveData();
   showToast('🎉 设置完成！欢迎来到电子拉钩！');
   // 进入信任树
-  navigateTo('page-tree');
+  navigateTo('page-input');
 }
 
 /* ============================================
