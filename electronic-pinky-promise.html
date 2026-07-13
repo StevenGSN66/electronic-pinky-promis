@@ -1110,6 +1110,29 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
 }
 .page-profile .add-partner-row input:focus { border-color: var(--mint); }
 
+/* AI 设置 */
+.ai-status-bar {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+  padding: 10px 14px; background: var(--bg-warm); border-radius: var(--radius-sm);
+}
+.ai-status-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #999;
+  display: inline-block;
+}
+.ai-status-dot.on { background: #4CAF50; box-shadow: 0 0 0 3px rgba(76,175,80,0.2); }
+.ai-status-dot.off { background: #FF5722; }
+.ai-status-text { font-size: 13px; color: var(--text); font-weight: 600; }
+.ai-key-input {
+  width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 14px; outline: none;
+  font-family: inherit; box-sizing: border-box; margin-bottom: 10px;
+}
+.ai-key-input:focus { border-color: var(--mint); }
+.ai-key-actions { display: flex; gap: 8px; }
+.ai-key-hint {
+  font-size: 11px; color: var(--text-light); margin-top: 8px; line-height: 1.4;
+}
+
 /* 统计摘要 */
 .page-profile .stats-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
@@ -2143,6 +2166,23 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
       <div class="section-title"><span class="icon">🎖️</span> 我的称号</div>
       <div id="titleList">
         <!-- 由JS动态渲染 -->
+      </div>
+    </div>
+
+    <!-- AI 设置 -->
+    <div class="profile-section" id="aiSettingSection">
+      <div class="section-title"><span class="icon">🤖</span> AI 设置</div>
+      <div class="ai-status-bar" id="aiStatusBar">
+        <span class="ai-status-dot" id="aiStatusDot"></span>
+        <span class="ai-status-text" id="aiStatusText">检测中...</span>
+      </div>
+      <div class="ai-key-form" id="aiKeyForm">
+        <input type="password" id="aiKeyInput" placeholder="输入 DeepSeek API Key (sk-...)" class="ai-key-input">
+        <div class="ai-key-actions">
+          <button class="btn btn-sm btn-primary" onclick="saveAIKey()">💾 保存</button>
+          <button class="btn btn-sm btn-secondary" onclick="clearAIKey()">🗑️ 清除</button>
+        </div>
+        <p class="ai-key-hint">Key 仅保存在服务端内存，不存浏览器，重启后需重新配置</p>
       </div>
     </div>
 
@@ -4257,6 +4297,69 @@ function renderProfilePage() {
 
   // 渲染称号
   renderTitles();
+
+  // 检查 AI 状态
+  checkAIStatus();
+}
+
+// ===== AI 配置 =====
+function checkAIStatus() {
+  fetch('/api/health')
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(data => {
+      const dot = document.getElementById('aiStatusDot');
+      const text = document.getElementById('aiStatusText');
+      if (!dot || !text) return;
+      if (data.ai) {
+        dot.className = 'ai-status-dot on';
+        text.textContent = '雁小约在线 ✓';
+      } else {
+        dot.className = 'ai-status-dot off';
+        text.textContent = 'AI 未配置，当前使用本地解析';
+      }
+    })
+    .catch(() => {
+      const dot = document.getElementById('aiStatusDot');
+      const text = document.getElementById('aiStatusText');
+      if (dot) dot.className = 'ai-status-dot off';
+      if (text) text.textContent = '无法连接到服务端';
+    });
+}
+
+function saveAIKey() {
+  const input = document.getElementById('aiKeyInput');
+  const key = input?.value?.trim();
+  if (!key) { showToast('请输入 API Key'); return; }
+  if (!key.startsWith('sk-')) { showToast('API Key 格式不正确，应以 sk- 开头'); return; }
+
+  fetch('/api/config/key', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ apiKey: key })
+  })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        showToast('🤖 雁小约已上线！');
+        input.value = '';
+        checkAIStatus();
+      } else {
+        showToast(data.error || '配置失败');
+      }
+    })
+    .catch(() => showToast('配置失败，请检查服务端是否运行'));
+}
+
+function clearAIKey() {
+  fetch('/api/config/key', { method: 'DELETE' })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        showToast('已清除 AI 配置');
+        checkAIStatus();
+      }
+    })
+    .catch(() => showToast('清除失败'));
 }
 
 // 渲染常用约定人

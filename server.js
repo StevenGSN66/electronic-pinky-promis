@@ -13,6 +13,9 @@ const PORT = process.env.PORT || 3000;
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || '';
 const DEEPSEEK_BASE_URL = 'https://api.deepseek.com';
 
+// 运行时 API Key（通过前端界面配置，存在内存中，重启后需重新配置）
+let runtimeApiKey = '';
+
 // ============================================================
 // AI 提示词与规则
 // ============================================================
@@ -130,7 +133,7 @@ function deepseekRequest(messages) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
+        'Authorization': `Bearer ${runtimeApiKey || DEEPSEEK_API_KEY}`,
         'Content-Length': Buffer.byteLength(body),
       },
     };
@@ -272,9 +275,45 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
       status: 'ok',
-      ai: !!DEEPSEEK_API_KEY,
+      ai: !!(runtimeApiKey || DEEPSEEK_API_KEY),
       timestamp: new Date().toISOString(),
     }));
+    return;
+  }
+
+  // 配置 API Key（通过前端界面输入）
+  if (url.pathname === '/api/config/key' && req.method === 'POST') {
+    const body = await new Promise((resolve) => {
+      let data = '';
+      req.on('data', chunk => data += chunk);
+      req.on('end', () => {
+        try { resolve(JSON.parse(data)); } catch(e) { resolve({}); }
+      });
+    });
+
+    const key = body.apiKey?.trim();
+    if (!key) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'API Key 不能为空' }));
+      return;
+    }
+    if (!key.startsWith('sk-')) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'API Key 格式不正确，应以 sk- 开头' }));
+      return;
+    }
+
+    runtimeApiKey = key;
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, message: 'AI 已配置' }));
+    return;
+  }
+
+  // 清除 API Key
+  if (url.pathname === '/api/config/key' && req.method === 'DELETE') {
+    runtimeApiKey = '';
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, message: '已清除 AI 配置' }));
     return;
   }
   
