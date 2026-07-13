@@ -4088,23 +4088,52 @@ function goToReviewStep3() {
   document.getElementById('reviewStep2').style.display = 'none';
   document.getElementById('reviewStep3').style.display = 'block';
 
-  // 生成本地总结
   const childReason = document.getElementById('childReason').value.trim();
   const parentObservation = (document.getElementById('parentObservation') || {}).value?.trim() || '';
   const task = state.selectedReviewAgreement?.task || '';
-  const result = generateReviewSummary(childReason, parentObservation, task);
 
+  // 先尝试 AI 复盘
   const content = document.getElementById('aiSuggestionContent');
   if (content) {
-    let html = '<div style="margin-bottom:10px">' + escapeHtml(result.summary) + '</div>';
-    if (result.suggestions && result.suggestions.length > 0) {
-      html += '<div style="font-size:13px;color:var(--text-light);margin-top:8px">小建议：</div>';
-      result.suggestions.forEach(s => {
-        html += '<div style="font-size:13px;color:var(--text);margin:4px 0">- ' + escapeHtml(s) + '</div>';
-      });
-    }
-    content.innerHTML = html;
+    content.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">雁小约正在思考...</div>';
   }
+
+  fetch('/api/deepseek/review', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      task, childReason, parentObservation,
+      initiator: state.selectedReviewAgreement?.initiator,
+      receiver: state.selectedReviewAgreement?.receiver,
+    })
+  }).then(r => r.ok ? r.json() : Promise.reject())
+    .then(data => {
+      if (data && !data.fallback && data.commonPoints) {
+        renderReviewResult(data);
+      } else {
+        renderReviewResult(generateReviewSummary(childReason, parentObservation, task));
+      }
+    })
+    .catch(() => {
+      renderReviewResult(generateReviewSummary(childReason, parentObservation, task));
+    });
+}
+
+function renderReviewResult(result) {
+  const content = document.getElementById('aiSuggestionContent');
+  if (!content) return;
+  let html = '<div style="margin-bottom:10px">' + escapeHtml(result.summary || result.commonPoints || '') + '</div>';
+  const suggestions = result.suggestions || [];
+  if (suggestions.length > 0) {
+    html += '<div style="font-size:13px;color:var(--text-light);margin-top:8px">小建议：</div>';
+    suggestions.forEach(s => {
+      html += '<div style="font-size:13px;color:var(--text);margin:4px 0">- ' + escapeHtml(s) + '</div>';
+    });
+  }
+  if (result.encouragement) {
+    html += '<div style="margin-top:12px;padding:10px;background:var(--bg-warm);border-radius:var(--radius-sm);font-size:13px;color:var(--mint-dark);">' + escapeHtml(result.encouragement) + '</div>';
+  }
+  content.innerHTML = html;
 }
 function goBackToReviewStep2() {
   document.getElementById('reviewStep3').style.display = 'none';
