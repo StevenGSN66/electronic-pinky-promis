@@ -757,6 +757,60 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
 .home-create-btn:active { transform: scale(0.97); }
 .home-create-btn:hover { box-shadow: 0 6px 16px rgba(102,187,106,0.4); }
 
+/* 约定页 */
+.agreements-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 16px; padding: 0 4px;
+}
+.agreements-title { font-size: 22px; font-weight: 800; color: var(--text); }
+.agreements-count { font-size: 13px; color: var(--text-light); }
+
+.ai-create-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 20px; margin-bottom: 20px;
+  background: linear-gradient(135deg, #E8F5E9, #F1F8E9);
+  cursor: pointer; transition: all 0.2s;
+  border: 2px solid transparent;
+}
+.ai-create-card:hover { border-color: var(--mint); transform: translateY(-1px); }
+.ai-create-icon { font-size: 32px; }
+.ai-create-text { flex: 1; }
+.ai-create-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.ai-create-sub { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+.ai-create-arrow { font-size: 20px; color: var(--mint-dark); }
+
+.agreement-card { margin-bottom: 12px; padding: 16px; }
+.agreement-card.card-overdue { border-left: 3px solid #FF9800; }
+.agreement-card-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 6px;
+}
+.agreement-card-title { font-size: 15px; font-weight: 700; color: var(--text); flex: 1; }
+.agreement-deadline { font-size: 11px; padding: 2px 8px; border-radius: 8px; white-space: nowrap; }
+.agreement-deadline.overdue { background: #FFF3E0; color: #E65100; }
+.agreement-deadline.today { background: #FFEBEE; color: #C62828; }
+.agreement-deadline.soon { background: #FFF8E1; color: #F57C00; }
+.agreement-deadline.normal { background: var(--bg-warm); color: var(--text-light); }
+.agreement-card-meta { font-size: 12px; color: var(--text-light); line-height: 1.5; margin-bottom: 10px; }
+.agreement-standard { display: block; margin-top: 2px; }
+.btn-agree-action {
+  width: 100%; padding: 10px; border: none; border-radius: var(--radius-sm);
+  background: var(--mint); color: white; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-agree-action:hover { opacity: 0.9; }
+.btn-agree-action.pending { background: #2196F3; }
+.btn-agree-action.review { background: #FF9800; }
+
+.completed-list { margin-bottom: 20px; }
+.completed-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; background: var(--bg-warm); border-radius: var(--radius-sm);
+  margin-bottom: 6px; font-size: 13px; color: var(--text); cursor: pointer;
+}
+.completed-check { color: var(--mint-dark); font-weight: 700; }
+.completed-text { text-decoration: line-through; opacity: 0.7; }
+
 /* ============================================
    页面4：信任树可视化页面V2（借鉴图一）
    ============================================ */
@@ -1621,12 +1675,12 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
     <div class="logo-text">信任星球</div>
   </div>
   <button class="nav-item active" data-page="page-home" onclick="navigateTo('page-home')">
-    <span class="nav-icon">🌍</span>
-    <span>星球</span>
+    <span class="nav-icon">🤝</span>
+    <span>约定</span>
   </button>
   <button class="nav-item" data-page="page-tree" onclick="navigateTo('page-tree')">
-    <span class="nav-icon">🌳</span>
-    <span>约定</span>
+    <span class="nav-icon">🌍</span>
+    <span>星球</span>
   </button>
   <button class="nav-item" data-page="page-profile" onclick="navigateTo('page-profile')">
     <span class="nav-icon">👤</span>
@@ -1639,12 +1693,12 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
      ============================================ -->
 <nav class="bottom-nav" id="bottomNav">
   <button class="nav-item active" data-page="page-home" onclick="navigateTo('page-home')">
-    <span class="nav-icon">🌍</span>
-    <span class="nav-label">星球</span>
+    <span class="nav-icon">🤝</span>
+    <span class="nav-label">约定</span>
   </button>
   <button class="nav-item" data-page="page-tree" onclick="navigateTo('page-tree')">
-    <span class="nav-icon">🌳</span>
-    <span class="nav-label">约定</span>
+    <span class="nav-icon">🌍</span>
+    <span class="nav-label">星球</span>
   </button>
   <button class="nav-item" data-page="page-profile" onclick="navigateTo('page-profile')">
     <span class="nav-icon">👤</span>
@@ -1692,7 +1746,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
     <!-- 步骤1：选择头像 -->
     <div class="onboard-step active" data-step="1">
       <div class="step-title">🎨 第一步：选一个喜欢的头像</div>
-      <div class="step-desc">头像会显示在信任树和个人页面上哦</div>
+      <div class="step-desc">头像会显示在星球和个人页面上哦</div>
       <div class="onboard-avatar-grid" id="onboardAvatarGrid">
         <!-- JS动态渲染 -->
       </div>
@@ -1704,7 +1758,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
     <!-- 步骤2：填写昵称 -->
     <div class="onboard-step" data-step="2">
       <div class="step-title">✏️ 第二步：给自己起个名字</div>
-      <div class="step-desc">这个名字会显示在约定和信任树上</div>
+      <div class="step-desc">这个名字会显示在约定和星球上</div>
       <div class="onboard-name-area">
         <div class="onboard-avatar-preview" id="onboardAvatarPreview">👶</div>
         <input type="text" class="onboard-name-input" id="onboardNameInput" placeholder="比如：小明" maxlength="8">
@@ -1734,7 +1788,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
       </div>
       <div class="onboard-actions">
         <button class="btn btn-secondary" onclick="prevOnboardStep()">← 上一步</button>
-        <button class="btn btn-primary" onclick="finishOnboard()" id="finishBtn" disabled>🎉 完成设置，进入我的星球</button>
+        <button class="btn btn-primary" onclick="finishOnboard()" id="finishBtn" disabled>🎉 完成设置，进入约定页</button>
       </div>
     </div>
   </div>
@@ -1830,7 +1884,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
       <div style="font-size:48px;margin:16px 0;">🎉</div>
       <div style="font-size:18px;font-weight:700;color:var(--mint-dark);margin-bottom:8px;">约定已成立！</div>
       <div style="font-size:14px;color:var(--text-light);margin-bottom:20px;">双方确认后生效</div>
-      <button class="btn btn-primary" onclick="afterAgreementCreated()">回到我的星球</button>
+      <button class="btn btn-primary" onclick="afterAgreementCreated()">回到约定页</button>
     </div>
   </div>
 </div>
@@ -1911,7 +1965,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
       </div>
       <div class="card-actions">
         <button class="btn btn-yellow btn-sm" onclick="simulateSaveAlbum()">📷 保存到相册</button>
-        <button class="btn btn-primary" onclick="goToTree()">🌳 去信任树看看</button>
+        <button class="btn btn-primary" onclick="goToTree()">🌍 去星球看看</button>
       </div>
     </div>
   </div>
@@ -2142,7 +2196,7 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
       <img class="mascot-img mascot-success-img" src="assets/mascot/yan-xiaoyue-main.png" alt="雁小约" style="margin-bottom:12px">
       <h3>信任树叶正在恢复...</h3>
       <p>你们一起积极面对了问题，信任树叶恢复到 3/4 的绿色啦！<br>下次一起加油！</p>
-      <button class="btn btn-primary" onclick="goToTreeAfterReview()">回到信任树</button>
+      <button class="btn btn-primary" onclick="goToTreeAfterReview()">回到约定页</button>
     </div>
   </div>
 </div>
@@ -2456,8 +2510,8 @@ function showToast(msg) {
    页面路由与导航
    ============================================ */
 const navTitles = {
-  'page-home': '首页',
-  'page-tree': '信任树',
+  'page-home': '约定',
+  'page-tree': '星球',
   'page-input': '新建约定',
   'page-sign': '签名确认',
   'page-review': '约定复盘',
@@ -2472,7 +2526,7 @@ function navigateTo(pageId) {
     return;
   }
   if (pageId === 'page-review' && !state.selectedReviewAgreement) {
-    showToast('请从信任树选择需要复盘的约定~');
+    showToast('请从星球页选择需要复盘的约定~');
     return;
   }
 
@@ -2528,7 +2582,7 @@ function navigateTo(pageId) {
   // 滚动到顶部
   window.scrollTo(0, 0);
 
-  // 进入首页时，检查是否有到期提醒
+  // 进入约定页时，检查是否有到期提醒
   if (pageId === 'page-home') {
     setTimeout(checkReminders, 800);
   }
@@ -3464,9 +3518,9 @@ function simulateSaveAlbum() {
   showToast('📷 已保存到手机相册啦！');
 }
 
-// 确认完成，跳转信任树
+// 确认完成，跳转星球页
 function goToTree() {
-  navigateTo('page-home');
+  navigateTo('page-tree');
 }
 
 /* ============================================
@@ -3599,128 +3653,101 @@ function settleTrustDrops(agreement) {
 function renderHomePage() {
   const container = document.getElementById('homeContent');
   if (!container) return;
-  
-  const user = state.user;
-  const drops = user.trustDrops || 0;
-  const stage = getTreeStage(drops);
-  const progress = getTreeProgress(drops);
-  const nextDrops = getNextStageDrops(drops);
-  
-  // 获取今日约定（active/pending_completion_confirmation状态，按deadline排序，最多2条）
+
   const activeAgreements = (state.agreements || [])
     .filter(a => a.status === 'active' || a.status === 'pending_completion_confirmation')
     .sort((a, b) => (a.deadline || '9999') < (b.deadline || '9999') ? -1 : 1);
-  const todayAgreements = activeAgreements.slice(0, 2);
-  
-  // 最近完成的约定
-  const recentCompleted = (state.agreements || [])
-    .filter(a => a.status === 'completed')
-    .sort((a, b) => (b.completedAt || '').localeCompare(a.completedAt || ''))
-    .slice(0, 1);
 
-  const greeting = getGreeting();
-  
+  const completedAgreements = (state.agreements || [])
+    .filter(a => a.status === 'completed')
+    .sort((a, b) => (b.completedAt || '').localeCompare(a.completedAt || ''));
+
+  const overdueCount = activeAgreements.filter(a => a.deadline && new Date(a.deadline) < new Date()).length;
+
   container.innerHTML = `
-    <!-- 问候区 -->
-    <div class="home-greeting">
-      <img class="home-avatar" src="${getAvatarSrc(user.avatar)}" alt="${user.name}">
-      <div class="home-greeting-text">
-        <div class="home-nickname">${user.name || '小朋友'}的信任星球</div>
-        <div class="home-mascot-say">雁小约：${greeting}</div>
-      </div>
+    <!-- 快速创建入口 -->
+    <div class="agreements-header">
+      <div class="agreements-title">我的约定</div>
+      <div class="agreements-count">${activeAgreements.length} 个进行中${overdueCount > 0 ? ` · ${overdueCount} 个已逾期` : ''}</div>
     </div>
-    
-    <!-- 星球主视觉 -->
-    <div class="home-planet-card card">
-      <div class="planet-visual">
-        <span class="stage-icon">${stage.icon}</span>
-        <span class="stage-name">${stage.name}</span>
+
+    <!-- AI 创建卡片 -->
+    <div class="card ai-create-card" onclick="navigateTo('page-input')">
+      <div class="ai-create-icon">🤖</div>
+      <div class="ai-create-text">
+        <div class="ai-create-title">让雁小约帮我建约定</div>
+        <div class="ai-create-sub">说出你的想法，AI 帮你整理成结构化约定</div>
       </div>
-      <div class="drops-display">
-        <span class="drops-number">${drops}</span>
-        <span class="drops-label">信任水滴</span>
-      </div>
-      <div class="tree-progress">
-        <div class="tree-progress-bar" style="width:${progress}%"></div>
-      </div>
-      <div class="next-stage-hint">
-        ${nextDrops > 0 ? `距离「${getNextStageName(drops)}」还差 ${nextDrops} 滴信任水` : '已达到最高阶段！'}
-      </div>
+      <div class="ai-create-arrow">→</div>
     </div>
-    
-    <!-- 今日约定 -->
-    <div class="home-section">
-      <div class="section-title">今日约定</div>
-      ${todayAgreements.length > 0 
-        ? todayAgreements.map(a => createCompactAgreementCard(a)).join('')
-        : `<div class="empty-state">
-            <div class="empty-icon">${stage.icon}</div>
-            <div class="empty-text">你的亲情树还是一颗小种子。<br>和${getFirstPartnerName()}完成第一个约定，就能获得第一滴信任水。</div>
-          </div>`
-      }
-    </div>
-    
-    <!-- 新建约定按钮 -->
-    <div class="home-create-btn" onclick="navigateTo('page-input')">
-      <span>+ 新建约定</span>
-    </div>
-    
-    <!-- 最近成长 -->
-    ${recentCompleted.length > 0 ? `
-    <div class="home-section">
-      <div class="section-title">最近成长</div>
-      ${createRecentGrowthCard(recentCompleted[0])}
+
+    <!-- 进行中的约定 -->
+    <div class="section-title">进行中</div>
+    ${activeAgreements.length > 0
+      ? activeAgreements.map(a => createAgreementCard(a)).join('')
+      : `<div class="empty-state">
+          <div class="empty-icon">🌱</div>
+          <div class="empty-text">还没有约定呢~<br>点击上方让雁小约帮你建一个吧</div>
+        </div>`
+    }
+
+    <!-- 已完成的约定 -->
+    ${completedAgreements.length > 0 ? `
+    <div class="section-title">已完成</div>
+    <div class="completed-list">
+      ${completedAgreements.slice(0, 3).map(a => `
+        <div class="completed-item" onclick="viewAgreement(${a.id})">
+          <span class="completed-check">✓</span>
+          <span class="completed-text">${escapeHtml(a.task || '未命名')}</span>
+        </div>
+      `).join('')}
     </div>` : ''}
   `;
 }
 
-function getGreeting() {
-  const h = new Date().getHours();
-  if (h < 6) return '夜深了，早点休息哦~';
-  if (h < 12) return '早上好！今天也要加油哦~';
-  if (h < 14) return '中午好！记得吃饭休息哦~';
-  if (h < 18) return '下午好！约定完成了吗~';
-  return '晚上好！今天过得怎么样~';
-}
-
-function getNextStageName(drops) {
-  const stage = getTreeStage(drops);
-  if (stage.max === Infinity) return '';
-  const idx = TREE_STAGES.indexOf(stage);
-  return idx < TREE_STAGES.length - 1 ? TREE_STAGES[idx + 1].name : '';
-}
-
-function getFirstPartnerName() {
-  const members = state.user.members || [];
-  if (members.length > 0) return members[0].name;
-  return '爸爸妈妈';
-}
-
-function createCompactAgreementCard(a) {
+function createAgreementCard(a) {
   const isOverdue = a.deadline && new Date(a.deadline) < new Date() && a.status === 'active';
-  let actionBtn = '';
-  
-  if (a.status === 'active' && !isOverdue) {
-    actionBtn = `<button class="btn btn-sm btn-primary" style="margin-top:8px;width:100%;" onclick="event.stopPropagation();markPendingCompletion(${a.id})">我完成了</button>`;
-  } else if (a.status === 'pending_completion_confirmation') {
-    actionBtn = `<button class="btn btn-sm btn-primary" style="margin-top:8px;width:100%;" onclick="event.stopPropagation();confirmCompletion(${a.id})">确认对方已完成</button>`;
-  } else if (isOverdue) {
-    actionBtn = `<button class="btn btn-sm" style="margin-top:8px;width:100%;background:#FF9800;color:white;" onclick="event.stopPropagation();startReview(${a.id})">进入温和复盘</button>`;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const deadline = a.deadline ? new Date(a.deadline) : null;
+  const diff = deadline ? Math.ceil((deadline - today) / 86400000) : null;
+
+  let deadlineText = '';
+  let deadlineClass = '';
+  if (isOverdue) {
+    deadlineText = '已逾期';
+    deadlineClass = 'overdue';
+  } else if (diff === 0) {
+    deadlineText = '今天到期';
+    deadlineClass = 'today';
+  } else if (diff === 1) {
+    deadlineText = '明天到期';
+    deadlineClass = 'soon';
+  } else if (diff !== null && diff < 7) {
+    deadlineText = `${diff}天后`;
+    deadlineClass = 'soon';
+  } else if (deadline) {
+    deadlineText = `${deadline.getMonth()+1}/${deadline.getDate()}`;
+    deadlineClass = 'normal';
   }
-  
-  const statusInfo = STATUS_MAP[a.status] || STATUS_MAP['active'];
-  const displayTag = isOverdue
-    ? '<span class="tag tag-overdue" style="font-size:11px;">已逾期</span>'
-    : `<span class="tag ${statusInfo.class}" style="font-size:11px;">${statusInfo.label}</span>`;
-  
+
+  let actionBtn = '';
+  if (a.status === 'active' && !isOverdue) {
+    actionBtn = `<button class="btn-agree-action" onclick="event.stopPropagation();markPendingCompletion(${a.id})">我完成了</button>`;
+  } else if (a.status === 'pending_completion_confirmation') {
+    actionBtn = `<button class="btn-agree-action pending" onclick="event.stopPropagation();confirmCompletion(${a.id})">确认完成</button>`;
+  } else if (isOverdue) {
+    actionBtn = `<button class="btn-agree-action review" onclick="event.stopPropagation();startReview(${a.id})">温和复盘</button>`;
+  }
+
   return `
-    <div class="card compact-agreement" onclick="viewAgreement(${a.id})" style="margin-bottom:10px;${isOverdue ? 'border-left:3px solid #FF9800;' : ''}">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <div>
-          <div style="font-weight:600;font-size:14px;color:var(--text);margin-bottom:2px;">${a.task || '未命名约定'}</div>
-          <div style="font-size:12px;color:var(--text-light);">${a.initiator || ''} → ${a.receiver || ''}</div>
-        </div>
-        ${isOverdue ? '' : (a.deadline ? `<span style="font-size:12px;color:var(--text-light);">${formatDeadline(a.deadline)}</span>` : '')}
+    <div class="card agreement-card ${isOverdue ? 'card-overdue' : ''}" onclick="viewAgreement(${a.id})">
+      <div class="agreement-card-header">
+        <div class="agreement-card-title">${escapeHtml(a.task || '未命名约定')}</div>
+        ${deadlineText ? `<span class="agreement-deadline ${deadlineClass}">${deadlineText}</span>` : ''}
+      </div>
+      <div class="agreement-card-meta">
+        <span>${a.initiator || ''} ↔ ${a.receiver || ''}</span>
+        ${a.standard ? `<span class="agreement-standard">标准: ${escapeHtml(a.standard.substring(0, 20))}${a.standard.length > 20 ? '...' : ''}</span>` : ''}
       </div>
       ${actionBtn}
     </div>
@@ -3735,16 +3762,6 @@ function formatDeadline(dateStr) {
   if (diff === 1) return '明天';
   if (diff < 7) return `${diff}天后`;
   return `${d.getMonth()+1}/${d.getDate()}`;
-}
-
-function createRecentGrowthCard(a) {
-  return `
-    <div class="card" style="padding:16px;text-align:center;">
-      <div style="font-size:24px;margin-bottom:6px;">🎉</div>
-      <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">${a.task || '约定已完成'}</div>
-      <div style="font-size:12px;color:var(--text-light);">+10 信任水滴</div>
-    </div>
-  `;
 }
 
 /* ============================================
@@ -4332,7 +4349,7 @@ function confirmReview() {
   document.getElementById('reviewResult').classList.add('show');
 }
 
-// 复盘完成后回到信任树
+// 复盘完成后回到约定页
 function goToTreeAfterReview() {
   state.selectedReviewAgreement = null;
   navigateTo('page-home');
@@ -5027,7 +5044,7 @@ function finishOnboard() {
   setOnboarded();
   saveData();
   showToast('🎉 设置完成！欢迎来到信任星球！');
-  // 进入我的星球
+  // 进入约定页
   navigateTo('page-home');
 }
 
@@ -5089,7 +5106,7 @@ document.addEventListener('DOMContentLoaded', function() {
     return; // 首次引导时不渲染其他页面
   }
 
-  // 非首次：正常渲染首页
+  // 非首次：正常渲染约定页
   // 旧数据迁移（在渲染前执行）
   migrateData();
   // 迁移后重新加载 state（migrateData 可能更新了 localStorage）
