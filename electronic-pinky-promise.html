@@ -3775,12 +3775,15 @@ function renderTreePage() {
 }
 
 // 渲染信任树V2可视化（带叶子卡片）
-// 树阶段配置（基于信任水滴数）
+// 树阶段配置（基于完成约定数，与TREE_STAGES 7阶段对齐）
 const TREE_GROWTH_STAGES = [
-  { min: 0, img: 'assets/tree-stages/stage-seed.jpg', label: '🌱 信任种子', max: 0 },
-  { min: 1, img: 'assets/tree-stages/stage-sprout.jpg', label: '🌿 守信新芽', max: 20 },
-  { min: 21, img: 'assets/tree-stages/stage-leaves.jpg', label: '🌳 信任绿树', max: 60 },
-  { min: 61, img: 'assets/tree-stages/stage-full-tree.jpg', label: '🌲 参天信任树', max: 999 }
+  { min: 0,  img: 'assets/tree-stages/stage-seed.jpg',      label: '🌱 信任种子',     max: 0 },
+  { min: 1,  img: 'assets/tree-stages/stage-sprout.jpg',    label: '🌿 守信新芽',     max: 3 },
+  { min: 4,  img: 'assets/tree-stages/stage-sapling.jpg',   label: '🌱 成长树苗',     max: 9 },
+  { min: 10, img: 'assets/tree-stages/stage-leaves.jpg',    label: '🌳 绿叶小树',     max: 19 },
+  { min: 20, img: 'assets/tree-stages/stage-blossom.jpg',   label: '🌸 开花亲情树',   max: 39 },
+  { min: 40, img: 'assets/tree-stages/stage-full-tree.jpg', label: '🌲 信任森林',     max: 69 },
+  { min: 70, img: 'assets/tree-stages/stage-planet.jpg',    label: '🪐 信任星球',     max: 999 }
 ];
 
 function getTreeGrowthStage(completed) {
