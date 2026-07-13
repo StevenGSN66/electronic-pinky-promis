@@ -1239,6 +1239,28 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
   text-align: center; font-size: 12px; color: var(--text-light);
   margin-top: 8px;
 }
+/* AI 密钥设置 */
+.api-key-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; background: var(--card-bg); border-radius: var(--radius-sm);
+}
+.api-key-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #4CAF50; flex-shrink: 0;
+}
+.api-key-dot.custom { background: #FF9800; }
+.api-key-text { flex: 1; font-size: 13px; color: var(--text); font-weight: 600; }
+.api-key-btn {
+  padding: 6px 14px; border-radius: 8px; border: 1.5px solid var(--border);
+  background: none; font-size: 13px; color: var(--mint-dark); font-weight: 600;
+  cursor: pointer; font-family: inherit;
+}
+.api-key-btn:hover { background: var(--mint-light); }
+.api-key-input-field {
+  width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 14px; outline: none;
+  font-family: inherit; box-sizing: border-box;
+}
+.api-key-input-field:focus { border-color: var(--mint); }
 
 /* 注销确认弹窗 */
 .logout-overlay {
@@ -2252,6 +2274,16 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
       </button>
       <p class="logout-hint">注销后所有数据将被清除，需要重新设置</p>
     </div>
+
+    <!-- AI 密钥设置 -->
+    <div class="profile-section">
+      <div class="section-title"><span class="icon">🤖</span> AI 设置</div>
+      <div class="api-key-bar" id="apiKeyBar">
+        <span class="api-key-dot" id="apiKeyDot"></span>
+        <span class="api-key-text" id="apiKeyText">内置密钥</span>
+        <button class="api-key-btn" onclick="openApiKeyModal()">修改</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2266,6 +2298,22 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
     <div class="logout-actions">
       <button class="btn btn-secondary" onclick="closeLogoutModal()">不用了</button>
       <button class="btn btn-pink" onclick="confirmLogout()">确认要注销</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     AI 密钥设置弹窗
+     ============================================ -->
+<div class="logout-overlay" id="apiKeyOverlay">
+  <div class="logout-modal" style="max-width:380px;">
+    <div class="logout-icon">🔑</div>
+    <h3>AI 密钥设置</h3>
+    <p style="font-size:13px;color:var(--text-light);margin-bottom:16px;">输入 DeepSeek API Key（sk-开头）替换内置密钥，留空则恢复内置密钥。</p>
+    <input type="password" id="apiKeyInput" placeholder="sk-..." class="api-key-input-field">
+    <div class="logout-actions" style="margin-top:16px;">
+      <button class="btn btn-secondary" onclick="closeApiKeyModal()">取消</button>
+      <button class="btn btn-primary" onclick="saveApiKeyFromModal()">保存</button>
     </div>
   </div>
 </div>
@@ -4357,11 +4405,17 @@ function renderProfilePage() {
 
   // 渲染称号
   renderTitles();
+  // 更新密钥状态
+  updateApiKeyUI();
 }
 
 // ===== AI 内置配置（直接调用 DeepSeek API）=====
-const DEEPSEEK_API_KEY = atob('c2stZmMzYTc5YTMxNWExNGRlMGE1MGI0MDI4ZjQ2YjRkMjA=');
+let DEEPSEEK_API_KEY = atob('c2stZmMzYTc5YTMxNWExNGRlMGE1MGI0MDI4ZjQ2YjRkMjA=');
+const DEFAULT_API_KEY = DEEPSEEK_API_KEY;
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
+// 页面加载时恢复自定义密钥
+const _savedKey = localStorage.getItem('_trust_planet_api_key');
+if (_savedKey) DEEPSEEK_API_KEY = _savedKey;
 
 async function callDeepSeekParse(text) {
   try {
@@ -4586,6 +4640,52 @@ function confirmLogout() {
   // 延迟后刷新页面，重新进入引导页
   setTimeout(() => {
     location.reload();
+  }, 1200);
+}
+
+/* ===== AI 密钥设置弹窗 ===== */
+function updateApiKeyUI() {
+  const dot = document.getElementById('apiKeyDot');
+  const text = document.getElementById('apiKeyText');
+  if (!dot || !text) return;
+  const saved = localStorage.getItem('_trust_planet_api_key');
+  if (saved) {
+    dot.className = 'api-key-dot custom';
+    text.textContent = '自定义密钥 sk-...' + saved.slice(-4);
+  } else {
+    dot.className = 'api-key-dot';
+    text.textContent = '内置密钥';
+  }
+}
+
+function openApiKeyModal() {
+  document.getElementById('apiKeyInput').value = '';
+  document.getElementById('apiKeyOverlay').classList.add('show');
+}
+
+function closeApiKeyModal() {
+  document.getElementById('apiKeyOverlay').classList.remove('show');
+}
+
+function saveApiKeyFromModal() {
+  const input = document.getElementById('apiKeyInput');
+  const key = (input?.value || '').trim();
+  if (key && !key.startsWith('sk-')) {
+    showToast('API Key 格式不正确，应以 sk- 开头');
+    return;
+  }
+  if (key) {
+    localStorage.setItem('_trust_planet_api_key', key);
+    DEEPSEEK_API_KEY = key;
+    showToast('密钥已更新');
+  } else {
+    localStorage.removeItem('_trust_planet_api_key');
+    DEEPSEEK_API_KEY = DEFAULT_API_KEY;
+    showToast('已恢复内置密钥');
+  }
+  updateApiKeyUI();
+  closeApiKeyModal();
+}
   }, 1200);
 }
 
