@@ -1089,6 +1089,20 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
   font-family: inherit; background: #FFFEF5; margin-bottom: 8px;
 }
 .page-review .reason-input:focus { border-color: var(--mint); }
+.page-review .review-input-row {
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.page-review .review-input-row .reason-input {
+  flex: 1;
+}
+.page-review .review-input-row .btn-voice {
+  width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--border);
+  background: white; font-size: 18px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0;
+}
+.page-review .review-input-row .btn-voice.recording {
+  background: #FFEBEE; border-color: #E91E63; animation: pulse 1s infinite;
+}
 
 /* AI调解建议 */
 .page-review .ai-suggestion {
@@ -2112,7 +2126,10 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
         <h3><span class="step-num">1</span> 说说自己的想法</h3>
         <p style="font-size:13px;color:var(--text-light);margin-bottom:10px">先说说为什么没能完成约定，我们一起想办法~</p>
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:13px;font-weight:600" id="childReasonLabel">发起方的想法：</div>
-        <textarea class="reason-input" id="childReason" placeholder="说说为什么没能完成约定呢..."></textarea>
+        <div class="review-input-row">
+          <textarea class="reason-input" id="childReason" placeholder="说说为什么没能完成约定呢..."></textarea>
+          <button class="btn-voice" id="childVoiceBtn" onclick="toggleVoiceFor('childReason','childVoiceBtn')">🎤</button>
+        </div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px" id="childQuickReasons">
           <button class="btn btn-sm btn-secondary" onclick="fillQuickReason('childReason','时间不够用')">时间不够用</button>
           <button class="btn btn-sm btn-secondary" onclick="fillQuickReason('childReason','有点难')">有点难</button>
@@ -2129,7 +2146,10 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
         <h3><span class="step-num">2</span> 另一方的观察</h3>
         <p style="font-size:13px;color:var(--text-light);margin-bottom:10px">另一方的观察和想法也很重要~</p>
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:13px;font-weight:600" id="parentReasonLabel">接受方的观察：</div>
-        <textarea class="reason-input" id="parentObservation" placeholder="说说你观察到了什么，或者有什么想法..."></textarea>
+        <div class="review-input-row">
+          <textarea class="reason-input" id="parentObservation" placeholder="说说你观察到了什么，或者有什么想法..."></textarea>
+          <button class="btn-voice" id="parentVoiceBtn" onclick="toggleVoiceFor('parentObservation','parentVoiceBtn')">🎤</button>
+        </div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px" id="parentQuickReasons">
           <button class="btn btn-sm btn-secondary" onclick="fillQuickReason('parentObservation','可能是时间安排比较紧')">可能是时间安排比较紧</button>
           <button class="btn btn-sm btn-secondary" onclick="fillQuickReason('parentObservation','可以试试换个方式')">可以试试换个方式</button>
@@ -2666,10 +2686,10 @@ function renderCreateStep() {
 let voicePermissionDenied = false;
 let recognition = null;
 
-function toggleVoice() {
+function toggleVoiceFor(textareaId, btnId) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const btn = document.getElementById('voiceBtn');
-  const textarea = document.getElementById('agreementText');
+  const btn = document.getElementById(btnId);
+  const textarea = document.getElementById(textareaId);
 
   if (!SpeechRecognition) {
     showToast('当前浏览器不支持语音识别，请手动输入哦~');
@@ -2677,7 +2697,7 @@ function toggleVoice() {
   }
 
   if (voicePermissionDenied) {
-    showToast('麦克风权限被拒绝，请手动输入约定内容~');
+    showToast('麦克风权限被拒绝，请手动输入~');
     return;
   }
 
@@ -2735,6 +2755,10 @@ function toggleVoice() {
     btn.classList.remove('recording');
     btn.textContent = '🎤';
   };
+}
+
+function toggleVoice() {
+  toggleVoiceFor('agreementText', 'voiceBtn');
 
   recognition.start();
 }
