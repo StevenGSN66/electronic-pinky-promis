@@ -2629,6 +2629,19 @@ function navigateTo(pageId) {
   if (pageId === 'page-sign') initSignPage();
   if (pageId === 'page-review') initReviewPage();
 
+  // 离开约定页时停止雁小约引导视频和定时器
+  if (pageId !== 'page-home') {
+    const guideVideo = document.getElementById('homeGuideVideo');
+    if (guideVideo) {
+      guideVideo.pause();
+      guideVideo.currentTime = 0;
+    }
+    if (window._homeGuideTimer) {
+      clearTimeout(window._homeGuideTimer);
+      window._homeGuideTimer = null;
+    }
+  }
+
   // 滚动到顶部
   window.scrollTo(0, 0);
 
@@ -3706,9 +3719,19 @@ function settleTrustDrops(agreement) {
 
 function unmuteHomeGuideVideo() {
   const v = document.getElementById('homeGuideVideo');
-  if (v && v.muted) {
-    v.muted = false;
-    v.play().catch(function(){});
+  if (v) {
+    if (v.muted) {
+      v.muted = false;
+      v.play().catch(function(){});
+    } else if (v.paused) {
+      v.currentTime = 0;
+      v.play().catch(function(){});
+    }
+    // 用户主动交互，重置空闲计时器
+    if (window._homeGuideTimer) {
+      clearTimeout(window._homeGuideTimer);
+      window._homeGuideTimer = null;
+    }
   }
 }
 
@@ -3736,7 +3759,7 @@ function renderHomePage() {
     <!-- AI 创建卡片 -->
     <div class="card ai-create-card" onclick="navigateTo('page-input')" onmouseenter="unmuteHomeGuideVideo()">
       <div class="ai-create-mascot-video-wrap">
-        <video class="ai-create-mascot-video" id="homeGuideVideo" autoplay playsinline loop
+        <video class="ai-create-mascot-video" id="homeGuideVideo" autoplay playsinline
           src="assets/animations/home-guide.webm"
           webkit-playsinline="true" x5-playsinline="true">
         </video>
@@ -3772,13 +3795,50 @@ function renderHomePage() {
     </div>` : ''}
   `;
 
-  // 初始化雁小约引导视频（有声自动播放，浏览器阻止则回退静音）
+  // 初始化雁小约引导视频（只播放一次，45秒无操作则重新引导）
   const homeGuideVideo = document.getElementById('homeGuideVideo');
   if (homeGuideVideo) {
-    homeGuideVideo.muted = false;
-    homeGuideVideo.play().catch(function() {
-      homeGuideVideo.muted = true;
-      homeGuideVideo.play().catch(function(){});
+    // 清除之前的定时器
+     if (window._homeGuideTimer) clearTimeout(window._homeGuideTimer);
+    window._homeGuideTimer = null;
+    homeGuideVideo._hasPlayed = false;
+
+    function playGuideOnce() {
+      if (homeGuideVideo._hasPlayed && !homeGuideVideo.ended) return; // 正在播放中，不重复
+      homeGuideVideo.currentTime = 0;
+      homeGuideVideo.muted = false;
+      homeGuideVideo.play().then(function() {
+        homeGuideVideo._hasPlayed = true;
+      }).catch(function() {
+        homeGuideVideo.muted = true;
+        homeGuideVideo.play().catch(function(){});
+        homeGuideVideo._hasPlayed = true;
+      });
+    }
+
+    function resetIdleTimer() {
+      // 用户有操作，取消即将到来的重播
+      if (window._homeGuideTimer) {
+        clearTimeout(window._homeGuideTimer);
+        window._homeGuideTimer = null;
+      }
+    }
+
+    // 首次播放
+    playGuideOnce();
+
+    // 视频结束时，启动45秒空闲计时器
+    homeGuideVideo.addEventListener('ended', function() {
+      window._homeGuideTimer = setTimeout(function() {
+        playGuideOnce();
+      }, 45000);
+    });
+
+    // 全局交互事件重置计时器
+    const resetEvents = ['click', 'scroll', 'keydown', 'touchstart', 'mousemove'];
+    resetEvents.forEach(function(evt) {
+      document.removeEventListener(evt, resetIdleTimer);
+      document.addEventListener(evt, resetIdleTimer);
     });
   }
 }
