@@ -3763,6 +3763,16 @@ function renderHomePage() {
       `).join('')}
     </div>` : ''}
   `;
+
+  // 初始化雁小约引导视频（有声自动播放，浏览器阻止则回退静音）
+  const homeGuideVideo = document.getElementById('homeGuideVideo');
+  if (homeGuideVideo) {
+    homeGuideVideo.muted = false;
+    homeGuideVideo.play().catch(function() {
+      homeGuideVideo.muted = true;
+      homeGuideVideo.play().catch(function(){});
+    });
+  }
 }
 
 function createAgreementCard(a) {
