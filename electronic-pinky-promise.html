@@ -311,8 +311,39 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
   box-sizing: border-box;
 }
 .step1-input textarea:focus { border-color: var(--mint); }
-.step1-actions {
-  display: flex; gap: 8px; margin-top: 10px; align-items: center;
+.step1-bottom {
+  display: flex; gap: 12px; margin-top: 12px; align-items: stretch;
+}
+.step1-mascot-wrap {
+  width: 100px; min-height: 130px;
+  border-radius: 16px; overflow: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 100%);
+  position: relative;
+}
+.step1-mascot-video {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  border: none;
+}
+.step1-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+}
+.step1-top-actions {
+  display: flex; gap: 8px; align-items: center;
+}
+.step1-submit-btn {
+  width: 160px;
+  min-height: 52px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 14px;
 }
 .btn-voice {
   width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--border);
@@ -1878,11 +1909,23 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
     </div>
     <div class="step1-input">
       <textarea id="agreementText" placeholder="写下你们的约定..." rows="4"></textarea>
-      <div class="step1-actions">
-        <button class="btn-voice" id="voiceBtn" onclick="toggleVoice()">🎤</button>
-        <button class="btn btn-sm btn-secondary" onclick="fillDemoSentence()">演示句子</button>
+      <div class="step1-bottom">
+        <!-- 左侧：雁小约视频引导 -->
+        <div class="step1-mascot-wrap">
+          <video class="step1-mascot-video" id="inputGuideVideo" autoplay playsinline
+            src="assets/animations/input-guide.webm"
+            webkit-playsinline="true" x5-playsinline="true">
+          </video>
+        </div>
+        <!-- 右侧：操作按钮区 -->
+        <div class="step1-right">
+          <div class="step1-top-actions">
+            <button class="btn-voice" id="voiceBtn" onclick="toggleVoice()">🎤</button>
+            <button class="btn btn-sm btn-secondary" onclick="fillDemoSentence()">演示句子</button>
+          </div>
+          <button class="btn btn-primary step1-submit-btn" onclick="goToCreateStep2()">让雁小约帮你 →</button>
+        </div>
       </div>
-      <button class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="goToCreateStep2()">让雁小约帮我整理 →</button>
     </div>
   </div>
 
@@ -2642,6 +2685,11 @@ function navigateTo(pageId) {
     }
   }
 
+  // 离开录入页时停止录入页引导视频
+  if (pageId !== 'page-input') {
+    stopInputGuideVideo();
+  }
+
   // 滚动到顶部
   window.scrollTo(0, 0);
 
@@ -2701,6 +2749,69 @@ function initCreatePage() {
   // 记住选中的成员索引，用于交换
   window._initiatorMemberIdx = 0;
   window._receiverMemberIdx = 0;
+
+  // 初始化雁小约录入页引导视频（播放一次，45秒空闲重播）
+  initInputGuideVideo();
+}
+
+function initInputGuideVideo() {
+  const v = document.getElementById('inputGuideVideo');
+  if (!v) return;
+
+  // 清除之前的定时器和事件
+  if (window._inputGuideTimer) {
+    clearTimeout(window._inputGuideTimer);
+    window._inputGuideTimer = null;
+  }
+  v._hasPlayed = false;
+
+  function playGuideOnce() {
+    if (v._hasPlayed && !v.ended) return; // 正在播放中，不重复
+    v.currentTime = 0;
+    v.muted = false;
+    v.play().then(function() {
+      v._hasPlayed = true;
+    }).catch(function() {
+      v.muted = true;
+      v.play().catch(function(){});
+      v._hasPlayed = true;
+    });
+  }
+
+  function resetIdleTimer() {
+    if (window._inputGuideTimer) {
+      clearTimeout(window._inputGuideTimer);
+      window._inputGuideTimer = null;
+    }
+  }
+
+  // 首次播放
+  playGuideOnce();
+
+  // 视频结束时，启动45秒空闲计时器
+  v.addEventListener('ended', function onEnded() {
+    window._inputGuideTimer = setTimeout(function() {
+      playGuideOnce();
+    }, 45000);
+  });
+
+  // 用户交互时重置计时器
+  const resetEvents = ['click', 'scroll', 'keydown', 'touchstart', 'input'];
+  resetEvents.forEach(function(evt) {
+    document.addEventListener(evt, resetIdleTimer);
+  });
+}
+
+function stopInputGuideVideo() {
+  const v = document.getElementById('inputGuideVideo');
+  if (v) {
+    v.pause();
+    v.currentTime = 0;
+  }
+  if (window._inputGuideTimer) {
+    clearTimeout(window._inputGuideTimer);
+    window._inputGuideTimer = null;
+  }
 }
 
 function renderCreateStep() {
