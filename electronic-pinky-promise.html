@@ -774,13 +774,28 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
 
 .ai-create-card {
   display: flex; align-items: center; gap: 14px;
-  padding: 14px 18px; margin-bottom: 20px;
+  padding: 16px 18px; margin-bottom: 20px;
   background: linear-gradient(135deg, #E8F5E9, #F1F8E9);
   cursor: pointer; transition: all 0.2s;
   border: 2px solid transparent; border-radius: 16px;
+  min-height: 90px;
 }
 .ai-create-card:hover { border-color: var(--mint); transform: translateY(-1px); }
-.ai-create-mascot { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
+.ai-create-mascot-img { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; flex-shrink: 0; display: none; }
+.ai-create-mascot-video-wrap {
+  width: 72px; height: 88px;
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 100%);
+}
+.ai-create-mascot-video {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  border: none;
+}
 .ai-create-icon { font-size: 32px; }
 .ai-create-text { flex: 1; }
 .ai-create-title { font-size: 16px; font-weight: 700; color: var(--text); }
@@ -3713,7 +3728,13 @@ function renderHomePage() {
 
     <!-- AI 创建卡片 -->
     <div class="card ai-create-card" onclick="navigateTo('page-input')">
-      <img class="ai-create-mascot" src="assets/mascot/yan-xiaoyue-main-front.jpg" alt="雁小约">
+      <div class="ai-create-mascot-video-wrap">
+        <video class="ai-create-mascot-video" id="homeGuideVideo" autoplay playsinline loop muted
+          src="assets/animations/home-guide.webm"
+          webkit-playsinline="true" x5-playsinline="true">
+        </video>
+      </div>
+      <img class="ai-create-mascot-img" src="assets/mascot/yan-xiaoyue-main-front.jpg" alt="雁小约">
       <div class="ai-create-text">
         <div class="ai-create-title">让雁小约帮我建约定</div>
         <div class="ai-create-sub">说出你的想法，AI 帮你整理成结构化约定</div>
