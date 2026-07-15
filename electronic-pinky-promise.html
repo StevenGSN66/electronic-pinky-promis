@@ -783,8 +783,8 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
 .ai-create-card:hover { border-color: var(--mint); transform: translateY(-1px); }
 .ai-create-mascot-img { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; flex-shrink: 0; display: none; }
 .ai-create-mascot-video-wrap {
-  width: 72px; height: 88px;
-  border-radius: 14px;
+  width: 144px; height: 176px;
+  border-radius: 18px;
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
@@ -3728,7 +3728,7 @@ function renderHomePage() {
     <!-- AI 创建卡片 -->
     <div class="card ai-create-card" onclick="navigateTo('page-input')">
       <div class="ai-create-mascot-video-wrap">
-        <video class="ai-create-mascot-video" id="homeGuideVideo" autoplay playsinline loop muted
+        <video class="ai-create-mascot-video" id="homeGuideVideo" autoplay playsinline loop
           src="assets/animations/home-guide.webm"
           webkit-playsinline="true" x5-playsinline="true">
         </video>
@@ -5193,6 +5193,16 @@ function migrateData() {
    初始化与页面加载
    ============================================ */
 document.addEventListener('DOMContentLoaded', function() {
+  // 处理首页雁小约视频自动播放（浏览器可能阻止有声自动播放）
+  const homeGuideVideo = document.getElementById('homeGuideVideo');
+  if (homeGuideVideo) {
+    homeGuideVideo.play().catch(function(err) {
+      // 自动播放被阻止，回退到静音模式
+      homeGuideVideo.muted = true;
+      homeGuideVideo.play().catch(function(){});
+    });
+  }
+
   // 首次启动：直接进入引导页
   if (!isOnboarded()) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
