@@ -384,6 +384,19 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
   50% { transform: scale(1.15); opacity: 0.7; }
 }
 .ai-thinking-icon { display: inline-block; }
+.ai-thinking-video-wrap {
+  width: 160px; height: 180px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 100%);
+}
+.ai-thinking-video {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  border: none;
+}
 
 /* AI 建议框 */
 .ai-suggestion-box {
@@ -2959,11 +2972,25 @@ async function goToCreateStep2() {
   if (body) {
     body.innerHTML = `
       <div class="ai-thinking" style="text-align:center;padding:40px 20px;">
-        <div class="ai-thinking-icon" style="font-size:48px;animation:aiPulse 1.5s ease-in-out infinite;">🤖</div>
+        <div class="ai-thinking-video-wrap">
+          <video class="ai-thinking-video" id="aiThinkingVideo" autoplay playsinline loop muted
+            src="assets/animations/ai-thinking.webm"
+            webkit-playsinline="true" x5-playsinline="true">
+          </video>
+        </div>
         <div class="ai-thinking-text" style="margin-top:16px;font-size:15px;color:var(--text);font-weight:600;">雁小约正在帮你整理约定...</div>
         <div class="ai-thinking-sub" style="margin-top:8px;font-size:13px;color:var(--text-light);">识别约定双方、提取时间和标准</div>
       </div>
     `;
+    // 尝试有声播放，被阻止则静音继续
+    const thinkingVid = document.getElementById('aiThinkingVideo');
+    if (thinkingVid) {
+      thinkingVid.muted = false;
+      thinkingVid.play().catch(function() {
+        thinkingVid.muted = true;
+        thinkingVid.play().catch(function(){});
+      });
+    }
   }
   if (modeTag) modeTag.textContent = 'AI 处理中...';
 
@@ -4942,13 +4969,17 @@ function initOnboardPage() {
   renderPartnerPresets();
   updateOnboardButtons();
 
-  // 欢迎视频：直接播放（有声音），每30秒循环一次
+  // 欢迎视频：尝试有声播放，被阻止则回退静音
   const vid = document.getElementById('welcomeVideo');
   if (vid) {
     vid.muted = false;
     vid.volume = 1;
     vid.currentTime = 0;
-    vid.play().catch(() => {});
+    vid.play().catch(function() {
+      // 浏览器阻止有声自动播放，回退静音
+      vid.muted = true;
+      vid.play().catch(function(){});
+    });
 
     // 阻止 loop 自动循环，改为手动控制30秒间隔
     vid.removeAttribute('loop');
@@ -4956,7 +4987,11 @@ function initOnboardPage() {
     function playOnce() {
       if (!document.getElementById('page-onboard')?.classList.contains('active')) return;
       vid.currentTime = 0;
-      vid.play().catch(() => {});
+      vid.muted = false;
+      vid.play().catch(function() {
+        vid.muted = true;
+        vid.play().catch(function(){});
+      });
     }
 
     vid.addEventListener('ended', function() {
