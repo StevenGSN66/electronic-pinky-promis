@@ -3704,6 +3704,14 @@ function settleTrustDrops(agreement) {
   return drops;
 }
 
+function unmuteHomeGuideVideo() {
+  const v = document.getElementById('homeGuideVideo');
+  if (v && v.muted) {
+    v.muted = false;
+    v.play().catch(function(){});
+  }
+}
+
 function renderHomePage() {
   const container = document.getElementById('homeContent');
   if (!container) return;
@@ -3726,7 +3734,7 @@ function renderHomePage() {
     </div>
 
     <!-- AI 创建卡片 -->
-    <div class="card ai-create-card" onclick="navigateTo('page-input')">
+    <div class="card ai-create-card" onclick="navigateTo('page-input')" onmouseenter="unmuteHomeGuideVideo()">
       <div class="ai-create-mascot-video-wrap">
         <video class="ai-create-mascot-video" id="homeGuideVideo" autoplay playsinline loop
           src="assets/animations/home-guide.webm"
