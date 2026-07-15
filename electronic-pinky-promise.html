@@ -1354,10 +1354,9 @@ body { min-height: 100vh; padding-bottom: calc(var(--nav-height) + 60px); }
   font-size: 14px; z-index: 300;
   animation: fadeInUp 0.3s ease; pointer-events: none;
 }
-.empty-state {
-  text-align: center; padding: 40px 20px; color: var(--text-light);
-}
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text-light); }
 .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state .empty-icon-img { width: 120px; height: 120px; margin-bottom: 16px; object-fit: contain; }
 .empty-state p { font-size: 14px; }
 
 /* ============================================
@@ -3747,7 +3746,7 @@ function renderHomePage() {
     ${activeAgreements.length > 0
       ? activeAgreements.map(a => createAgreementCard(a)).join('')
       : `<div class="empty-state">
-          <div class="empty-icon">🌱</div>
+          <img class="empty-icon-img" src="assets/images/stage-empty.png" alt="空星球">
           <div class="empty-text">还没有约定呢~<br>点击上方让雁小约帮你建一个吧</div>
         </div>`
     }
