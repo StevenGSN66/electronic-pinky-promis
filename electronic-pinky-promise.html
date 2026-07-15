@@ -3887,10 +3887,14 @@ function renderHomePage() {
     <div class="section-title">进行中</div>
     ${activeAgreements.length > 0
       ? activeAgreements.map(a => createAgreementCard(a)).join('')
-      : `<div class="empty-state">
-          <img class="empty-icon-img" src="assets/images/stage-empty.png" alt="空星球">
-          <div class="empty-text">还没有约定呢~<br>点击上方让雁小约帮你建一个吧</div>
-        </div>`
+      : (() => {
+          const completed = (state.agreements || []).filter(a => a.status === 'completed').length;
+          const stage = getTreeGrowthStage(completed);
+          return `<div class="empty-state">
+            <img class="empty-icon-img" src="${stage.img}" alt="${stage.label}">
+            <div class="empty-text">还没有约定呢~<br>点击上方让雁小约帮你建一个吧</div>
+          </div>`;
+        })()
     }
 
     <!-- 已完成的约定 -->
